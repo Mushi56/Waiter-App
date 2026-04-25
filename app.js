@@ -131,8 +131,9 @@
     addonTitle: $('#addonTitle'),
     addonList: $('#addonList'),
     // Table select
-    tableSelect: $('#tableSelect'),
-    // Table management
+    tableNumberInput: $('#tableNumberInput'),
+    tablePresetsList: $('#tablePresetsList'),
+    activeTableBanner: $('#activeTableBanner'),
     tableManageList: $('#tableManageList'),
     manageTableGroup: $('#manageTableGroup'),
     manageTableInput: $('#manageTableInput'),
@@ -621,17 +622,14 @@
   }
 
   function renderTablePresets() {
-    let html = '<option value="" disabled selected>Choose a table...</option>';
-    for (const [group, tables] of Object.entries(tablePresets)) {
-      if (tables && tables.length > 0) {
-        html += `<optgroup label="${group} Tables">`;
-        tables.forEach(t => {
-          html += `<option value="${t}">${t}</option>`;
-        });
-        html += `</optgroup>`;
-      }
-    }
-    els.tableSelect.innerHTML = html;
+    if (!els.tablePresetsList) return;
+    let html = '';
+    Object.keys(tablePresets).forEach((group) => {
+      tablePresets[group].forEach((table) => {
+        html += `<option value="${table}">${group} Group</option>`;
+      });
+    });
+    els.tablePresetsList.innerHTML = html;
   }
 
   function renderTableManageList() {
@@ -752,16 +750,14 @@
 
   // --- Table Number ---
   function setTable() {
-    // If there is custom input, prioritize it, otherwise check dropdown
-    let val = els.tableNumberInput.value.trim().toUpperCase();
-    if (val) {
-      addTableToPresets(val); // Automatically save custom entries
-    } else {
-      val = els.tableSelect.value;
-    }
+    const val = els.tableNumberInput.value.trim().toUpperCase();
+    if (!val) { showToast('⚠️ Enter or select a table number'); return; }
     
-    if (!val) { showToast('⚠️ Select or enter a table number'); return; }
-    
+    // Automatically add to Others if not in presets
+    let found = false;
+    Object.values(tablePresets).forEach(arr => { if (arr.includes(val)) found = true; });
+    if (!found) addTableToPresets(val, 'Others');
+
     tableNumber = val;
     els.activeTableNum.textContent = val;
     els.tableSection.classList.add('hidden');
@@ -807,7 +803,6 @@
     // Set table
     $('#setTableBtn').addEventListener('click', setTable);
     els.tableNumberInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') setTable(); });
-    els.tableSelect.addEventListener('change', () => { els.tableNumberInput.value = ''; setTable(); });
     $('#changeTableBtn').addEventListener('click', changeTable);
 
     // Table management page

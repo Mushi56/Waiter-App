@@ -102,16 +102,10 @@
       <div class="table-section" id="tableSection">
         <div class="table-input-group">
           <div class="table-input-row">
-            <select id="tableSelect" class="table-dropdown">
-              <option value="" disabled selected>Choose a table...</option>
-              <!-- Options populated by JS -->
-            </select>
-          </div>
-        </div>
-
-        <div class="table-input-group" style="margin-top: 12px;">
-          <div class="table-input-row">
-            <input type="text" id="tableNumberInput" placeholder="e.g. A1, VIP" autocomplete="off">
+            <input type="text" id="tableNumberInput" list="tablePresetsList" placeholder="Enter or select table (e.g. B1, VIP)" autocomplete="off">
+            <datalist id="tablePresetsList">
+              <!-- Dynamically populated -->
+            </datalist>
             <button class="btn-accent" id="setTableBtn">Set Table</button>
           </div>
         </div>
