@@ -91,7 +91,7 @@
     orderItems: $('#orderItems'),
     totalItemsCount: $('#totalItemsCount'),
     totalAmount: $('#totalAmount'),
-    orderBadge: $('#orderBadge'),
+
     tableNumberInput: $('#tableNumberInput'),
     tableSection: $('#tableSection'),
     activeTableBanner: $('#activeTableBanner'),
@@ -319,7 +319,6 @@
 
     els.totalItemsCount.textContent = totalQty;
     els.totalAmount.textContent = `RM ${totalPrice.toFixed(2)}`;
-    els.orderBadge.textContent = totalQty;
     if(els.cartBadge) els.cartBadge.textContent = totalQty;
     if(els.cartTotalBtn) els.cartTotalBtn.textContent = `RM ${totalPrice.toFixed(2)}`;
   }
