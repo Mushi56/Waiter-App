@@ -724,10 +724,8 @@
     $(`[data-page="${pageId}"]`).classList.add('active');
 
     if (pageId === 'pageOrders') renderOrdersPage();
-    if (pageId === 'pageMenu') {
-      renderMenuManage();
-      renderTableManageList();
-    }
+    if (pageId === 'pageTables') renderTableManageList();
+    if (pageId === 'pageMenu') renderMenuManage();
     if (pageId === 'pageHistory') renderHistoryPage();
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
