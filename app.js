@@ -226,9 +226,23 @@
 
   // --- Render Menu Grid ---
   function renderMenu() {
-    const filtered = activeCategory === 'All'
-      ? menuItems
+    let filtered = activeCategory === 'All'
+      ? [...menuItems]
       : menuItems.filter((i) => i.category === activeCategory);
+
+    if (activeCategory === 'All') {
+      const categoryOrder = [
+        'Main Course', 'Burgers', 'Pasta', 'Salted Egg', 'Wraps', 
+        'Snacks', 'Mocktails', 'Coffee', 'Non Coffee', 'Desserts'
+      ];
+      filtered.sort((a, b) => {
+        let indexA = categoryOrder.indexOf(a.category);
+        let indexB = categoryOrder.indexOf(b.category);
+        if (indexA === -1) indexA = 999;
+        if (indexB === -1) indexB = 999;
+        return indexA - indexB;
+      });
+    }
 
     els.menuGrid.innerHTML = filtered.map((item) => {
       const qty = getOrderQty(item.id);
