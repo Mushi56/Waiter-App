@@ -40,17 +40,36 @@
 .drawer-overlay.hidden .side-drawer { transform: translateX(-100%); }
 
 .drawer-header {
-  padding: 40px 20px 30px; border-bottom: 1px solid var(--border);
-  background: linear-gradient(to bottom, var(--bg-card), var(--bg-secondary));
+  padding: 45px 20px 30px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-secondary);
+  position: relative;
+  overflow: hidden;
 }
-.drawer-branding { display: flex; align-items: center; gap: 14px; }
-.logo-circle {
-  width: 48px; height: 48px; background: var(--accent); color: var(--bg-primary);
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 1.3rem; box-shadow: 0 0 15px var(--accent-glow);
+.drawer-header-bg {
+  position: absolute; top: 0; left: 0; right: 0; height: 120px;
+  background: linear-gradient(135deg, rgba(231,160,30,0.2) 0%, transparent 100%);
+  border-bottom-left-radius: 50% 20%;
+  border-bottom-right-radius: 50% 20%;
+  z-index: 0;
 }
-.drawer-branding h3 { font-size: 1.15rem; margin-bottom: 2px; color: var(--text-primary); }
-.drawer-branding p { font-size: 0.75rem; color: var(--text-secondary); font-weight: 500; }
+.drawer-branding {
+  display: flex; align-items: center; gap: 16px; position: relative; z-index: 1;
+}
+.drawer-avatar {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--bg-primary); padding: 4px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 15px var(--accent-glow);
+}
+.drawer-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.drawer-info { display: flex; flex-direction: column; gap: 4px; }
+.drawer-info h3 { font-size: 1.3rem; margin: 0; color: var(--text-primary); font-weight: 800; letter-spacing: 0.5px; }
+.drawer-badge {
+  background: rgba(231,160,30,0.15); color: var(--accent);
+  padding: 4px 10px; border-radius: 12px; font-size: 0.7rem;
+  font-weight: 700; display: inline-block; align-self: flex-start;
+  border: 1px solid rgba(231,160,30,0.3); text-transform: uppercase; letter-spacing: 1px;
+}
 
 .drawer-menu { flex: 1; padding: 25px 12px; overflow-y: auto; }
 .drawer-section-label {
