@@ -87,18 +87,23 @@ body {
 .table-input-row { display: flex; gap: 8px; }
 .table-input-row input, .table-dropdown {
   flex: 1; background: var(--bg-primary); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 10px 12px; color: var(--text-primary);
-  font-size: 0.85rem; font-family: inherit; outline: none; transition: border var(--transition);
+  border-radius: var(--radius-sm); padding: 12px 14px; color: var(--text-primary);
+  font-size: 0.95rem; font-family: inherit; outline: none; transition: border var(--transition);
+  height: 48px;
 }
-.table-dropdown { appearance: none; cursor: pointer; }
+.table-dropdown { appearance: auto; cursor: pointer; }
 .table-dropdown option { background: var(--bg-primary); color: var(--text-primary); }
 .table-input-row input:focus, .table-dropdown:focus { border-color: var(--accent); }
-.btn-set-table {
-  padding: 10px 16px; border-radius: var(--radius-sm);
-  font-size: 0.8rem; font-weight: 600; white-space: nowrap;
+
+.btn-accent, .btn-secondary {
+  padding: 0 20px; border-radius: var(--radius-sm);
+  font-size: 0.9rem; font-weight: 600; white-space: nowrap;
+  height: 48px; display: flex; align-items: center; justify-content: center;
+  border: none;
 }
+
 .btn-icon {
-  padding: 0 10px; display: flex; align-items: center; justify-content: center;
+  width: 48px; height: 48px; padding: 0; display: flex; align-items: center; justify-content: center;
   background: transparent; border: 1px solid var(--danger);
   color: var(--danger); border-radius: var(--radius-sm); cursor: pointer;
   transition: all var(--transition);

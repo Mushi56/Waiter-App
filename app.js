@@ -141,7 +141,10 @@
     L: ['L1', 'L2'],
     Others: []
   };
-  let tablePresets = JSON.parse(localStorage.getItem('waiter_table_presets')) || DEFAULT_TABLE_PRESETS;
+  let tablePresets = JSON.parse(localStorage.getItem('waiter_table_presets'));
+  if (!tablePresets || !tablePresets.B || !tablePresets.S || !tablePresets.L) {
+    tablePresets = DEFAULT_TABLE_PRESETS;
+  }
 
   const ADDONS_DATA = {
     'Main Course': [
