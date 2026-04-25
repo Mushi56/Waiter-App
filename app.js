@@ -253,10 +253,12 @@
             ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy">`
             : `<div class="menu-card-placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`
           }
-          <button class="menu-card-add" data-id="${item.id}">+</button>
           <div class="menu-card-info">
             <div class="menu-card-name">${item.name}</div>
-            <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
+            <div class="menu-card-bottom">
+              <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
+              <button class="menu-card-add" data-id="${item.id}">+</button>
+            </div>
           </div>
         </div>`;
     }).join('');
