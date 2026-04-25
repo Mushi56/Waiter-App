@@ -141,7 +141,8 @@
     // Side drawer
     drawerOverlay: $('#drawerOverlay'),
     menuToggleBtn: $('#menuToggleBtn'),
-    drawerItems: $$('.drawer-item')
+    drawerItems: $$('.drawer-item'),
+    bottomNav: $('#bottomNav')
   };
 
   const DEFAULT_TABLE_PRESETS = {
@@ -732,6 +733,11 @@
     if (pageId === 'pageTables') renderTableManageList();
     if (pageId === 'pageMenu') renderMenuManage();
     if (pageId === 'pageHistory') renderHistoryPage();
+    if (pageId === 'pageAbout' || pageId === 'pagePrivacy' || pageId === 'pageTerms') {
+      if (els.bottomNav) els.bottomNav.classList.add('hidden');
+    } else {
+      if (els.bottomNav) els.bottomNav.classList.remove('hidden');
+    }
 
     closeDrawer();
     window.scrollTo({ top: 0, behavior: 'smooth' });
