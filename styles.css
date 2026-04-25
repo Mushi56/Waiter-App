@@ -680,3 +680,142 @@ input, select, textarea, button {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ===== TABLE SUGGESTIONS REDESIGN ===== */
+.table-picker-input-wrapper {
+  position: relative;
+}
+.table-suggestions {
+  position: absolute;
+  top: calc(100% + 20px);
+  left: -50px;
+  right: -50px;
+  background: rgba(26, 29, 32, 0.95);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  z-index: 1000;
+  max-height: 350px;
+  overflow-y: auto;
+  animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.table-suggestions.hidden {
+  display: none !important;
+}
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.suggestion-group {
+  margin-bottom: 16px;
+}
+.suggestion-group:last-child {
+  margin-bottom: 0;
+}
+.suggestion-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-weight: 700;
+  padding-left: 4px;
+}
+.suggestion-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.suggestion-chip {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.suggestion-chip:active {
+  transform: scale(0.9);
+  background: var(--accent);
+  color: var(--bg-primary);
+  border-color: var(--accent);
+}
+@media (min-width: 480px) {
+  .table-suggestions {
+    left: 0;
+    right: 0;
+  }
+}
+
+/* ===== TABLE MANAGEMENT PAGE REFINEMENTS ===== */
+.table-add-form {
+  background: var(--bg-secondary);
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 32px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.table-add-form label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.manage-input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.manage-select, .manage-input-row input {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all var(--transition);
+  font-family: inherit;
+}
+.manage-select {
+  flex: 0.45;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23E7A01E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 40px;
+}
+.manage-input-row input {
+  flex: 1;
+}
+.manage-select:focus, .manage-input-row input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(231, 160, 30, 0.1);
+}
+.btn-manage-add {
+  width: 100%;
+  height: 52px;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  border-radius: var(--radius-md) !important;
+  box-shadow: 0 4px 15px rgba(231, 160, 30, 0.2);
+}
+.btn-manage-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(231, 160, 30, 0.3);
+}
+.btn-manage-add:active {
+  transform: translateY(0);
+}
