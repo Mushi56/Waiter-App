@@ -5,7 +5,7 @@
   // --- Default Menu ---
   const DEFAULT_MENU = [
     // Wraps
-    { id: 1, name: 'Beef Tortilla', price: 21.90, category: 'Wraps', image: null },
+    { id: 1, name: 'Beef Tortilla', price: 18.90, category: 'Wraps', image: 'images/beef_tortilla.png' },
     { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: null },
     { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: null },
     // Burgers

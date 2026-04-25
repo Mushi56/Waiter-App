@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Waiter Helper</string>
+    <string name="title_activity_main">Waiter Helper</string>
+    <string name="package_name">com.mushi56.waiterhelper</string>
+    <string name="custom_url_scheme">com.mushi56.waiterhelper</string>
+</resources>
