@@ -358,7 +358,9 @@
     <div class="modal">
       <div class="modal-header">
         <h3>Add Menu Item</h3>
-        <button class="modal-close" id="closeAddItemModal">&times;</button>
+        <button class="modal-close" id="closeAddItemModal" title="Cancel">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        </button>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -397,6 +399,9 @@
               <span>Tap to upload image</span>
             </div>
             <img id="imagePreview" class="image-preview hidden" alt="Preview">
+            <button type="button" class="remove-image-btn hidden" id="removeNewItemImage" title="Remove Image">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+            </button>
           </div>
         </div>
       </div>
@@ -412,7 +417,9 @@
     <div class="modal">
       <div class="modal-header">
         <h3 id="orderDetailTitle">Order Details</h3>
-        <button class="modal-close" id="closeOrderDetail">&times;</button>
+        <button class="modal-close" id="closeOrderDetail" title="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
       </div>
       <div class="modal-body" id="orderDetailBody">
         <!-- Filled dynamically -->
@@ -428,7 +435,9 @@
     <div class="modal">
       <div class="modal-header">
         <h3>Edit Menu Item</h3>
-        <button class="modal-close" id="closeEditItemModal">&times;</button>
+        <button class="modal-close" id="closeEditItemModal" title="Cancel">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        </button>
       </div>
       <div class="modal-body">
         <input type="hidden" id="editItemId">
@@ -468,6 +477,9 @@
               <span>Tap to upload or change image</span>
             </div>
             <img id="editImagePreview" class="image-preview hidden" alt="Preview">
+            <button type="button" class="remove-image-btn hidden" id="removeEditItemImage" title="Remove Image">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+            </button>
           </div>
         </div>
       </div>

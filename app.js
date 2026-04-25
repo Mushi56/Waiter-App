@@ -133,13 +133,15 @@
     editImageUploadArea: $('#editImageUploadArea'),
     editUploadPlaceholder: $('#editUploadPlaceholder'),
     editImagePreview: $('#editImagePreview'),
+    removeNewItemImage: $('#removeNewItemImage'),
+    removeEditItemImage: $('#removeEditItemImage'),
     // Addon modal
     addonModal: $('#addonModal'),
     addonTitle: $('#addonTitle'),
     addonList: $('#addonList'),
     // Table select
     tableNumberInput: $('#tableNumberInput'),
-    tableSuggestions: $('#tableSuggestions'),
+    tablePresetsList: $('#tablePresetsList'),
     activeTableBanner: $('#activeTableBanner'),
     tableManageList: $('#tableManageList'),
     manageTableGroup: $('#manageTableGroup'),
@@ -543,6 +545,7 @@
     els.newItemDesc.value = '';
     els.imagePreview.classList.add('hidden');
     els.uploadPlaceholder.classList.remove('hidden');
+    if (els.removeNewItemImage) els.removeNewItemImage.classList.add('hidden');
     pendingImageData = null;
     els.addItemModal.classList.remove('hidden');
     setTimeout(() => els.newItemName.focus(), 300);
@@ -591,10 +594,12 @@
       els.editImagePreview.src = item.image;
       els.editImagePreview.classList.remove('hidden');
       els.editUploadPlaceholder.classList.add('hidden');
+      if (els.removeEditItemImage) els.removeEditItemImage.classList.remove('hidden');
       editPendingImageData = item.image;
     } else {
       els.editImagePreview.classList.add('hidden');
       els.editUploadPlaceholder.classList.remove('hidden');
+      if (els.removeEditItemImage) els.removeEditItemImage.classList.add('hidden');
       editPendingImageData = null;
     }
 
@@ -654,21 +659,14 @@
   }
 
   function renderTablePresets() {
-    if (!els.tableSuggestions) return;
+    if (!els.tablePresetsList) return;
     let html = '';
-    for (const [group, tables] of Object.entries(tablePresets)) {
-      if (tables.length > 0) {
-        html += `
-          <div class="suggestion-group">
-            <div class="suggestion-label">${group} Group</div>
-            <div class="suggestion-grid">
-              ${tables.map(t => `<div class="suggestion-chip" data-val="${t}">${t}</div>`).join('')}
-            </div>
-          </div>
-        `;
-      }
-    }
-    els.tableSuggestions.innerHTML = html || '<div class="suggestion-label" style="text-align:center;">No presets found</div>';
+    Object.keys(tablePresets).forEach((group) => {
+      tablePresets[group].forEach((table) => {
+        html += `<option value="${table}">${group} Group</option>`;
+      });
+    });
+    els.tablePresetsList.innerHTML = html;
   }
 
   function renderTableManageList() {
@@ -825,24 +823,6 @@
     els.tableNumberInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') setTable(); });
     $('#changeTableBtn').addEventListener('click', changeTable);
 
-    // Table suggestions
-    els.tableNumberInput.addEventListener('focus', () => {
-      els.tableSuggestions.classList.remove('hidden');
-    });
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.table-picker-input-wrapper')) {
-        els.tableSuggestions.classList.add('hidden');
-      }
-    });
-    els.tableSuggestions.addEventListener('click', (e) => {
-      const chip = e.target.closest('.suggestion-chip');
-      if (chip) {
-        els.tableNumberInput.value = chip.dataset.val;
-        els.tableSuggestions.classList.add('hidden');
-        setTable();
-      }
-    });
-
     // Table management page
     els.manageAddTableBtn.addEventListener('click', () => {
       const val = els.manageTableInput.value;
@@ -940,9 +920,21 @@
         els.imagePreview.src = pendingImageData;
         els.imagePreview.classList.remove('hidden');
         els.uploadPlaceholder.classList.add('hidden');
+        if (els.removeNewItemImage) els.removeNewItemImage.classList.remove('hidden');
       };
       reader.readAsDataURL(file);
     });
+
+    if (els.removeNewItemImage) {
+      els.removeNewItemImage.addEventListener('click', (e) => {
+        e.stopPropagation();
+        pendingImageData = null;
+        els.newItemImage.value = '';
+        els.imagePreview.classList.add('hidden');
+        els.uploadPlaceholder.classList.remove('hidden');
+        els.removeNewItemImage.classList.add('hidden');
+      });
+    }
 
     // History cards (delegated)
     document.addEventListener('click', (e) => {
@@ -992,9 +984,21 @@
         els.editImagePreview.src = editPendingImageData;
         els.editImagePreview.classList.remove('hidden');
         els.editUploadPlaceholder.classList.add('hidden');
+        if (els.removeEditItemImage) els.removeEditItemImage.classList.remove('hidden');
       };
       reader.readAsDataURL(file);
     });
+
+    if (els.removeEditItemImage) {
+      els.removeEditItemImage.addEventListener('click', (e) => {
+        e.stopPropagation();
+        editPendingImageData = null;
+        els.editItemImage.value = '';
+        els.editImagePreview.classList.add('hidden');
+        els.editUploadPlaceholder.classList.remove('hidden');
+        els.removeEditItemImage.classList.add('hidden');
+      });
+    }
 
     // Addon modal
     $('#closeAddonModal').addEventListener('click', () => els.addonModal.classList.add('hidden'));
