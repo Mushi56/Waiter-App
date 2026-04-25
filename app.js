@@ -132,7 +132,6 @@
     addonList: $('#addonList'),
     // Table select
     tableSelect: $('#tableSelect'),
-    deleteTableBtn: $('#deleteTableBtn'),
     // Table management
     tableManageList: $('#tableManageList'),
     manageTableGroup: $('#manageTableGroup'),
@@ -810,7 +809,6 @@
     els.tableNumberInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') setTable(); });
     els.tableSelect.addEventListener('change', () => { els.tableNumberInput.value = ''; setTable(); });
     $('#changeTableBtn').addEventListener('click', changeTable);
-    els.deleteTableBtn.addEventListener('click', deleteSelectedTable);
 
     // Table management page
     els.manageAddTableBtn.addEventListener('click', () => {
