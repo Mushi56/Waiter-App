@@ -150,7 +150,7 @@
     // Side drawer
     drawerOverlay: $('#drawerOverlay'),
     menuToggleBtn: $('#menuToggleBtn'),
-    drawerItems: $$('.dropdown-item'),
+    dropdownItems: $$('.dropdown-item'),
     bottomNav: $('#bottomNav')
   };
 
@@ -1009,8 +1009,17 @@
       if (e.target === els.addonModal) els.addonModal.classList.add('hidden');
     });
 
-    // Sidebar toggle (simple)
-    $('#menuToggleBtn').addEventListener('click', () => showToast('Menu: use bottom nav'));
+    // Sidebar/Dropdown toggle
+    els.menuToggleBtn.addEventListener('click', () => {
+      els.drawerOverlay.classList.toggle('hidden');
+    });
+    
+    // Close dropdown on overlay click
+    els.drawerOverlay.addEventListener('click', (e) => {
+      if (e.target === els.drawerOverlay) {
+        els.drawerOverlay.classList.add('hidden');
+      }
+    });
   }
 
   // --- Service Worker ---
