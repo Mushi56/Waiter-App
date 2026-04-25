@@ -102,7 +102,14 @@
     menuManageGrid: $('#menuManageGrid'),
     toast: $('#toast'),
     toastMsg: $('#toastMsg'),
-    orderSection: $('#orderSection'),
+    
+    // Order bottom sheet & cart
+    floatingCartBtn: $('#floatingCartBtn'),
+    orderModalOverlay: $('#orderModalOverlay'),
+    cartBadge: $('#cartBadge'),
+    cartTotalBtn: $('#cartTotalBtn'),
+    closeOrderModal: $('#closeOrderModal'),
+
     addItemModal: $('#addItemModal'),
     orderDetailModal: $('#orderDetailModal'),
     orderDetailTitle: $('#orderDetailTitle'),
@@ -276,8 +283,14 @@
       els.totalItemsCount.textContent = '0';
       els.totalAmount.textContent = 'RM 0.00';
       els.orderBadge.textContent = '0';
+      if(els.cartBadge) els.cartBadge.textContent = '0';
+      if(els.cartTotalBtn) els.cartTotalBtn.textContent = 'RM 0.00';
+      if(els.floatingCartBtn) els.floatingCartBtn.classList.add('hidden');
+      if(els.orderModalOverlay) els.orderModalOverlay.classList.add('hidden');
       return;
     }
+    
+    if(els.floatingCartBtn) els.floatingCartBtn.classList.remove('hidden');
 
     let totalQty = 0, totalPrice = 0;
     els.orderItems.innerHTML = currentOrder.map((item) => {
@@ -305,6 +318,8 @@
     els.totalItemsCount.textContent = totalQty;
     els.totalAmount.textContent = `RM ${totalPrice.toFixed(2)}`;
     els.orderBadge.textContent = totalQty;
+    if(els.cartBadge) els.cartBadge.textContent = totalQty;
+    if(els.cartTotalBtn) els.cartTotalBtn.textContent = `RM ${totalPrice.toFixed(2)}`;
   }
 
   // --- Add to Order ---
@@ -420,6 +435,7 @@
     renderOrder();
     renderMenu();
     renderHistoryPreview();
+    if(els.orderModalOverlay) els.orderModalOverlay.classList.add('hidden');
     showToast('✅ Order saved successfully!');
   }
 
@@ -848,6 +864,25 @@
         renderMenu();
       });
     });
+
+    // Floating Cart & Bottom Sheet
+    if (els.floatingCartBtn) {
+      els.floatingCartBtn.addEventListener('click', () => {
+        els.orderModalOverlay.classList.remove('hidden');
+      });
+    }
+    if (els.orderModalOverlay) {
+      els.orderModalOverlay.addEventListener('click', (e) => {
+        if (e.target === els.orderModalOverlay) {
+          els.orderModalOverlay.classList.add('hidden');
+        }
+      });
+    }
+    if (els.closeOrderModal) {
+      els.closeOrderModal.addEventListener('click', () => {
+        els.orderModalOverlay.classList.add('hidden');
+      });
+    }
 
     // Menu grid clicks (delegated)
     els.menuGrid.addEventListener('click', (e) => {
