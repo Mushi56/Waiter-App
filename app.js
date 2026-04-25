@@ -1,0 +1,789 @@
+// ===== Waiter Helper - App Logic =====
+(function () {
+  'use strict';
+
+  // --- Default Menu ---
+  const DEFAULT_MENU = [
+    // Wraps
+    { id: 1, name: 'Beef Tortilla', price: 21.90, category: 'Wraps', image: null },
+    { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: null },
+    { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: null },
+    // Burgers
+    { id: 4, name: 'Burger Wagyu Truffle', price: 49.90, category: 'Burgers', image: null },
+    { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: null },
+    { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: null },
+    { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: null },
+    { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: null },
+    { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: null },
+    // Main Course
+    { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: null },
+    { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: null },
+    { id: 12, name: 'Grill Chicken Chop', price: 22.90, category: 'Main Course', image: null },
+    { id: 13, name: 'Lamb Grilled', price: 36.90, category: 'Main Course', image: null },
+    { id: 14, name: 'Lamb Grilled 1KG', price: 109.90, category: 'Main Course', image: null },
+    { id: 15, name: 'Lamb Grilled 500g', price: 59.90, category: 'Main Course', image: null },
+    { id: 16, name: 'Mix Platter', price: 38.90, category: 'Main Course', image: null },
+    // Pasta
+    { id: 17, name: 'Aglio Bolognaise', price: 18.90, category: 'Pasta', image: null },
+    { id: 18, name: 'Aglio Olio', price: 15.90, category: 'Pasta', image: null },
+    { id: 19, name: 'Amatricana', price: 19.90, category: 'Pasta', image: null },
+    { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: null },
+    { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: null },
+    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: null },
+    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: null },
+    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: null },
+    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: null },
+    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: null },
+    // Salted Egg
+    { id: 27, name: 'Salted Egg Calamari', price: 17.90, category: 'Salted Egg', image: null },
+    { id: 28, name: 'Salted Egg Chicken', price: 14.90, category: 'Salted Egg', image: null },
+    { id: 29, name: 'Salted Egg Prawn', price: 21.90, category: 'Salted Egg', image: null },
+    { id: 30, name: 'Salted Egg Zinger', price: 19.90, category: 'Salted Egg', image: null },
+    // Snacks
+    { id: 31, name: 'Cheesy Bacon Fries', price: 12.90, category: 'Snacks', image: null },
+    { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: null },
+    { id: 33, name: 'Chicken n Fries', price: 12.90, category: 'Snacks', image: null },
+    { id: 34, name: 'Onion Rings', price: 9.90, category: 'Snacks', image: null },
+    { id: 35, name: 'Plain Fries', price: 7.00, category: 'Snacks', image: null },
+    { id: 36, name: 'Sober Cheese Snack', price: 5.00, category: 'Snacks', image: null },
+    // Coffee
+    { id: 37, name: 'Mocha', price: 12.00, category: 'Coffee', image: null },
+    { id: 38, name: 'Latte', price: 10.90, category: 'Coffee', image: null },
+    { id: 39, name: 'Americano', price: 7.00, category: 'Coffee', image: null },
+    // Non Coffee
+    { id: 40, name: 'Chocolate', price: 12.00, category: 'Non Coffee', image: null },
+    { id: 41, name: 'Matcha', price: 11.00, category: 'Non Coffee', image: null },
+    { id: 42, name: 'Ice Peach Tea', price: 4.00, category: 'Non Coffee', image: null },
+    { id: 43, name: 'Ice Passionfruit Tea', price: 4.00, category: 'Non Coffee', image: null },
+    { id: 44, name: 'Ice Lemon Tea', price: 4.00, category: 'Non Coffee', image: null },
+    // Mocktails
+    { id: 45, name: 'Watermelon Blackcurrant', price: 6.90, category: 'Mocktails', image: null },
+    { id: 46, name: 'Virgin Mojitos', price: 6.90, category: 'Mocktails', image: null },
+    { id: 47, name: 'Tropical Sunrise', price: 6.90, category: 'Mocktails', image: null },
+    { id: 48, name: 'TripleBerries', price: 6.90, category: 'Mocktails', image: null },
+    { id: 49, name: 'Solero', price: 6.00, category: 'Mocktails', image: null },
+    // Desserts
+    { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: null },
+    { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: null },
+    { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: null },
+  ];
+
+  const EMOJI_MAP = {
+    Wraps: '🌯', Burgers: '🍔', 'Main Course': '🥩', Pasta: '🍝',
+    'Salted Egg': '🥚', Snacks: '🍟', Coffee: '☕', 'Non Coffee': '🧋',
+    Mocktails: '🍹', Desserts: '🍰'
+  };
+
+  // --- State ---
+  let menuItems = [];
+  let currentOrder = []; // { id, name, price, qty }
+  let orders = [];
+  let tableNumber = '';
+  let activeCategory = 'All';
+  let nextMenuId = 100;
+
+  // --- DOM Refs ---
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => document.querySelectorAll(sel);
+
+  const els = {
+    menuGrid: $('#menuGrid'),
+    orderItems: $('#orderItems'),
+    totalItemsCount: $('#totalItemsCount'),
+    totalAmount: $('#totalAmount'),
+    orderBadge: $('#orderBadge'),
+    tableNumberInput: $('#tableNumberInput'),
+    tableSection: $('#tableSection'),
+    activeTableBanner: $('#activeTableBanner'),
+    activeTableNum: $('#activeTableNum'),
+    historyPreviewList: $('#historyPreviewList'),
+    ordersFullList: $('#ordersFullList'),
+    historyFullList: $('#historyFullList'),
+    menuManageGrid: $('#menuManageGrid'),
+    toast: $('#toast'),
+    toastMsg: $('#toastMsg'),
+    orderSection: $('#orderSection'),
+    addItemModal: $('#addItemModal'),
+    orderDetailModal: $('#orderDetailModal'),
+    orderDetailTitle: $('#orderDetailTitle'),
+    orderDetailBody: $('#orderDetailBody'),
+    newItemName: $('#newItemName'),
+    newItemPrice: $('#newItemPrice'),
+    newItemCategory: $('#newItemCategory'),
+    newItemDesc: $('#newItemDesc'),
+    newItemImage: $('#newItemImage'),
+    imageUploadArea: $('#imageUploadArea'),
+    uploadPlaceholder: $('#uploadPlaceholder'),
+    imagePreview: $('#imagePreview'),
+    // Edit modal
+    editItemModal: $('#editItemModal'),
+    editItemId: $('#editItemId'),
+    editItemName: $('#editItemName'),
+    editItemPrice: $('#editItemPrice'),
+    editItemCategory: $('#editItemCategory'),
+    editItemDesc: $('#editItemDesc'),
+    editItemImage: $('#editItemImage'),
+    editImageUploadArea: $('#editImageUploadArea'),
+    editUploadPlaceholder: $('#editUploadPlaceholder'),
+    editImagePreview: $('#editImagePreview'),
+    // Addon modal
+    addonModal: $('#addonModal'),
+    addonTitle: $('#addonTitle'),
+    addonList: $('#addonList'),
+  };
+
+  const ADDONS_DATA = {
+    'Main Course': [
+      { name: 'Mac and Cheese', price: 4 },
+      { name: 'Extra Grilled/Fried Chicken', price: 12 },
+      { name: '2 pcs Beef Bacon', price: 4 },
+      { name: 'Mashed Potato', price: 3 },
+      { name: 'Extra Brown Sauce', price: 3 },
+      { name: 'Plain Rice', price: 2 }
+    ],
+    'Pasta': [
+      { name: 'Grilled Chicken', price: 3 },
+      { name: 'Seafood', price: 5 },
+      { name: 'Prawn Only', price: 5 },
+      { name: 'Squid Only', price: 5 },
+      { name: 'Zinger', price: 3 },
+      { name: 'Grilled Lamb', price: 13 },
+      { name: 'Beef Patty', price: 5 },
+      { name: 'Australian Wagyu', price: 20 }
+    ],
+    'Burgers': [
+      { name: 'Mac and Cheese', price: 4 },
+      { name: '2 pcs Beef Bacon', price: 3 },
+      { name: '3 pcs Onion Ring', price: 2 },
+      { name: 'Cheddar Cheese', price: 1 },
+      { name: 'Mozarella Cheese', price: 4 },
+      { name: 'Truffle Sauce', price: 5 }
+    ]
+  };
+
+  // --- Init ---
+  function init() {
+    loadData();
+    renderMenu();
+    renderOrder();
+    renderHistoryPreview();
+    bindEvents();
+    registerSW();
+  }
+
+  // --- LocalStorage ---
+  const MENU_VERSION = '3'; // Bump this to force menu reset
+
+  function loadData() {
+    const storedVersion = localStorage.getItem('wh_menu_version');
+    const storedMenu = localStorage.getItem('wh_menu');
+
+    // Reset menu if version changed (new menu data)
+    if (storedVersion !== MENU_VERSION) {
+      menuItems = [...DEFAULT_MENU];
+      saveMenu();
+      localStorage.setItem('wh_menu_version', MENU_VERSION);
+    } else {
+      menuItems = storedMenu ? JSON.parse(storedMenu) : [...DEFAULT_MENU];
+      if (!storedMenu) saveMenu();
+    }
+
+    const storedOrders = localStorage.getItem('wh_orders');
+    orders = storedOrders ? JSON.parse(storedOrders) : [];
+
+    const storedNextId = localStorage.getItem('wh_nextId');
+    nextMenuId = storedNextId ? parseInt(storedNextId) : 100;
+  }
+
+  function saveMenu() { localStorage.setItem('wh_menu', JSON.stringify(menuItems)); }
+  function saveOrders() { localStorage.setItem('wh_orders', JSON.stringify(orders)); }
+  function saveNextId() { localStorage.setItem('wh_nextId', nextMenuId.toString()); }
+
+  // --- Render Menu Grid ---
+  function renderMenu() {
+    const filtered = activeCategory === 'All'
+      ? menuItems
+      : menuItems.filter((i) => i.category === activeCategory);
+
+    els.menuGrid.innerHTML = filtered.map((item) => {
+      const qty = getOrderQty(item.id);
+      return `
+        <div class="menu-card" data-id="${item.id}">
+          <div class="menu-card-qty ${qty > 0 ? 'show' : ''}">${qty}</div>
+          ${item.image
+            ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy">`
+            : `<div class="menu-card-placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`
+          }
+          <button class="menu-card-add" data-id="${item.id}">+</button>
+          <div class="menu-card-info">
+            <div class="menu-card-name">${item.name}</div>
+            <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function getOrderQty(id) {
+    const found = currentOrder.find((o) => o.id === id);
+    return found ? found.qty : 0;
+  }
+
+  // --- Render Order List ---
+  function renderOrder() {
+    if (currentOrder.length === 0) {
+      els.orderItems.innerHTML = '<div class="order-empty">No items added yet. Tap menu items to start.</div>';
+      els.totalItemsCount.textContent = '0';
+      els.totalAmount.textContent = 'RM 0.00';
+      els.orderBadge.textContent = '0';
+      return;
+    }
+
+    let totalQty = 0, totalPrice = 0;
+    els.orderItems.innerHTML = currentOrder.map((item) => {
+      totalQty += item.qty;
+      totalPrice += item.price * item.qty;
+      const modText = item.modifiers && item.modifiers.length > 0 ? `<br><span style="color:var(--text-secondary);font-size:0.75rem;">+ ${item.modifiers.map(m=>m.name).join(', ')}</span>` : '';
+      return `
+        <div class="order-item">
+          <div class="order-item-controls">
+            <button class="qty-btn minus" data-cart-id="${item.cartItemId}" data-action="dec">−</button>
+            <span class="order-item-qty">${item.qty}</span>
+            <button class="qty-btn" data-cart-id="${item.cartItemId}" data-action="inc">+</button>
+          </div>
+          <span class="order-item-name">${item.name}${modText}</span>
+          <span class="order-item-price">RM ${(item.price * item.qty).toFixed(2)}</span>
+          <button class="order-item-delete" data-cart-id="${item.cartItemId}" data-action="remove">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
+              <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+            </svg>
+          </button>
+        </div>`;
+    }).join('');
+
+    els.totalItemsCount.textContent = totalQty;
+    els.totalAmount.textContent = `RM ${totalPrice.toFixed(2)}`;
+    els.orderBadge.textContent = totalQty;
+  }
+
+  // --- Add to Order ---
+  let pendingAddonItem = null;
+
+  function addToOrder(id) {
+    const menuItem = menuItems.find((m) => m.id === id);
+    if (!menuItem) return;
+
+    if (ADDONS_DATA[menuItem.category]) {
+      openAddonModal(menuItem);
+    } else {
+      addCartItem(menuItem, []);
+    }
+  }
+
+  function openAddonModal(menuItem) {
+    pendingAddonItem = menuItem;
+    els.addonTitle.textContent = `${menuItem.name} Add-ons`;
+    const addons = ADDONS_DATA[menuItem.category];
+    els.addonList.innerHTML = addons.map((addon, index) => `
+      <div class="addon-item">
+        <label>
+          <input type="checkbox" value="${index}">
+          <span class="addon-name">${addon.name}</span>
+        </label>
+        <span class="addon-price">+RM ${addon.price.toFixed(2)}</span>
+      </div>
+    `).join('');
+    els.addonModal.classList.remove('hidden');
+  }
+
+  function confirmAddons() {
+    if (!pendingAddonItem) return;
+    const addons = ADDONS_DATA[pendingAddonItem.category];
+    const checkboxes = els.addonList.querySelectorAll('input[type="checkbox"]:checked');
+    const selectedAddons = Array.from(checkboxes).map(cb => addons[parseInt(cb.value)]);
+    
+    addCartItem(pendingAddonItem, selectedAddons);
+    els.addonModal.classList.add('hidden');
+    pendingAddonItem = null;
+  }
+
+  function addCartItem(menuItem, modifiers) {
+    const modifiersKey = modifiers.map(m => m.name).sort().join('|');
+    const existing = currentOrder.find(o => o.id === menuItem.id && (o.modifiersKey || '') === modifiersKey);
+
+    if (existing) {
+      existing.qty++;
+    } else {
+      const unitPrice = menuItem.price + modifiers.reduce((s, m) => s + m.price, 0);
+      currentOrder.push({
+        cartItemId: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+        id: menuItem.id,
+        name: menuItem.name,
+        price: unitPrice,
+        qty: 1,
+        modifiers: modifiers,
+        modifiersKey: modifiersKey
+      });
+    }
+
+    renderOrder();
+    renderMenu();
+    hapticFeedback();
+  }
+
+  function changeQty(cartItemId, action) {
+    const idx = currentOrder.findIndex((o) => o.cartItemId === cartItemId);
+    if (idx === -1) return;
+
+    if (action === 'inc') {
+      currentOrder[idx].qty++;
+    } else if (action === 'dec') {
+      currentOrder[idx].qty--;
+      if (currentOrder[idx].qty <= 0) currentOrder.splice(idx, 1);
+    } else if (action === 'remove') {
+      currentOrder.splice(idx, 1);
+    }
+
+    renderOrder();
+    renderMenu();
+  }
+
+  // --- Save Order ---
+  function saveOrder() {
+    if (!tableNumber) {
+      showToast('⚠️ Please set a table number first!');
+      els.tableNumberInput.focus();
+      return;
+    }
+    if (currentOrder.length === 0) {
+      showToast('⚠️ Order is empty!');
+      return;
+    }
+
+    const totalQty = currentOrder.reduce((s, i) => s + i.qty, 0);
+    const totalPrice = currentOrder.reduce((s, i) => s + i.price * i.qty, 0);
+
+    const order = {
+      id: Date.now(),
+      table: tableNumber,
+      items: [...currentOrder],
+      totalQty,
+      totalPrice,
+      timestamp: new Date().toISOString(),
+    };
+
+    orders.unshift(order);
+    saveOrders();
+
+    currentOrder = [];
+    renderOrder();
+    renderMenu();
+    renderHistoryPreview();
+    showToast('✅ Order saved successfully!');
+  }
+
+  // --- Render History ---
+  function renderHistoryPreview() {
+    const recent = orders.slice(0, 3);
+    if (recent.length === 0) {
+      els.historyPreviewList.innerHTML = '<div class="history-empty">No orders yet</div>';
+      return;
+    }
+    els.historyPreviewList.innerHTML = recent.map((o) => buildHistoryCard(o)).join('');
+  }
+
+  function renderOrdersPage() {
+    if (orders.length === 0) {
+      els.ordersFullList.innerHTML = '<div class="history-empty">No orders yet</div>';
+      return;
+    }
+    els.ordersFullList.innerHTML = orders.map((o) => buildHistoryCard(o)).join('');
+  }
+
+  function renderHistoryPage() {
+    if (orders.length === 0) {
+      els.historyFullList.innerHTML = '<div class="history-empty">No history yet</div>';
+      return;
+    }
+    els.historyFullList.innerHTML = orders.map((o) => buildHistoryCard(o)).join('');
+  }
+
+  function buildHistoryCard(order) {
+    const d = new Date(order.timestamp);
+    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const timeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+    return `
+      <div class="history-card" data-order-id="${order.id}">
+        <div class="history-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E7A01E" stroke-width="2">
+            <rect x="3" y="3" width="18" height="12" rx="2"/><line x1="7" y1="19" x2="7" y2="15"/><line x1="17" y1="19" x2="17" y2="15"/>
+          </svg>
+        </div>
+        <div class="history-info">
+          <div class="history-table">Table ${order.table}</div>
+          <div class="history-meta">${dateStr} • ${timeStr}<br>Items: ${order.totalQty} • RM ${order.totalPrice.toFixed(2)}</div>
+        </div>
+        <div class="history-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>`;
+  }
+
+  function showOrderDetail(orderId) {
+    const order = orders.find((o) => o.id === orderId);
+    if (!order) return;
+
+    els.orderDetailTitle.textContent = `Table ${order.table}`;
+    const d = new Date(order.timestamp);
+    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const timeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+    let html = `<div class="detail-row"><span class="detail-label">Date</span><span>${dateStr} • ${timeStr}</span></div>`;
+    html += `<div class="detail-row" style="font-weight:600;margin-top:8px"><span>Item</span><span>Qty × Price</span></div>`;
+    order.items.forEach((item) => {
+      let modText = item.modifiers && item.modifiers.length > 0 ? `<br><small style="color:var(--text-secondary);font-size:0.75rem;">+ ${item.modifiers.map(m => m.name).join(', ')}</small>` : '';
+      html += `<div class="detail-row"><span>${item.name}${modText}</span><span>${item.qty} × RM ${item.price.toFixed(2)} = RM ${(item.qty * item.price).toFixed(2)}</span></div>`;
+    });
+    html += `<div class="detail-row detail-total"><span>Total</span><span>RM ${order.totalPrice.toFixed(2)}</span></div>`;
+    els.orderDetailBody.innerHTML = html;
+    els.orderDetailModal.classList.remove('hidden');
+  }
+
+  // --- Menu Management ---
+  function renderMenuManage() {
+    els.menuManageGrid.innerHTML = menuItems.map((item) => {
+      const desc = item.description ? `<div class="manage-card-desc">${item.description}</div>` : '';
+      return `
+      <div class="manage-card">
+        <div class="manage-card-actions">
+          <button class="manage-card-edit" data-edit-id="${item.id}" title="Edit">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="manage-card-delete" data-del-id="${item.id}" title="Delete">✕</button>
+        </div>
+        ${item.image
+          ? `<img class="manage-card-img" src="${item.image}" alt="${item.name}" loading="lazy">`
+          : `<div class="manage-card-placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`
+        }
+        <div class="manage-card-info">
+          <div class="manage-card-name">${item.name}</div>
+          <div class="manage-card-cat">${item.category}</div>
+          ${desc}
+          <div class="manage-card-price">RM ${item.price.toFixed(2)}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // --- Add New Menu Item ---
+  let pendingImageData = null;
+
+  function openAddItemModal() {
+    els.newItemName.value = '';
+    els.newItemPrice.value = '';
+    els.newItemCategory.value = 'Wraps';
+    els.newItemDesc.value = '';
+    els.imagePreview.classList.add('hidden');
+    els.uploadPlaceholder.classList.remove('hidden');
+    pendingImageData = null;
+    els.addItemModal.classList.remove('hidden');
+    setTimeout(() => els.newItemName.focus(), 300);
+  }
+
+  function confirmAddItem() {
+    const name = els.newItemName.value.trim();
+    const price = parseFloat(els.newItemPrice.value);
+    const category = els.newItemCategory.value;
+    const description = els.newItemDesc.value.trim();
+
+    if (!name) { showToast('⚠️ Please enter item name'); return; }
+    if (isNaN(price) || price <= 0) { showToast('⚠️ Please enter a valid price'); return; }
+
+    const newItem = {
+      id: nextMenuId++,
+      name, price, category, description,
+      image: pendingImageData || null,
+    };
+
+    menuItems.push(newItem);
+    saveMenu();
+    saveNextId();
+
+    renderMenu();
+    renderMenuManage();
+    els.addItemModal.classList.add('hidden');
+    showToast('✅ Item added!');
+  }
+
+  // --- Edit Menu Item ---
+  let editPendingImageData = null;
+
+  function openEditItemModal(id) {
+    const item = menuItems.find((m) => m.id === id);
+    if (!item) return;
+
+    els.editItemId.value = id;
+    els.editItemName.value = item.name;
+    els.editItemPrice.value = item.price;
+    els.editItemCategory.value = item.category;
+    els.editItemDesc.value = item.description || '';
+
+    // Show existing image or placeholder
+    if (item.image) {
+      els.editImagePreview.src = item.image;
+      els.editImagePreview.classList.remove('hidden');
+      els.editUploadPlaceholder.classList.add('hidden');
+      editPendingImageData = item.image;
+    } else {
+      els.editImagePreview.classList.add('hidden');
+      els.editUploadPlaceholder.classList.remove('hidden');
+      editPendingImageData = null;
+    }
+
+    els.editItemModal.classList.remove('hidden');
+    setTimeout(() => els.editItemName.focus(), 300);
+  }
+
+  function confirmEditItem() {
+    const id = parseInt(els.editItemId.value);
+    const name = els.editItemName.value.trim();
+    const price = parseFloat(els.editItemPrice.value);
+    const category = els.editItemCategory.value;
+    const description = els.editItemDesc.value.trim();
+
+    if (!name) { showToast('⚠️ Please enter item name'); return; }
+    if (isNaN(price) || price <= 0) { showToast('⚠️ Please enter a valid price'); return; }
+
+    const item = menuItems.find((m) => m.id === id);
+    if (!item) return;
+
+    item.name = name;
+    item.price = price;
+    item.category = category;
+    item.description = description;
+    if (editPendingImageData !== undefined) {
+      item.image = editPendingImageData;
+    }
+
+    // Also update price in current order if present
+    const orderItemsToUpdate = currentOrder.filter((o) => o.id === id);
+    orderItemsToUpdate.forEach((o) => {
+      o.name = name;
+      o.price = price + (o.modifiers ? o.modifiers.reduce((s, m) => s + m.price, 0) : 0);
+    });
+
+    saveMenu();
+    renderMenu();
+    renderOrder();
+    renderMenuManage();
+    els.editItemModal.classList.add('hidden');
+    showToast('✅ Item updated!');
+  }
+
+  function deleteMenuItem(id) {
+    menuItems = menuItems.filter((m) => m.id !== id);
+    currentOrder = currentOrder.filter((o) => o.id !== id);
+    saveMenu();
+    renderMenu();
+    renderOrder();
+    renderMenuManage();
+    showToast('Item removed');
+  }
+
+  // --- Navigation ---
+  function navigateTo(pageId) {
+    $$('.page').forEach((p) => p.classList.remove('active'));
+    $(`#${pageId}`).classList.add('active');
+    $$('.nav-btn').forEach((b) => b.classList.remove('active'));
+    $(`[data-page="${pageId}"]`).classList.add('active');
+
+    if (pageId === 'pageOrders') renderOrdersPage();
+    if (pageId === 'pageMenu') renderMenuManage();
+    if (pageId === 'pageHistory') renderHistoryPage();
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // --- Table Number ---
+  function setTable() {
+    const val = els.tableNumberInput.value.trim();
+    if (!val) { showToast('⚠️ Enter table number'); return; }
+    tableNumber = val;
+    els.activeTableNum.textContent = val;
+    els.tableSection.classList.add('hidden');
+    els.activeTableBanner.classList.remove('hidden');
+    showToast(`Table ${val} selected`);
+  }
+
+  function changeTable() {
+    els.tableSection.classList.remove('hidden');
+    els.activeTableBanner.classList.add('hidden');
+    tableNumber = '';
+    els.tableNumberInput.value = '';
+    els.tableNumberInput.focus();
+  }
+
+  // --- Toast ---
+  function showToast(msg) {
+    els.toastMsg.textContent = msg;
+    els.toast.classList.remove('hidden');
+    clearTimeout(showToast._timer);
+    showToast._timer = setTimeout(() => els.toast.classList.add('hidden'), 2200);
+  }
+
+  // --- Haptic ---
+  function hapticFeedback() {
+    if (navigator.vibrate) navigator.vibrate(15);
+  }
+
+  // --- Event Binding ---
+  function bindEvents() {
+    // Nav
+    $$('.nav-btn').forEach((btn) => {
+      btn.addEventListener('click', () => navigateTo(btn.dataset.page));
+    });
+
+    // Set table
+    $('#setTableBtn').addEventListener('click', setTable);
+    els.tableNumberInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') setTable(); });
+    $('#changeTableBtn').addEventListener('click', changeTable);
+
+    // Category tabs
+    $$('.cat-tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        $$('.cat-tab').forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeCategory = tab.dataset.category;
+        renderMenu();
+      });
+    });
+
+    // Menu grid clicks (delegated)
+    els.menuGrid.addEventListener('click', (e) => {
+      const addBtn = e.target.closest('.menu-card-add');
+      if (addBtn) { addToOrder(parseInt(addBtn.dataset.id)); return; }
+      const card = e.target.closest('.menu-card');
+      if (card) addToOrder(parseInt(card.dataset.id));
+    });
+
+    // Order item actions (delegated)
+    els.orderItems.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (btn) changeQty(btn.dataset.cartId, btn.dataset.action);
+    });
+
+    // Clear all
+    $('#clearAllBtn').addEventListener('click', () => {
+      if (currentOrder.length === 0) return;
+      currentOrder = [];
+      renderOrder();
+      renderMenu();
+      showToast('Order cleared');
+    });
+
+    // Save order
+    $('#saveOrderBtn').addEventListener('click', saveOrder);
+
+    // Order badge -> scroll to order
+    $('#orderBadgeBtn').addEventListener('click', () => {
+      navigateTo('pageHome');
+      setTimeout(() => els.orderSection.scrollIntoView({ behavior: 'smooth' }), 100);
+    });
+
+    // Add item modal
+    $('#addItemBtn').addEventListener('click', openAddItemModal);
+    $('#addMenuItemFull').addEventListener('click', openAddItemModal);
+    $('#closeAddItemModal').addEventListener('click', () => els.addItemModal.classList.add('hidden'));
+    $('#cancelAddItem').addEventListener('click', () => els.addItemModal.classList.add('hidden'));
+    $('#confirmAddItem').addEventListener('click', confirmAddItem);
+
+    // Image upload
+    els.imageUploadArea.addEventListener('click', () => els.newItemImage.click());
+    els.newItemImage.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        pendingImageData = ev.target.result;
+        els.imagePreview.src = pendingImageData;
+        els.imagePreview.classList.remove('hidden');
+        els.uploadPlaceholder.classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // History cards (delegated)
+    document.addEventListener('click', (e) => {
+      const card = e.target.closest('.history-card');
+      if (card) showOrderDetail(parseInt(card.dataset.orderId));
+    });
+
+    // View all history
+    $('#viewAllHistoryBtn').addEventListener('click', () => navigateTo('pageHistory'));
+
+    // Order detail modal close
+    $('#closeOrderDetail').addEventListener('click', () => els.orderDetailModal.classList.add('hidden'));
+    $('#closeOrderDetailBtn').addEventListener('click', () => els.orderDetailModal.classList.add('hidden'));
+
+    // Close modals on backdrop
+    els.addItemModal.addEventListener('click', (e) => {
+      if (e.target === els.addItemModal) els.addItemModal.classList.add('hidden');
+    });
+    els.orderDetailModal.addEventListener('click', (e) => {
+      if (e.target === els.orderDetailModal) els.orderDetailModal.classList.add('hidden');
+    });
+
+    // Menu manage edit + delete (delegated)
+    els.menuManageGrid.addEventListener('click', (e) => {
+      const editBtn = e.target.closest('.manage-card-edit');
+      if (editBtn) { openEditItemModal(parseInt(editBtn.dataset.editId)); return; }
+      const delBtn = e.target.closest('.manage-card-delete');
+      if (delBtn) deleteMenuItem(parseInt(delBtn.dataset.delId));
+    });
+
+    // Edit item modal
+    $('#closeEditItemModal').addEventListener('click', () => els.editItemModal.classList.add('hidden'));
+    $('#cancelEditItem').addEventListener('click', () => els.editItemModal.classList.add('hidden'));
+    $('#confirmEditItem').addEventListener('click', confirmEditItem);
+    els.editItemModal.addEventListener('click', (e) => {
+      if (e.target === els.editItemModal) els.editItemModal.classList.add('hidden');
+    });
+
+    // Edit image upload
+    els.editImageUploadArea.addEventListener('click', () => els.editItemImage.click());
+    els.editItemImage.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        editPendingImageData = ev.target.result;
+        els.editImagePreview.src = editPendingImageData;
+        els.editImagePreview.classList.remove('hidden');
+        els.editUploadPlaceholder.classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Addon modal
+    $('#closeAddonModal').addEventListener('click', () => els.addonModal.classList.add('hidden'));
+    $('#cancelAddonBtn').addEventListener('click', () => els.addonModal.classList.add('hidden'));
+    $('#confirmAddonBtn').addEventListener('click', confirmAddons);
+    els.addonModal.addEventListener('click', (e) => {
+      if (e.target === els.addonModal) els.addonModal.classList.add('hidden');
+    });
+
+    // Sidebar toggle (simple)
+    $('#menuToggleBtn').addEventListener('click', () => showToast('Menu: use bottom nav'));
+  }
+
+  // --- Service Worker ---
+  function registerSW() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+  }
+
+  // --- Boot ---
+  document.addEventListener('DOMContentLoaded', init);
+})();
