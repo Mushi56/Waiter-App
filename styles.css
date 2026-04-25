@@ -164,32 +164,67 @@ input, select, textarea, button {
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .page-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
 
-/* ===== TABLE SECTION ===== */
-.table-section {
-  background: var(--bg-secondary);
-  border-radius: var(--radius-md);
-  padding: 20px;
+/* ===== TABLE PICKER REDESIGN ===== */
+.table-picker-container {
   margin-bottom: 24px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
 }
-.table-icon {
-  width: 44px; height: 44px; background: var(--accent-glow);
-  border-radius: var(--radius-md); display: flex;
-  align-items: center; justify-content: center; flex-shrink: 0;
+.table-picker-card {
+  display: flex;
+  align-items: center;
+  background: rgba(33, 36, 39, 0.7); /* Translucent */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 100px;
+  padding: 6px 6px 6px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all var(--transition);
 }
-.table-input-group { flex: 1; }
-.table-input-group label { font-size: 0.8rem; font-weight: 600; margin-bottom: 6px; display: block; }
-.table-input-row { display: flex; gap: 8px; width: 100%; flex-wrap: wrap; }
-.table-input-row input, .table-dropdown {
-  flex: 1 1 120px; min-width: 0; background: var(--bg-primary); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 12px 14px; color: var(--text-primary);
-  font-size: 0.95rem; outline: none; transition: border var(--transition);
-  height: 48px;
+.table-picker-card:focus-within {
+  border-color: var(--accent);
+  background: rgba(33, 36, 39, 0.9);
+  box-shadow: 0 8px 32px rgba(231, 160, 30, 0.2);
 }
-.table-dropdown { appearance: auto; cursor: pointer; }
-.table-dropdown option { background: var(--bg-primary); color: var(--text-primary); }
-.table-input-row input:focus, .table-dropdown:focus { border-color: var(--accent); }
+.table-picker-icon {
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+.table-picker-input-wrapper {
+  flex: 1;
+}
+.table-picker-input-wrapper input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  outline: none;
+  padding: 4px 0;
+}
+.table-picker-input-wrapper input::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.table-picker-btn {
+  width: 44px;
+  height: 44px;
+  background: var(--accent);
+  color: var(--bg-primary);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.table-picker-btn:active {
+  transform: scale(0.9);
+}
 
 .btn-accent, .btn-secondary {
   padding: 0 16px; border-radius: var(--radius-sm);

@@ -730,25 +730,7 @@
     }
   }
 
-  function deleteSelectedTable() {
-    const val = els.tableSelect.value;
-    if (!val) {
-      showToast('Select a table from the dropdown to delete');
-      return;
-    }
-    
-    // Find and remove
-    for (const group in tablePresets) {
-      const idx = tablePresets[group].indexOf(val);
-      if (idx !== -1) {
-        tablePresets[group].splice(idx, 1);
-        saveTablePresets();
-        renderTablePresets();
-        showToast(`Table ${val} deleted`);
-        return;
-      }
-    }
-  }
+
 
   // --- Navigation ---
   function navigateTo(pageId) {
@@ -803,7 +785,6 @@
     els.activeTableBanner.classList.add('hidden');
     tableNumber = '';
     els.tableNumberInput.value = '';
-    els.tableSelect.value = '';
     els.tableNumberInput.focus();
   }
 
