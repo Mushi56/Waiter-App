@@ -130,17 +130,18 @@
     addonModal: $('#addonModal'),
     addonTitle: $('#addonTitle'),
     addonList: $('#addonList'),
-    // Table grids
-    gridB: $('#gridB'),
-    gridS: $('#gridS'),
-    gridL: $('#gridL'),
+    // Table select
+    tableSelect: $('#tableSelect'),
+    deleteTableBtn: $('#deleteTableBtn')
   };
 
-  const TABLE_PRESETS = {
+  const DEFAULT_TABLE_PRESETS = {
     B: ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'B10', 'B11'],
     S: ['S1', 'S2', 'S3'],
-    L: ['L1', 'L2']
+    L: ['L1', 'L2'],
+    Others: []
   };
+  let tablePresets = JSON.parse(localStorage.getItem('waiter_table_presets')) || DEFAULT_TABLE_PRESETS;
 
   const ADDONS_DATA = {
     'Main Course': [
@@ -603,48 +604,66 @@
   }
 
   // --- Table Management ---
-  function renderTablePresets() {
-    els.gridB.innerHTML = TABLE_PRESETS.B.map(t => `<button class="table-btn" data-table="${t}">${t}</button>`).join('');
-    els.gridS.innerHTML = TABLE_PRESETS.S.map(t => `<button class="table-btn" data-table="${t}">${t}</button>`).join('');
-    els.gridL.innerHTML = TABLE_PRESETS.L.map(t => `<button class="table-btn" data-table="${t}">${t}</button>`).join('');
-    
-    // Render Custom group if it exists
-    if (TABLE_PRESETS.Custom && TABLE_PRESETS.Custom.length > 0) {
-      let customGroup = document.getElementById('gridCustom');
-      if (!customGroup) {
-        const container = document.querySelector('.table-presets-container');
-        const group = document.createElement('div');
-        group.className = 'table-group';
-        group.innerHTML = `<h4>Others</h4><div class="table-btn-grid" id="gridCustom"></div>`;
-        container.appendChild(group);
-        customGroup = $('#gridCustom');
-      }
-      customGroup.innerHTML = TABLE_PRESETS.Custom.map(t => `<button class="table-btn" data-table="${t}">${t}</button>`).join('');
-    }
-    document.querySelectorAll('.table-btn').forEach(btn => {
-      btn.onclick = () => {
-        document.querySelectorAll('.table-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        els.tableNumberInput.value = btn.dataset.table;
-        setTable();
-      };
-    });
+  function saveTablePresets() {
+    localStorage.setItem('waiter_table_presets', JSON.stringify(tablePresets));
   }
 
-  function addTableToPresets() {
-    const val = els.tableNumberInput.value.trim().toUpperCase();
-    if (!val) return;
-    
-    // Simple logic: if it starts with a letter, add to that group or a new 'Others' group
-    const prefix = val.charAt(0);
-    if (TABLE_PRESETS[prefix]) {
-      if (!TABLE_PRESETS[prefix].includes(val)) TABLE_PRESETS[prefix].push(val);
-    } else {
-      if (!TABLE_PRESETS.Custom) TABLE_PRESETS.Custom = [];
-      if (!TABLE_PRESETS.Custom.includes(val)) TABLE_PRESETS.Custom.push(val);
+  function renderTablePresets() {
+    let html = '<option value="" disabled selected>Choose a table...</option>';
+    for (const [group, tables] of Object.entries(tablePresets)) {
+      if (tables && tables.length > 0) {
+        html += `<optgroup label="${group} Tables">`;
+        tables.forEach(t => {
+          html += `<option value="${t}">${t}</option>`;
+        });
+        html += `</optgroup>`;
+      }
     }
-    renderTablePresets();
-    showToast(`Table ${val} added to presets`);
+    els.tableSelect.innerHTML = html;
+  }
+
+  function addTableToPresets(val) {
+    if (!val) return;
+    const prefix = val.charAt(0);
+    let added = false;
+    
+    if (tablePresets[prefix]) {
+      if (!tablePresets[prefix].includes(val)) {
+        tablePresets[prefix].push(val);
+        added = true;
+      }
+    } else {
+      if (!tablePresets.Others.includes(val)) {
+        tablePresets.Others.push(val);
+        added = true;
+      }
+    }
+    
+    if (added) {
+      saveTablePresets();
+      renderTablePresets();
+      showToast(`Table ${val} added to presets`);
+    }
+  }
+
+  function deleteSelectedTable() {
+    const val = els.tableSelect.value;
+    if (!val) {
+      showToast('Select a table from the dropdown to delete');
+      return;
+    }
+    
+    // Find and remove
+    for (const group in tablePresets) {
+      const idx = tablePresets[group].indexOf(val);
+      if (idx !== -1) {
+        tablePresets[group].splice(idx, 1);
+        saveTablePresets();
+        renderTablePresets();
+        showToast(`Table ${val} deleted`);
+        return;
+      }
+    }
   }
 
   // --- Navigation ---
@@ -663,15 +682,17 @@
 
   // --- Table Number ---
   function setTable() {
-    const val = els.tableNumberInput.value.trim().toUpperCase();
-    if (!val) { showToast('⚠️ Enter table number'); return; }
-    tableNumber = val;
-    // Highlight if it's a preset
-    document.querySelectorAll('.table-btn').forEach(btn => {
-      if (btn.dataset.table === val) btn.classList.add('selected');
-      else btn.classList.remove('selected');
-    });
+    // If there is custom input, prioritize it, otherwise check dropdown
+    let val = els.tableNumberInput.value.trim().toUpperCase();
+    if (val) {
+      addTableToPresets(val); // Automatically save custom entries
+    } else {
+      val = els.tableSelect.value;
+    }
     
+    if (!val) { showToast('⚠️ Select or enter a table number'); return; }
+    
+    tableNumber = val;
     els.activeTableNum.textContent = val;
     els.tableSection.classList.add('hidden');
     els.activeTableBanner.classList.remove('hidden');
@@ -684,7 +705,7 @@
     els.activeTableBanner.classList.add('hidden');
     tableNumber = '';
     els.tableNumberInput.value = '';
-    document.querySelectorAll('.table-btn').forEach(btn => btn.classList.remove('selected'));
+    els.tableSelect.value = '';
     els.tableNumberInput.focus();
   }
 
@@ -711,8 +732,9 @@
     // Set table
     $('#setTableBtn').addEventListener('click', setTable);
     els.tableNumberInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') setTable(); });
+    els.tableSelect.addEventListener('change', () => { els.tableNumberInput.value = ''; setTable(); });
     $('#changeTableBtn').addEventListener('click', changeTable);
-    $('#addTablePresetBtn').addEventListener('click', addTableToPresets);
+    els.deleteTableBtn.addEventListener('click', deleteSelectedTable);
 
     // Category tabs
     $$('.cat-tab').forEach((tab) => {
