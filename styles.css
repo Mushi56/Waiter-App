@@ -183,7 +183,7 @@ input, select, textarea, button {
 .table-picker-card {
   display: flex;
   align-items: center;
-  background: rgba(33, 36, 39, 0.7); /* Translucent */
+  background: rgba(33, 36, 39, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 100px;
@@ -263,6 +263,84 @@ input, select, textarea, button {
   background: transparent; border: 1px solid var(--accent);
   color: var(--accent); padding: 5px 12px; border-radius: var(--radius-sm);
   font-size: 0.75rem; font-weight: 600; cursor: pointer; font-family: inherit;
+}
+
+/* ===== DROPDOWN MENU ===== */
+.drawer-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4); z-index: 999;
+  transition: opacity 0.3s ease;
+}
+.drawer-overlay.hidden {
+  opacity: 0; pointer-events: none;
+}
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 16px;
+  width: 250px;
+  background: var(--bg-secondary);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  overflow: hidden;
+  z-index: 1000;
+  transform-origin: top right;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  flex-direction: column;
+}
+.drawer-overlay.hidden .dropdown-menu {
+  opacity: 0;
+  transform: scale(0.9) translateY(-10px);
+}
+.dropdown-content { padding: 8px 0; }
+.dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: inherit;
+}
+.dropdown-item:hover {
+  background: rgba(255,255,255,0.03);
+}
+.dropdown-item.active {
+  background: rgba(231, 160, 30, 0.1);
+  color: var(--accent);
+}
+.dropdown-item svg {
+  color: var(--text-secondary);
+  transition: color var(--transition);
+}
+.dropdown-item.active svg {
+  color: var(--accent);
+}
+.dropdown-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 6px 0;
+  opacity: 0.3;
+}
+.dropdown-footer {
+  padding: 16px;
+  text-align: center;
+  background: rgba(0,0,0,0.1);
+  border-top: 1px solid var(--border);
+}
+.dropdown-footer p {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 /* ===== SECTION HEADERS ===== */

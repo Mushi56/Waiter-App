@@ -150,7 +150,7 @@
     // Side drawer
     drawerOverlay: $('#drawerOverlay'),
     menuToggleBtn: $('#menuToggleBtn'),
-    drawerItems: $$('.drawer-item'),
+    drawerItems: $$('.dropdown-item'),
     bottomNav: $('#bottomNav')
   };
 
@@ -743,7 +743,7 @@
     $$('.page').forEach((p) => p.classList.remove('active'));
     $(`#${pageId}`).classList.add('active');
     
-    $$('.nav-btn, .drawer-item').forEach((b) => b.classList.remove('active'));
+    $$('.nav-btn, .dropdown-item').forEach((b) => b.classList.remove('active'));
     $$(`[data-page="${pageId}"]`).forEach(el => el.classList.add('active'));
 
     if (pageId === 'pageOrders') renderOrdersPage();
@@ -810,7 +810,7 @@
   // --- Event Binding ---
   function bindEvents() {
     // Nav
-    $$('.nav-btn, .drawer-item').forEach((btn) => {
+    $$('.nav-btn, .dropdown-item').forEach((btn) => {
       btn.addEventListener('click', () => navigateTo(btn.dataset.page));
     });
 
