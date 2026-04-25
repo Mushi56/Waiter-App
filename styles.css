@@ -1,9 +1,10 @@
 /* ===== RESET & BASE ===== */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 :root {
   --bg-primary: #111416;
   --bg-secondary: #212427;
   --bg-card: #1a1d20;
+  --bg-tertiary: #2a2d31;
   --accent: #E7A01E;
   --accent-hover: #d4900a;
   --accent-glow: rgba(231, 160, 30, 0.15);
@@ -18,8 +19,58 @@
   --radius-lg: 16px;
   --radius-xl: 20px;
   --shadow: 0 4px 20px rgba(0,0,0,0.3);
-  --transition: 0.2s ease;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* SIDE DRAWER */
+.drawer-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+  z-index: 2000; opacity: 1; transition: opacity var(--transition);
+  backdrop-filter: blur(5px);
+}
+.drawer-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.side-drawer {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 280px;
+  background: var(--bg-secondary); box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+  display: flex; flex-direction: column;
+  transform: translateX(0); transition: transform var(--transition);
+  border-right: 1px solid var(--border);
+}
+.drawer-overlay.hidden .side-drawer { transform: translateX(-100%); }
+
+.drawer-header {
+  padding: 40px 20px 30px; border-bottom: 1px solid var(--border);
+  background: linear-gradient(to bottom, var(--bg-card), var(--bg-secondary));
+}
+.drawer-branding { display: flex; align-items: center; gap: 14px; }
+.logo-circle {
+  width: 48px; height: 48px; background: var(--accent); color: var(--bg-primary);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 1.3rem; box-shadow: 0 0 15px var(--accent-glow);
+}
+.drawer-branding h3 { font-size: 1.15rem; margin-bottom: 2px; color: var(--text-primary); }
+.drawer-branding p { font-size: 0.75rem; color: var(--text-secondary); font-weight: 500; }
+
+.drawer-menu { flex: 1; padding: 25px 12px; overflow-y: auto; }
+.drawer-section-label {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--text-muted); margin: 25px 12px 12px; font-weight: 700;
+}
+.drawer-item {
+  width: 100%; display: flex; align-items: center; gap: 15px;
+  padding: 15px 18px; border-radius: var(--radius-md);
+  background: transparent; border: none; color: var(--text-primary);
+  font-size: 1rem; font-weight: 500; cursor: pointer;
+  transition: all var(--transition); text-align: left;
+  margin-bottom: 4px;
+}
+.drawer-item svg { color: var(--text-secondary); transition: color var(--transition); }
+.drawer-item:active { background: var(--bg-tertiary); }
+.drawer-item.active { background: var(--accent-glow); color: var(--accent); }
+.drawer-item.active svg { color: var(--accent); }
+
+.drawer-footer { padding: 20px; border-top: 1px solid var(--border); text-align: center; font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
 html { font-size: 16px; }
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;

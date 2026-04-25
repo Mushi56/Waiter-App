@@ -137,7 +137,11 @@
     tableManageList: $('#tableManageList'),
     manageTableGroup: $('#manageTableGroup'),
     manageTableInput: $('#manageTableInput'),
-    manageAddTableBtn: $('#manageAddTableBtn')
+    manageAddTableBtn: $('#manageAddTableBtn'),
+    // Side drawer
+    drawerOverlay: $('#drawerOverlay'),
+    menuToggleBtn: $('#menuToggleBtn'),
+    drawerItems: $$('.drawer-item')
   };
 
   const DEFAULT_TABLE_PRESETS = {
@@ -720,15 +724,25 @@
   function navigateTo(pageId) {
     $$('.page').forEach((p) => p.classList.remove('active'));
     $(`#${pageId}`).classList.add('active');
-    $$('.nav-btn').forEach((b) => b.classList.remove('active'));
-    $(`[data-page="${pageId}"]`).classList.add('active');
+    
+    $$('.nav-btn, .drawer-item').forEach((b) => b.classList.remove('active'));
+    $$(`[data-page="${pageId}"]`).forEach(el => el.classList.add('active'));
 
     if (pageId === 'pageOrders') renderOrdersPage();
     if (pageId === 'pageTables') renderTableManageList();
     if (pageId === 'pageMenu') renderMenuManage();
     if (pageId === 'pageHistory') renderHistoryPage();
 
+    closeDrawer();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleDrawer() {
+    els.drawerOverlay.classList.toggle('hidden');
+  }
+
+  function closeDrawer() {
+    if (els.drawerOverlay) els.drawerOverlay.classList.add('hidden');
   }
 
   // --- Table Number ---
@@ -776,8 +790,13 @@
   // --- Event Binding ---
   function bindEvents() {
     // Nav
-    $$('.nav-btn').forEach((btn) => {
+    $$('.nav-btn, .drawer-item').forEach((btn) => {
       btn.addEventListener('click', () => navigateTo(btn.dataset.page));
+    });
+
+    els.menuToggleBtn.addEventListener('click', toggleDrawer);
+    els.drawerOverlay.addEventListener('click', (e) => {
+      if (e.target === els.drawerOverlay) closeDrawer();
     });
 
     // Set table
