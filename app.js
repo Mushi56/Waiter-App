@@ -139,7 +139,7 @@
     addonList: $('#addonList'),
     // Table select
     tableNumberInput: $('#tableNumberInput'),
-    tablePresetsList: $('#tablePresetsList'),
+    tableSuggestions: $('#tableSuggestions'),
     activeTableBanner: $('#activeTableBanner'),
     tableManageList: $('#tableManageList'),
     manageTableGroup: $('#manageTableGroup'),
@@ -654,14 +654,21 @@
   }
 
   function renderTablePresets() {
-    if (!els.tablePresetsList) return;
+    if (!els.tableSuggestions) return;
     let html = '';
-    Object.keys(tablePresets).forEach((group) => {
-      tablePresets[group].forEach((table) => {
-        html += `<option value="${table}">${group} Group</option>`;
-      });
-    });
-    els.tablePresetsList.innerHTML = html;
+    for (const [group, tables] of Object.entries(tablePresets)) {
+      if (tables.length > 0) {
+        html += `
+          <div class="suggestion-group">
+            <div class="suggestion-label">${group} Group</div>
+            <div class="suggestion-grid">
+              ${tables.map(t => `<div class="suggestion-chip" data-val="${t}">${t}</div>`).join('')}
+            </div>
+          </div>
+        `;
+      }
+    }
+    els.tableSuggestions.innerHTML = html || '<div class="suggestion-label" style="text-align:center;">No presets found</div>';
   }
 
   function renderTableManageList() {
@@ -817,6 +824,24 @@
     $('#setTableBtn').addEventListener('click', setTable);
     els.tableNumberInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') setTable(); });
     $('#changeTableBtn').addEventListener('click', changeTable);
+
+    // Table suggestions
+    els.tableNumberInput.addEventListener('focus', () => {
+      els.tableSuggestions.classList.remove('hidden');
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.table-picker-input-wrapper')) {
+        els.tableSuggestions.classList.add('hidden');
+      }
+    });
+    els.tableSuggestions.addEventListener('click', (e) => {
+      const chip = e.target.closest('.suggestion-chip');
+      if (chip) {
+        els.tableNumberInput.value = chip.dataset.val;
+        els.tableSuggestions.classList.add('hidden');
+        setTable();
+      }
+    });
 
     // Table management page
     els.manageAddTableBtn.addEventListener('click', () => {
