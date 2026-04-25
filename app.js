@@ -91,7 +91,7 @@
     orderItems: $('#orderItems'),
     totalItemsCount: $('#totalItemsCount'),
     totalAmount: $('#totalAmount'),
-
+    orderBadge: $('#orderBadge'),
     tableNumberInput: $('#tableNumberInput'),
     tableSection: $('#tableSection'),
     activeTableBanner: $('#activeTableBanner'),
@@ -150,7 +150,7 @@
     // Side drawer
     drawerOverlay: $('#drawerOverlay'),
     menuToggleBtn: $('#menuToggleBtn'),
-    dropdownItems: $$('.dropdown-item'),
+    drawerItems: $$('.drawer-item'),
     bottomNav: $('#bottomNav')
   };
 
@@ -319,6 +319,7 @@
 
     els.totalItemsCount.textContent = totalQty;
     els.totalAmount.textContent = `RM ${totalPrice.toFixed(2)}`;
+    els.orderBadge.textContent = totalQty;
     if(els.cartBadge) els.cartBadge.textContent = totalQty;
     if(els.cartTotalBtn) els.cartTotalBtn.textContent = `RM ${totalPrice.toFixed(2)}`;
   }
@@ -743,7 +744,7 @@
     $$('.page').forEach((p) => p.classList.remove('active'));
     $(`#${pageId}`).classList.add('active');
     
-    $$('.nav-btn, .dropdown-item').forEach((b) => b.classList.remove('active'));
+    $$('.nav-btn, .drawer-item').forEach((b) => b.classList.remove('active'));
     $$(`[data-page="${pageId}"]`).forEach(el => el.classList.add('active'));
 
     if (pageId === 'pageOrders') renderOrdersPage();
@@ -810,7 +811,7 @@
   // --- Event Binding ---
   function bindEvents() {
     // Nav
-    $$('.nav-btn, .dropdown-item').forEach((btn) => {
+    $$('.nav-btn, .drawer-item').forEach((btn) => {
       btn.addEventListener('click', () => navigateTo(btn.dataset.page));
     });
 
@@ -1009,17 +1010,8 @@
       if (e.target === els.addonModal) els.addonModal.classList.add('hidden');
     });
 
-    // Sidebar/Dropdown toggle
-    els.menuToggleBtn.addEventListener('click', () => {
-      els.drawerOverlay.classList.toggle('hidden');
-    });
-    
-    // Close dropdown on overlay click
-    els.drawerOverlay.addEventListener('click', (e) => {
-      if (e.target === els.drawerOverlay) {
-        els.drawerOverlay.classList.add('hidden');
-      }
-    });
+    // Sidebar toggle (simple)
+    $('#menuToggleBtn').addEventListener('click', () => showToast('Menu: use bottom nav'));
   }
 
   // --- Service Worker ---
