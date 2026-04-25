@@ -132,7 +132,12 @@
     addonList: $('#addonList'),
     // Table select
     tableSelect: $('#tableSelect'),
-    deleteTableBtn: $('#deleteTableBtn')
+    deleteTableBtn: $('#deleteTableBtn'),
+    // Table management
+    tableManageList: $('#tableManageList'),
+    manageTableGroup: $('#manageTableGroup'),
+    manageTableInput: $('#manageTableInput'),
+    manageAddTableBtn: $('#manageAddTableBtn')
   };
 
   const DEFAULT_TABLE_PRESETS = {
@@ -625,27 +630,69 @@
     els.tableSelect.innerHTML = html;
   }
 
-  function addTableToPresets(val) {
+  function renderTableManageList() {
+    if (!els.tableManageList) return;
+    let html = '';
+    for (const [group, tables] of Object.entries(tablePresets)) {
+      if (tables && tables.length > 0) {
+        html += `
+          <div class="table-manage-group" style="margin-bottom: 20px;">
+            <h4 style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px;">${group} Tables</h4>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+              ${tables.map(t => `
+                <div style="background: var(--bg-primary); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+                  <span style="font-size: 0.85rem; font-weight: 600;">${t}</span>
+                  <button class="btn-delete-table-sm" data-group="${group}" data-table="${t}" style="background: transparent; border: none; color: var(--danger); cursor: pointer; display: flex; align-items: center;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+    }
+    els.tableManageList.innerHTML = html || '<div style="text-align: center; color: var(--text-muted);">No tables found</div>';
+  }
+
+  function addTableToPresets(val, specificGroup = null) {
     if (!val) return;
-    const prefix = val.charAt(0);
-    let added = false;
+    val = val.trim().toUpperCase();
     
-    if (tablePresets[prefix]) {
-      if (!tablePresets[prefix].includes(val)) {
-        tablePresets[prefix].push(val);
-        added = true;
-      }
-    } else {
-      if (!tablePresets.Others.includes(val)) {
-        tablePresets.Others.push(val);
-        added = true;
-      }
+    let added = false;
+    let group = specificGroup;
+    
+    if (!group) {
+      const prefix = val.charAt(0);
+      group = tablePresets[prefix] ? prefix : 'Others';
+    }
+    
+    if (!tablePresets[group].includes(val)) {
+      tablePresets[group].push(val);
+      // Sort if numeric-ish
+      tablePresets[group].sort((a,b) => a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'}));
+      added = true;
     }
     
     if (added) {
       saveTablePresets();
       renderTablePresets();
-      showToast(`Table ${val} added to presets`);
+      renderTableManageList();
+      showToast(`Table ${val} added to ${group}`);
+    }
+    return added;
+  }
+
+  function deleteTable(group, val) {
+    if (tablePresets[group]) {
+      const idx = tablePresets[group].indexOf(val);
+      if (idx !== -1) {
+        tablePresets[group].splice(idx, 1);
+        saveTablePresets();
+        renderTablePresets();
+        renderTableManageList();
+        showToast(`Table ${val} removed`);
+      }
     }
   }
 
@@ -677,7 +724,10 @@
     $(`[data-page="${pageId}"]`).classList.add('active');
 
     if (pageId === 'pageOrders') renderOrdersPage();
-    if (pageId === 'pageMenu') renderMenuManage();
+    if (pageId === 'pageMenu') {
+      renderMenuManage();
+      renderTableManageList();
+    }
     if (pageId === 'pageHistory') renderHistoryPage();
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -738,6 +788,24 @@
     els.tableSelect.addEventListener('change', () => { els.tableNumberInput.value = ''; setTable(); });
     $('#changeTableBtn').addEventListener('click', changeTable);
     els.deleteTableBtn.addEventListener('click', deleteSelectedTable);
+
+    // Table management page
+    els.manageAddTableBtn.addEventListener('click', () => {
+      const val = els.manageTableInput.value;
+      const group = els.manageTableGroup.value;
+      if (addTableToPresets(val, group)) {
+        els.manageTableInput.value = '';
+      } else {
+        showToast('Table already exists or invalid');
+      }
+    });
+
+    els.tableManageList.addEventListener('click', (e) => {
+      const delBtn = e.target.closest('.btn-delete-table-sm');
+      if (delBtn) {
+        deleteTable(delBtn.dataset.group, delBtn.dataset.table);
+      }
+    });
 
     // Category tabs
     $$('.cat-tab').forEach((tab) => {

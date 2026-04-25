@@ -148,6 +148,30 @@
       <div class="menu-manage-grid" id="menuManageGrid">
         <!-- Filled dynamically -->
       </div>
+
+      <div class="table-management-section" style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);">
+        <h2 class="page-title">Table Management</h2>
+        
+        <div class="table-add-form" style="background: var(--bg-secondary); padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px; border: 1px solid var(--border);">
+          <div class="table-input-group">
+            <label>Add New Table</label>
+            <div class="table-input-row" style="margin-bottom: 12px;">
+              <select id="manageTableGroup" class="table-dropdown" style="flex: 0.5;">
+                <option value="B">B Tables</option>
+                <option value="S">S Tables</option>
+                <option value="L">L Tables</option>
+                <option value="Others">Others</option>
+              </select>
+              <input type="text" id="manageTableInput" placeholder="e.g. B12" style="flex: 1;">
+            </div>
+            <button class="btn-accent" id="manageAddTableBtn" style="width: 100%;">Add Table</button>
+          </div>
+        </div>
+
+        <div class="table-manage-list" id="tableManageList">
+          <!-- Filled dynamically by JS -->
+        </div>
+      </div>
     </section>
 
     <!-- PAGE: HISTORY -->
