@@ -432,12 +432,12 @@ button {
   background: rgba(231, 160, 30, 0.1);
   color: var(--accent);
   border: 1px solid rgba(231, 160, 30, 0.2);
-  padding: 8px 16px;
-  border-radius: var(--radius-md);
+  padding: 5px 12px;
+  border-radius: 100px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
+  gap: 6px;
+  font-size: 0.75rem;
   font-weight: 800;
   cursor: pointer;
   transition: all var(--transition);
