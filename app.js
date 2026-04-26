@@ -81,6 +81,7 @@
   let tableNumber = '';
   let activeCategory = 'All';
   let nextMenuId = 100;
+  let isAdmin = localStorage.getItem('wh_is_admin') === 'true';
 
   // --- DOM Refs ---
   const $ = (sel) => document.querySelector(sel);
@@ -117,10 +118,8 @@
     newItemPrice: $('#newItemPrice'),
     newItemCategory: $('#newItemCategory'),
     newItemDesc: $('#newItemDesc'),
-    newItemImage: $('#newItemImage'),
-    imageUploadArea: $('#imageUploadArea'),
-    uploadPlaceholder: $('#uploadPlaceholder'),
-    imagePreview: $('#imagePreview'),
+    newItemImages: $('#newItemImages'),
+    newGalleryPreviews: $('#newGalleryPreviews'),
     // Edit modal
     editItemModal: $('#editItemModal'),
     editItemId: $('#editItemId'),
@@ -128,16 +127,15 @@
     editItemPrice: $('#editItemPrice'),
     editItemCategory: $('#editItemCategory'),
     editItemDesc: $('#editItemDesc'),
-    editItemImage: $('#editItemImage'),
-    editImageUploadArea: $('#editImageUploadArea'),
-    editUploadPlaceholder: $('#editUploadPlaceholder'),
-    editImagePreview: $('#editImagePreview'),
-    removeNewItemImage: $('#removeNewItemImage'),
-    removeEditItemImage: $('#removeEditItemImage'),
+    editItemImages: $('#editItemImages'),
+    editGalleryPreviews: $('#editGalleryPreviews'),
     // Addon modal
     addonModal: $('#addonModal'),
     addonTitle: $('#addonTitle'),
     addonList: $('#addonList'),
+    // Admin Modal
+    adminLoginModal: $('#adminLoginModal'),
+    adminPinInput: $('#adminPinInput'),
     // Table select
     tableNumberInput: $('#tableNumberInput'),
     tablePresetsList: $('#tablePresetsList'),
@@ -150,7 +148,16 @@
     drawerOverlay: $('#drawerOverlay'),
     menuToggleBtn: $('#menuToggleBtn'),
     drawerItems: $$('.drawer-item'),
-    bottomNav: $('#bottomNav')
+    bottomNav: $('#bottomNav'),
+    // Item detail sheet (customer UX)
+    itemDetailOverlay: $('#itemDetailOverlay'),
+    itemDetailGallery: $('#itemDetailGallery'),
+    itemDetailDots: $('#itemDetailDots'),
+    itemDetailCategory: $('#itemDetailCategory'),
+    itemDetailName: $('#itemDetailName'),
+    itemDetailDesc: $('#itemDetailDesc'),
+    itemDetailPrice: $('#itemDetailPrice'),
+    itemDetailAddBtn: $('#itemDetailAddBtn')
   };
 
   const DEFAULT_TABLE_PRESETS = {
@@ -196,6 +203,7 @@
   // --- Init ---
   function init() {
     loadData();
+    applyAdminState();
     renderMenu();
     renderOrder();
     renderHistoryPreview();
@@ -232,6 +240,57 @@
   function saveOrders() { localStorage.setItem('wh_orders', JSON.stringify(orders)); }
   function saveNextId() { localStorage.setItem('wh_nextId', nextMenuId.toString()); }
 
+  // --- Admin Logic ---
+  function applyAdminState() {
+    const adminEls = $$('.admin-only');
+    const badge = document.querySelector('.drawer-badge');
+    const loginBtn = document.getElementById('adminLoginBtn');
+    
+    if (isAdmin) {
+      adminEls.forEach(el => el.classList.remove('hidden'));
+      if(badge) badge.textContent = 'Admin';
+      if(loginBtn) loginBtn.textContent = 'Logout Admin';
+    } else {
+      adminEls.forEach(el => el.classList.add('hidden'));
+      if(badge) badge.textContent = 'Waiter';
+      if(loginBtn) loginBtn.textContent = 'Admin Login';
+    }
+  }
+
+  function toggleAdminLogin() {
+    if (isAdmin) {
+      isAdmin = false;
+      localStorage.removeItem('wh_is_admin');
+      applyAdminState();
+      showToast('Logged out of Admin mode');
+      const activePage = document.querySelector('.page.active');
+      if (activePage && (activePage.id === 'pageMenu' || activePage.id === 'pageTables')) {
+        navigateTo('pageHome');
+      }
+    } else {
+      // Open custom modal instead of prompt
+      if (els.adminPinInput) els.adminPinInput.value = '';
+      if (els.adminLoginModal) els.adminLoginModal.classList.remove('hidden');
+      setTimeout(() => { if (els.adminPinInput) els.adminPinInput.focus(); }, 300);
+    }
+  }
+
+  function confirmAdminPin() {
+    const pin = els.adminPinInput.value;
+    if (pin === '77375') {
+      isAdmin = true;
+      localStorage.setItem('wh_is_admin', 'true');
+      applyAdminState();
+      showToast('Admin Mode Unlocked');
+      els.adminLoginModal.classList.add('hidden');
+      if (typeof closeDrawer === 'function') closeDrawer();
+    } else {
+      showToast('⚠️ Incorrect passcode!');
+      els.adminPinInput.value = '';
+      els.adminPinInput.focus();
+    }
+  }
+
   // --- Render Menu Grid ---
   function renderMenu() {
     let filtered = activeCategory === 'All'
@@ -265,11 +324,20 @@
             <div class="menu-card-name">${item.name}</div>
             <div class="menu-card-bottom">
               <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
-              <button class="menu-card-add" data-id="${item.id}">+</button>
+              <button class="menu-card-add" data-id="${item.id}">
+                ADD <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              </button>
             </div>
           </div>
         </div>`;
     }).join('');
+
+    // Staggered card entrance animation
+    requestAnimationFrame(() => {
+      els.menuGrid.querySelectorAll('.menu-card').forEach((card, i) => {
+        setTimeout(() => card.classList.add('visible'), i * 40);
+      });
+    });
   }
 
   function getOrderQty(id) {
@@ -419,6 +487,22 @@
     renderOrder();
     renderMenu();
     hapticFeedback();
+
+    // Pulse floating cart
+    if (els.floatingCartBtn) {
+      els.floatingCartBtn.classList.remove('pulse');
+      void els.floatingCartBtn.offsetWidth;
+      els.floatingCartBtn.classList.add('pulse');
+      setTimeout(() => els.floatingCartBtn.classList.remove('pulse'), 600);
+    }
+
+    // Animate card
+    const card = els.menuGrid.querySelector(`.menu-card[data-id="${menuItem.id}"]`);
+    if (card) {
+      card.classList.remove('added');
+      void card.offsetWidth;
+      card.classList.add('added');
+    }
   }
 
   function updateCartItemModifiers(cartItemId, modifiers) {
@@ -634,18 +718,73 @@
     }).join('');
   }
 
+  // --- Canvas Auto Crop 1:1 ---
+  function autoCropSquare(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const size = 500;
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
+          const minDim = Math.min(img.width, img.height);
+          const startX = (img.width - minDim) / 2;
+          const startY = (img.height - minDim) / 2;
+          ctx.drawImage(img, startX, startY, minDim, minDim, 0, 0, size, size);
+          resolve(canvas.toDataURL('image/jpeg', 0.85));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   // --- Add New Menu Item ---
-  let pendingImageData = null;
+  let pendingGallery = [];
+
+  els.newItemImages.addEventListener('change', async (e) => {
+    for (let file of e.target.files) {
+      if(!file.type.startsWith('image/')) continue;
+      const croppedData = await autoCropSquare(file);
+      pendingGallery.push({ id: Date.now() + Math.random(), data: croppedData, isThumbnail: pendingGallery.length === 0 });
+    }
+    renderNewGallery();
+    e.target.value = '';
+  });
+
+  function renderNewGallery() {
+    els.newGalleryPreviews.innerHTML = pendingGallery.map((img, i) => `
+      <div class="gallery-preview-item ${img.isThumbnail ? 'thumbnail' : ''}" onclick="setNewThumbnail(${i})">
+        <img src="${img.data}" alt="Preview">
+        <button class="gallery-preview-remove" onclick="removeNewGalleryImage(event, ${i})">×</button>
+      </div>
+    `).join('');
+  }
+
+  window.setNewThumbnail = (index) => {
+    pendingGallery.forEach(img => img.isThumbnail = false);
+    if(pendingGallery[index]) pendingGallery[index].isThumbnail = true;
+    renderNewGallery();
+  };
+
+  window.removeNewGalleryImage = (e, index) => {
+    e.stopPropagation();
+    const wasThumb = pendingGallery[index].isThumbnail;
+    pendingGallery.splice(index, 1);
+    if (wasThumb && pendingGallery.length > 0) pendingGallery[0].isThumbnail = true;
+    renderNewGallery();
+  };
 
   function openAddItemModal() {
     els.newItemName.value = '';
     els.newItemPrice.value = '';
     els.newItemCategory.value = 'Wraps';
     els.newItemDesc.value = '';
-    els.imagePreview.classList.add('hidden');
-    els.uploadPlaceholder.classList.remove('hidden');
-    if (els.removeNewItemImage) els.removeNewItemImage.classList.add('hidden');
-    pendingImageData = null;
+    pendingGallery = [];
+    renderNewGallery();
     els.addItemModal.classList.remove('hidden');
     setTimeout(() => els.newItemName.focus(), 300);
   }
@@ -659,10 +798,12 @@
     if (!name) { showToast('⚠️ Please enter item name'); return; }
     if (isNaN(price) || price <= 0) { showToast('⚠️ Please enter a valid price'); return; }
 
+    const thumbImg = pendingGallery.find(g => g.isThumbnail);
     const newItem = {
       id: nextMenuId++,
       name, price, category, description,
-      image: pendingImageData || null,
+      image: thumbImg ? thumbImg.data : null,
+      gallery: pendingGallery.map(g => g.data)
     };
 
     menuItems.push(newItem);
@@ -676,7 +817,40 @@
   }
 
   // --- Edit Menu Item ---
-  let editPendingImageData = null;
+  let editPendingGallery = [];
+
+  els.editItemImages.addEventListener('change', async (e) => {
+    for (let file of e.target.files) {
+      if(!file.type.startsWith('image/')) continue;
+      const croppedData = await autoCropSquare(file);
+      editPendingGallery.push({ id: Date.now() + Math.random(), data: croppedData, isThumbnail: editPendingGallery.length === 0 });
+    }
+    renderEditGallery();
+    e.target.value = '';
+  });
+
+  function renderEditGallery() {
+    els.editGalleryPreviews.innerHTML = editPendingGallery.map((img, i) => `
+      <div class="gallery-preview-item ${img.isThumbnail ? 'thumbnail' : ''}" onclick="setEditThumbnail(${i})">
+        <img src="${img.data}" alt="Preview">
+        <button class="gallery-preview-remove" onclick="removeEditGalleryImage(event, ${i})">×</button>
+      </div>
+    `).join('');
+  }
+
+  window.setEditThumbnail = (index) => {
+    editPendingGallery.forEach(img => img.isThumbnail = false);
+    if(editPendingGallery[index]) editPendingGallery[index].isThumbnail = true;
+    renderEditGallery();
+  };
+
+  window.removeEditGalleryImage = (e, index) => {
+    e.stopPropagation();
+    const wasThumb = editPendingGallery[index].isThumbnail;
+    editPendingGallery.splice(index, 1);
+    if (wasThumb && editPendingGallery.length > 0) editPendingGallery[0].isThumbnail = true;
+    renderEditGallery();
+  };
 
   function openEditItemModal(id) {
     const item = menuItems.find((m) => m.id === id);
@@ -688,19 +862,13 @@
     els.editItemCategory.value = item.category;
     els.editItemDesc.value = item.description || '';
 
-    // Show existing image or placeholder
-    if (item.image) {
-      els.editImagePreview.src = item.image;
-      els.editImagePreview.classList.remove('hidden');
-      els.editUploadPlaceholder.classList.add('hidden');
-      if (els.removeEditItemImage) els.removeEditItemImage.classList.remove('hidden');
-      editPendingImageData = item.image;
-    } else {
-      els.editImagePreview.classList.add('hidden');
-      els.editUploadPlaceholder.classList.remove('hidden');
-      if (els.removeEditItemImage) els.removeEditItemImage.classList.add('hidden');
-      editPendingImageData = null;
+    editPendingGallery = [];
+    if (item.gallery && item.gallery.length > 0) {
+      editPendingGallery = item.gallery.map((g, i) => ({ id: i, data: g, isThumbnail: g === item.image }));
+    } else if (item.image) {
+      editPendingGallery.push({ id: 0, data: item.image, isThumbnail: true });
     }
+    renderEditGallery();
 
     els.editItemModal.classList.remove('hidden');
     setTimeout(() => els.editItemName.focus(), 300);
@@ -723,9 +891,10 @@
     item.price = price;
     item.category = category;
     item.description = description;
-    if (editPendingImageData !== undefined) {
-      item.image = editPendingImageData;
-    }
+    
+    const thumbImg = editPendingGallery.find(g => g.isThumbnail);
+    item.image = thumbImg ? thumbImg.data : null;
+    item.gallery = editPendingGallery.map(g => g.data);
 
     // Also update price in current order if present
     const orderItemsToUpdate = currentOrder.filter((o) => o.id === id);
@@ -905,8 +1074,69 @@
     if (navigator.vibrate) navigator.vibrate(15);
   }
 
+  function openItemDetail(id) {
+    const item = menuItems.find(m => m.id === id);
+    if (!item) return;
+
+    let galleryHtml = '';
+    let dotsHtml = '';
+    
+    const images = item.gallery && item.gallery.length > 0 ? item.gallery : (item.image ? [item.image] : []);
+    
+    if (images.length > 0) {
+      images.forEach((imgSrc, idx) => {
+        galleryHtml += `<img src="${imgSrc}" alt="${item.name}">`;
+        dotsHtml += `<div class="item-detail-dot ${idx === 0 ? 'active' : ''}"></div>`;
+      });
+    } else {
+      galleryHtml = `<div class="placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`;
+    }
+
+    els.itemDetailGallery.innerHTML = galleryHtml;
+    els.itemDetailDots.innerHTML = dotsHtml;
+    els.itemDetailCategory.textContent = item.category;
+    els.itemDetailName.textContent = item.name;
+    els.itemDetailDesc.textContent = item.description || 'No description available.';
+    els.itemDetailPrice.textContent = `RM ${item.price.toFixed(2)}`;
+    
+    // Carousel scroll listener to update dots
+    els.itemDetailGallery.onscroll = () => {
+      const scrollPos = els.itemDetailGallery.scrollLeft;
+      const width = els.itemDetailGallery.offsetWidth;
+      const activeIdx = Math.round(scrollPos / width);
+      const dots = els.itemDetailDots.querySelectorAll('.item-detail-dot');
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === activeIdx);
+      });
+    };
+
+    els.itemDetailAddBtn.onclick = () => {
+      addToOrder(item.id);
+      els.itemDetailOverlay.classList.add('hidden');
+    };
+
+    els.itemDetailOverlay.classList.remove('hidden');
+  }
+
+  function closeItemDetail() {
+    els.itemDetailOverlay.classList.add('hidden');
+  }
+
   // --- Event Binding ---
   function bindEvents() {
+    // Admin login
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    if (adminLoginBtn) {
+      adminLoginBtn.addEventListener('click', toggleAdminLogin);
+    }
+    
+    if (document.getElementById('closeAdminModal')) {
+      document.getElementById('closeAdminModal').addEventListener('click', () => els.adminLoginModal.classList.add('hidden'));
+      document.getElementById('cancelAdminBtn').addEventListener('click', () => els.adminLoginModal.classList.add('hidden'));
+      document.getElementById('confirmAdminBtn').addEventListener('click', confirmAdminPin);
+      els.adminPinInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') confirmAdminPin(); });
+    }
+
     // Nav
     $$('.nav-btn, .drawer-item').forEach((btn) => {
       btn.addEventListener('click', () => navigateTo(btn.dataset.page));
@@ -974,7 +1204,7 @@
       const addBtn = e.target.closest('.menu-card-add');
       if (addBtn) { addToOrder(parseInt(addBtn.dataset.id)); return; }
       const card = e.target.closest('.menu-card');
-      if (card) addToOrder(parseInt(card.dataset.id));
+      if (card) openItemDetail(parseInt(card.dataset.id));
     });
 
     // Order item actions (delegated)
@@ -1001,6 +1231,19 @@
     // Save order
     $('#saveOrderBtn').addEventListener('click', saveOrder);
 
+    // Item detail overlay (customer UX)
+    if (els.itemDetailOverlay) {
+      els.itemDetailOverlay.addEventListener('click', (e) => {
+        if (e.target === els.itemDetailOverlay) closeItemDetail();
+      });
+    }
+    if (els.itemDetailAddBtn) {
+      els.itemDetailAddBtn.addEventListener('click', () => {
+        const id = activeDetailItemId;
+        closeItemDetail();
+        if (id !== null) addToOrder(id);
+      });
+    }
 
     // Add item modal
     $('#addItemBtn').addEventListener('click', openAddItemModal);
@@ -1009,32 +1252,7 @@
     $('#cancelAddItem').addEventListener('click', () => els.addItemModal.classList.add('hidden'));
     $('#confirmAddItem').addEventListener('click', confirmAddItem);
 
-    // Image upload
-    els.imageUploadArea.addEventListener('click', () => els.newItemImage.click());
-    els.newItemImage.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        pendingImageData = ev.target.result;
-        els.imagePreview.src = pendingImageData;
-        els.imagePreview.classList.remove('hidden');
-        els.uploadPlaceholder.classList.add('hidden');
-        if (els.removeNewItemImage) els.removeNewItemImage.classList.remove('hidden');
-      };
-      reader.readAsDataURL(file);
-    });
-
-    if (els.removeNewItemImage) {
-      els.removeNewItemImage.addEventListener('click', (e) => {
-        e.stopPropagation();
-        pendingImageData = null;
-        els.newItemImage.value = '';
-        els.imagePreview.classList.add('hidden');
-        els.uploadPlaceholder.classList.remove('hidden');
-        els.removeNewItemImage.classList.add('hidden');
-      });
-    }
+    // (Image upload logic moved to top-level event listeners)
 
     // History cards (delegated)
     document.addEventListener('click', (e) => {
@@ -1085,32 +1303,7 @@
       if (e.target === els.editItemModal) els.editItemModal.classList.add('hidden');
     });
 
-    // Edit image upload
-    els.editImageUploadArea.addEventListener('click', () => els.editItemImage.click());
-    els.editItemImage.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        editPendingImageData = ev.target.result;
-        els.editImagePreview.src = editPendingImageData;
-        els.editImagePreview.classList.remove('hidden');
-        els.editUploadPlaceholder.classList.add('hidden');
-        if (els.removeEditItemImage) els.removeEditItemImage.classList.remove('hidden');
-      };
-      reader.readAsDataURL(file);
-    });
-
-    if (els.removeEditItemImage) {
-      els.removeEditItemImage.addEventListener('click', (e) => {
-        e.stopPropagation();
-        editPendingImageData = null;
-        els.editItemImage.value = '';
-        els.editImagePreview.classList.add('hidden');
-        els.editUploadPlaceholder.classList.remove('hidden');
-        els.removeEditItemImage.classList.add('hidden');
-      });
-    }
+    // (Edit image upload logic moved to top-level event listeners)
 
     // Addon modal
     $('#closeAddonModal').addEventListener('click', () => els.addonModal.classList.add('hidden'));

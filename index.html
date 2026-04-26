@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -22,8 +22,13 @@
   <!-- ===== HEADER ===== -->
   <header class="app-header" id="appHeader">
     <div class="header-title">
-      <h1>WAITER <span class="accent">HELPER</span></h1>
-      <p class="header-subtitle">Take Order, Save Time</p>
+      <div class="header-logo-wrap">
+        <img src="icons/icon-192.svg" alt="Logo" class="header-logo">
+        <div>
+          <h1>WAITER <span class="accent">HELPER</span></h1>
+          <p class="header-subtitle">Take Order, Save Time</p>
+        </div>
+      </div>
     </div>
     <div class="header-actions">
       <button class="header-btn" id="menuToggleBtn" aria-label="Menu">
@@ -49,12 +54,12 @@
       </div>
       <div class="drawer-menu">
 
-        <div class="drawer-section-label">Management</div>
-        <button class="drawer-item" data-page="pageTables">
+        <div class="drawer-section-label admin-only hidden">Management</div>
+        <button class="drawer-item admin-only hidden" data-page="pageTables">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="12" rx="2"/><line x1="7" y1="19" x2="7" y2="15"/><line x1="17" y1="19" x2="17" y2="15"/></svg>
           Manage Tables
         </button>
-        <button class="drawer-item" data-page="pageMenu">
+        <button class="drawer-item admin-only hidden" data-page="pageMenu">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="1" fill="currentColor"/><circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="18" r="1" fill="currentColor"/></svg>
           Manage Menu
         </button>
@@ -74,6 +79,7 @@
         </button>
       </div>
       <div class="drawer-footer">
+        <button class="btn-admin-login" id="adminLoginBtn">Admin Login</button>
         <p>&copy; 2026 Mushtaq Ahmad</p>
         <p style="font-size: 0.65rem; margin-top: 4px;">All Rights Reserved</p>
       </div>
@@ -114,7 +120,7 @@
       <!-- Menu Section -->
       <div class="section-header">
         <h2>MENU</h2>
-        <button class="btn-add-item" id="addItemBtn">+ Add Item <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E7A01E" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></button>
+        <button class="btn-add-item admin-only hidden" id="addItemBtn">+ Add Item <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E7A01E" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></button>
       </div>
 
       <!-- Category Tabs -->
@@ -387,18 +393,16 @@
           <textarea id="newItemDesc" placeholder="Brief description of the item"></textarea>
         </div>
         <div class="form-group">
-          <label for="newItemImage">Image (optional)</label>
-          <div class="image-upload-area" id="imageUploadArea">
-            <input type="file" id="newItemImage" accept="image/*" hidden>
-            <div class="upload-placeholder" id="uploadPlaceholder">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span>Tap to upload image</span>
-            </div>
-            <img id="imagePreview" class="image-preview hidden" alt="Preview">
-            <button type="button" class="remove-image-btn hidden" id="removeNewItemImage" title="Remove Image">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-            </button>
+          <label>Images (Multiple photos & Auto-Crop)</label>
+          <div class="gallery-upload-container">
+            <div id="newGalleryPreviews" style="display:contents"></div>
+            <label class="gallery-upload-btn" id="newGalleryBtn">
+              <input type="file" id="newItemImages" accept="image/*" multiple hidden>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span>Add Photos</span>
+            </label>
           </div>
+          <small class="text-muted" style="margin-top:6px;display:block;font-size:0.75rem;">Images are auto-cropped 1:1 perfectly. Tap an image to set as Thumbnail.</small>
         </div>
       </div>
       <div class="modal-footer">
@@ -463,23 +467,48 @@
           <textarea id="editItemDesc" placeholder="Brief description"></textarea>
         </div>
         <div class="form-group">
-          <label for="editItemImage">Image (optional)</label>
-          <div class="image-upload-area" id="editImageUploadArea">
-            <input type="file" id="editItemImage" accept="image/*" hidden>
-            <div class="upload-placeholder" id="editUploadPlaceholder">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span>Tap to upload or change image</span>
-            </div>
-            <img id="editImagePreview" class="image-preview hidden" alt="Preview">
-            <button type="button" class="remove-image-btn hidden" id="removeEditItemImage" title="Remove Image">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-            </button>
+          <label>Images (Multiple photos & Auto-Crop)</label>
+          <div class="gallery-upload-container">
+            <div id="editGalleryPreviews" style="display:contents"></div>
+            <label class="gallery-upload-btn" id="editGalleryBtn">
+              <input type="file" id="editItemImages" accept="image/*" multiple hidden>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span>Add Photos</span>
+            </label>
           </div>
+          <small class="text-muted" style="margin-top:6px;display:block;font-size:0.75rem;">Images are auto-cropped 1:1 perfectly. Tap an image to set as Thumbnail.</small>
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn-cancel" id="cancelEditItem">Cancel</button>
         <button class="btn-accent" id="confirmEditItem">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ITEM DETAIL MODAL (Customer UX) ===== -->
+  <div class="modal-overlay hidden" id="itemDetailOverlay">
+    <div class="item-detail-sheet">
+      <div class="sheet-handle"></div>
+      <div class="item-detail-gallery-wrap" style="position:relative">
+        <div class="item-detail-gallery" id="itemDetailGallery">
+          <!-- Filled dynamically -->
+        </div>
+        <div class="item-detail-dots" id="itemDetailDots"></div>
+      </div>
+      <div class="item-detail-body">
+        <div class="item-detail-tags">
+          <span class="item-detail-category" id="itemDetailCategory"></span>
+        </div>
+        <h2 class="item-detail-name" id="itemDetailName"></h2>
+        <p class="item-detail-desc" id="itemDetailDesc"></p>
+        <div class="item-detail-footer">
+          <div class="item-detail-price" id="itemDetailPrice"></div>
+          <button class="item-detail-add-btn" id="itemDetailAddBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Add to Order
+          </button>
+        </div>
       </div>
     </div>
   </div>
