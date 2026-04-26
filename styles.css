@@ -357,28 +357,26 @@ button {
 
 .search-expand-container {
   position: absolute;
-  right: -10px; /* Offset to align with toggle btn edge */
+  right: 0;
   top: 50%;
   transform: translateY(-50%) scaleX(0);
   transform-origin: right;
   width: 0;
   height: 44px;
-  background: rgba(0, 0, 0, 0.2); /* Same as button overlay color */
+  background: #B4780A; /* Dark Yellow / Deep Gold shade */
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  border-radius: var(--radius-sm);
+  padding: 0 14px;
+  border-radius: var(--radius-md);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   pointer-events: none;
-  box-shadow: none;
-  z-index: 5;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .header-search-wrap.search-active .search-expand-container {
-  /* Expand to cover header from logo padding to right */
-  width: calc(100vw - 32px); /* 16px padding on both sides */
-  max-width: calc(1200px - 32px);
+  width: calc(100vw - 185px); /* Leave room for logo and text */
+  max-width: 320px;
   transform: translateY(-50%) scaleX(1);
   opacity: 1;
   pointer-events: auto;
@@ -388,10 +386,11 @@ button {
   flex: 1;
   background: transparent;
   border: none;
-  color: #fff;
+  color: #fff; /* White text on dark yellow for better contrast */
   font-size: 1rem;
   font-weight: 700;
   outline: none;
+  padding-right: 30px;
 }
 
 .search-expand-container input::placeholder {
