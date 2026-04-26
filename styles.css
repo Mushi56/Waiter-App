@@ -2374,4 +2374,130 @@ button {
   color: var(--accent);
   margin-top: 4px;
   font-style: italic;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Tablets & Laptops)
+   ========================================================================== */
+
+/* Tablet & Desktop Container */
+@media (min-width: 768px) {
+  body {
+    background: #0a0c0d; /* Darker background for the surrounding area */
+  }
+
+  .app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 100vh;
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.5);
+    background: var(--bg-primary);
+  }
+
+  .main-content {
+    padding-bottom: 100px; /* More space for bottom nav */
+  }
+
+  /* Menu Grid Responsiveness */
+  .menu-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+  /* Bottom Nav Centering */
+  .bottom-nav {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 500px;
+    bottom: 24px;
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Transform Bottom Sheet into a Centered Modal */
+  .bottom-sheet {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -40%) scale(0.95);
+    bottom: auto;
+    width: 90%;
+    max-width: 500px;
+    max-height: 85vh;
+    border-radius: var(--radius-xl);
+    padding-bottom: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #orderModalOverlay:not(.hidden) .bottom-sheet {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .sheet-handle {
+    display: none; /* No need for handle on desktop */
+  }
+
+  /* Menu Cards - Hover Effects */
+  .menu-card {
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+  }
+
+  .menu-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Side Drawer Positioning */
+  .side-drawer {
+    right: 32px;
+    top: 32px;
+  }
+
+  /* Page Titles */
+  .page-title {
+    font-size: 2rem;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  /* History Cards */
+  .history-preview-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+}
+
+/* Larger Laptops */
+@media (min-width: 1024px) {
+  .menu-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  
+  .app-header {
+    padding: 30px 40px;
+  }
+
+  .header-title h1 {
+    font-size: 1.8rem;
+  }
+
+  /* Management Grids */
+  .menu-manage-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 24px;
+  }
+}
+
+/* Fix for ultra-wide screens */
+@media (min-width: 1440px) {
+  .app-container {
+    max-width: 1400px;
+  }
 }
