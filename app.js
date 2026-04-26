@@ -91,7 +91,6 @@
     orderItems: $('#orderItems'),
     totalItemsCount: $('#totalItemsCount'),
     totalAmount: $('#totalAmount'),
-    orderBadge: $('#orderBadge'),
     tableNumberInput: $('#tableNumberInput'),
     tableSection: $('#tableSection'),
     activeTableBanner: $('#activeTableBanner'),
@@ -284,7 +283,6 @@
       els.orderItems.innerHTML = '<div class="order-empty">No items added yet. Tap menu items to start.</div>';
       els.totalItemsCount.textContent = '0';
       els.totalAmount.textContent = 'RM 0.00';
-      els.orderBadge.textContent = '0';
       if(els.cartBadge) els.cartBadge.textContent = '0';
       if(els.cartTotalBtn) els.cartTotalBtn.textContent = 'RM 0.00';
       if(els.floatingCartBtn) els.floatingCartBtn.classList.add('hidden');
@@ -298,7 +296,18 @@
     els.orderItems.innerHTML = currentOrder.map((item) => {
       totalQty += item.qty;
       totalPrice += item.price * item.qty;
+      
+      const menuItem = menuItems.find(m => m.id === item.id);
+      const category = item.category || (menuItem ? menuItem.category : '');
+      const canEditAddons = ADDONS_DATA[category];
+      
       const modText = item.modifiers && item.modifiers.length > 0 ? `<br><span style="color:var(--text-secondary);font-size:0.75rem;">+ ${item.modifiers.map(m=>m.name).join(', ')}</span>` : '';
+      
+      const editAddonBtn = canEditAddons ? `
+        <button class="order-item-edit-addons" data-cart-id="${item.cartItemId}" data-action="edit-addons" title="Edit Add-ons">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>` : '';
+
       return `
         <div class="order-item">
           <div class="order-item-controls">
@@ -308,24 +317,27 @@
           </div>
           <span class="order-item-name">${item.name}${modText}</span>
           <span class="order-item-price">RM ${(item.price * item.qty).toFixed(2)}</span>
-          <button class="order-item-delete" data-cart-id="${item.cartItemId}" data-action="remove">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
-              <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
-            </svg>
-          </button>
+          <div class="order-item-actions">
+            ${editAddonBtn}
+            <button class="order-item-delete" data-cart-id="${item.cartItemId}" data-action="remove">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
+                <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+              </svg>
+            </button>
+          </div>
         </div>`;
     }).join('');
 
     els.totalItemsCount.textContent = totalQty;
     els.totalAmount.textContent = `RM ${totalPrice.toFixed(2)}`;
-    els.orderBadge.textContent = totalQty;
     if(els.cartBadge) els.cartBadge.textContent = totalQty;
     if(els.cartTotalBtn) els.cartTotalBtn.textContent = `RM ${totalPrice.toFixed(2)}`;
   }
 
   // --- Add to Order ---
   let pendingAddonItem = null;
+  let editingCartItemId = null;
 
   function addToOrder(id) {
     const menuItem = menuItems.find((m) => m.id === id);
@@ -338,20 +350,33 @@
     }
   }
 
-  function openAddonModal(menuItem) {
+  function openAddonModal(menuItem, existingModifiers = []) {
     pendingAddonItem = menuItem;
-    els.addonTitle.textContent = `${menuItem.name} Add-ons`;
+    els.addonTitle.textContent = editingCartItemId ? `Edit ${menuItem.name} Add-ons` : `${menuItem.name} Add-ons`;
     const addons = ADDONS_DATA[menuItem.category];
-    els.addonList.innerHTML = addons.map((addon, index) => `
-      <div class="addon-item">
-        <label>
-          <input type="checkbox" value="${index}">
-          <span class="addon-name">${addon.name}</span>
-        </label>
-        <span class="addon-price">+RM ${addon.price.toFixed(2)}</span>
-      </div>
-    `).join('');
+    els.addonList.innerHTML = addons.map((addon, index) => {
+      const isChecked = existingModifiers.some(m => m.name === addon.name) ? 'checked' : '';
+      return `
+        <div class="addon-item">
+          <label>
+            <input type="checkbox" value="${index}" ${isChecked}>
+            <span class="addon-name">${addon.name}</span>
+          </label>
+          <span class="addon-price">+RM ${addon.price.toFixed(2)}</span>
+        </div>`;
+    }).join('');
     els.addonModal.classList.remove('hidden');
+  }
+
+  function openEditAddonModal(cartItemId) {
+    const cartItem = currentOrder.find(o => o.cartItemId === cartItemId);
+    if (!cartItem) return;
+    
+    const menuItem = menuItems.find(m => m.id === cartItem.id);
+    if (!menuItem) return;
+
+    editingCartItemId = cartItemId;
+    openAddonModal(menuItem, cartItem.modifiers || []);
   }
 
   function confirmAddons() {
@@ -360,9 +385,15 @@
     const checkboxes = els.addonList.querySelectorAll('input[type="checkbox"]:checked');
     const selectedAddons = Array.from(checkboxes).map(cb => addons[parseInt(cb.value)]);
     
-    addCartItem(pendingAddonItem, selectedAddons);
+    if (editingCartItemId) {
+      updateCartItemModifiers(editingCartItemId, selectedAddons);
+    } else {
+      addCartItem(pendingAddonItem, selectedAddons);
+    }
+
     els.addonModal.classList.add('hidden');
     pendingAddonItem = null;
+    editingCartItemId = null;
   }
 
   function addCartItem(menuItem, modifiers) {
@@ -377,6 +408,7 @@
         cartItemId: Date.now().toString() + Math.random().toString(36).substr(2, 5),
         id: menuItem.id,
         name: menuItem.name,
+        category: menuItem.category,
         price: unitPrice,
         qty: 1,
         modifiers: modifiers,
@@ -387,6 +419,24 @@
     renderOrder();
     renderMenu();
     hapticFeedback();
+  }
+
+  function updateCartItemModifiers(cartItemId, modifiers) {
+    const idx = currentOrder.findIndex(o => o.cartItemId === cartItemId);
+    if (idx === -1) return;
+
+    const menuItem = menuItems.find(m => m.id === currentOrder[idx].id);
+    if (!menuItem) return;
+
+    const modifiersKey = modifiers.map(m => m.name).sort().join('|');
+    const unitPrice = menuItem.price + modifiers.reduce((s, m) => s + m.price, 0);
+
+    currentOrder[idx].modifiers = modifiers;
+    currentOrder[idx].modifiersKey = modifiersKey;
+    currentOrder[idx].price = unitPrice;
+
+    renderOrder();
+    showToast('Add-ons updated');
   }
 
   function changeQty(cartItemId, action) {
@@ -483,8 +533,13 @@
           <div class="history-table">Table ${order.table}</div>
           <div class="history-meta">${dateStr} • ${timeStr}<br>Items: ${order.totalQty} • RM ${order.totalPrice.toFixed(2)}</div>
         </div>
-        <div class="history-arrow">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        <div class="history-actions">
+           <button class="history-btn-edit" data-order-id="${order.id}" data-action="edit-saved-order" title="Edit Order">
+             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+           </button>
+           <button class="history-btn-delete" data-order-id="${order.id}" data-action="delete-saved-order" title="Delete Order">
+             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+           </button>
         </div>
       </div>`;
   }
@@ -507,6 +562,48 @@
     html += `<div class="detail-row detail-total"><span>Total</span><span>RM ${order.totalPrice.toFixed(2)}</span></div>`;
     els.orderDetailBody.innerHTML = html;
     els.orderDetailModal.classList.remove('hidden');
+  }
+
+  function editOrder(orderId) {
+    const order = orders.find(o => o.id === orderId);
+    if (!order) return;
+
+    if (currentOrder.length > 0) {
+      if (!confirm('You have items in your current order. Replace them with this saved order?')) return;
+    }
+
+    // Load order into active state
+    tableNumber = order.table;
+    els.activeTableNum.textContent = tableNumber;
+    els.tableSection.classList.add('hidden');
+    els.activeTableBanner.classList.remove('hidden');
+    els.tableNumberInput.value = tableNumber;
+
+    currentOrder = JSON.parse(JSON.stringify(order.items)); // Deep copy
+    
+    // Remove old order from history
+    orders = orders.filter(o => o.id !== orderId);
+    saveOrders();
+
+    renderOrder();
+    renderMenu();
+    renderHistoryPreview();
+    renderOrdersPage();
+    renderHistoryPage();
+
+    navigateTo('pageHome');
+    els.orderModalOverlay.classList.remove('hidden');
+    showToast('Order loaded for editing');
+  }
+
+  function deleteOrder(orderId) {
+    if (!confirm('Are you sure you want to delete this order?')) return;
+    orders = orders.filter(o => o.id !== orderId);
+    saveOrders();
+    renderHistoryPreview();
+    renderOrdersPage();
+    renderHistoryPage();
+    showToast('Order deleted');
   }
 
   // --- Menu Management ---
@@ -883,7 +980,13 @@
     // Order item actions (delegated)
     els.orderItems.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-action]');
-      if (btn) changeQty(btn.dataset.cartId, btn.dataset.action);
+      if (btn) {
+        if (btn.dataset.action === 'edit-addons') {
+          openEditAddonModal(btn.dataset.cartId);
+        } else {
+          changeQty(btn.dataset.cartId, btn.dataset.action);
+        }
+      }
     });
 
     // Clear all
@@ -898,11 +1001,6 @@
     // Save order
     $('#saveOrderBtn').addEventListener('click', saveOrder);
 
-    // Order badge -> scroll to order
-    $('#orderBadgeBtn').addEventListener('click', () => {
-      navigateTo('pageHome');
-      setTimeout(() => els.orderSection.scrollIntoView({ behavior: 'smooth' }), 100);
-    });
 
     // Add item modal
     $('#addItemBtn').addEventListener('click', openAddItemModal);
@@ -940,6 +1038,18 @@
 
     // History cards (delegated)
     document.addEventListener('click', (e) => {
+      const actionBtn = e.target.closest('[data-action="edit-saved-order"], [data-action="delete-saved-order"]');
+      if (actionBtn) {
+        e.stopPropagation();
+        const orderId = parseInt(actionBtn.dataset.orderId);
+        if (actionBtn.dataset.action === 'edit-saved-order') {
+          editOrder(orderId);
+        } else {
+          deleteOrder(orderId);
+        }
+        return;
+      }
+
       const card = e.target.closest('.history-card');
       if (card) showOrderDetail(parseInt(card.dataset.orderId));
     });
