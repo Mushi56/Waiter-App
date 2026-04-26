@@ -166,7 +166,6 @@
             <div class="order-items" id="orderItems">
               <!-- Filled dynamically -->
             </div>
-            </div>
             <div class="order-summary" id="orderSummary">
               <div class="order-summary-row">
                 <span>Total Items: <strong id="totalItemsCount">0</strong></span>
@@ -254,34 +253,43 @@
       <div class="page-nav-header">
         <button class="btn-back" onclick="navigateTo('pageHome')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
       </div>
-      <div class="info-header">
-        <img src="icons/icon-192.svg" alt="Smart Menu Logo" class="info-logo-glow">
-        <h2 class="info-title">Smart Menu</h2>
-        <div class="info-version">Version 2.1.0</div>
-      </div>
       
-      <div class="info-card">
-        <div class="info-block">
-          <div class="info-block-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div>
-          <div class="info-block-content">
-            <h3>About The App</h3>
-            <p>Waiter Helper is a premium, offline-first order management solution meticulously crafted to streamline restaurant operations, ensuring speed and reliability during peak hours.</p>
-          </div>
+      <div class="premium-card about-card">
+        <div class="about-hero">
+          <img src="icons/icon-192.svg" alt="Smart Menu" class="about-logo">
+          <h1>Smart Menu</h1>
+          <p class="tagline">The Ultimate Order Management Solution</p>
+          <span class="version-pill">v2.5.0</span>
         </div>
 
-        <div class="info-block">
-          <div class="info-block-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-          <div class="info-block-content">
-            <h3>Developer</h3>
-            <div class="dev-profile">
-              <strong>Mushtaq Ahmad</strong>
-              <span>Lead Engineer & Designer</span>
+        <div class="about-content">
+          <div class="info-section">
+            <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> Mission</h3>
+            <p>Smart Menu is designed to transform the restaurant experience. By streamlining communication between waiters and the kitchen, we ensure every guest enjoys faster service and perfectly accurate orders.</p>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-feature">
+              <div class="feature-icon">⚡</div>
+              <h4>Fast</h4>
+              <p>Lightning quick order entry</p>
+            </div>
+            <div class="info-feature">
+              <div class="feature-icon">🔒</div>
+              <h4>Secure</h4>
+              <p>Offline-first data storage</p>
             </div>
           </div>
-        </div>
 
-        <div class="info-footer">
-          &copy; 2026 Mushtaq Ahmad<br>All rights reserved.
+          <div class="dev-box">
+            <div class="dev-label">Developed By</div>
+            <div class="dev-name">Mushtaq Ahmad</div>
+            <div class="dev-title">Lead Engineer & UI Designer</div>
+          </div>
+        </div>
+        
+        <div class="about-footer">
+          &copy; 2026 Smart Menu Systems. All Rights Reserved.
         </div>
       </div>
     </section>
@@ -291,31 +299,27 @@
       <div class="page-nav-header">
         <button class="btn-back" onclick="navigateTo('pageHome')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
       </div>
-      <div class="info-header">
-        <div class="info-icon-badge"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--bg-primary)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <h2 class="info-title">Privacy Policy</h2>
-        <div class="info-version">Data Protection</div>
-      </div>
 
-      <div class="info-card">
-        <div class="info-block">
-          <div class="info-block-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <div class="info-block-content">
-            <h3>Local Storage</h3>
-            <p>Your privacy is our priority. Waiter Helper is designed to operate strictly offline. All your data, including menu items and historical orders, are securely stored locally on your device.</p>
-          </div>
+      <div class="premium-card policy-card">
+        <div class="policy-header">
+          <div class="policy-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h2>Privacy Policy</h2>
+          <p>Your Data, Your Control</p>
         </div>
 
-        <div class="info-block">
-          <div class="info-block-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-          <div class="info-block-content">
-            <h3>Zero Tracking</h3>
-            <p>We do not collect, monetize, or transmit your restaurant's operational data to any third-party servers. Your business data remains entirely in your control.</p>
+        <div class="policy-body">
+          <div class="policy-section">
+            <h3>1. Local Data Storage</h3>
+            <p>Smart Menu is an <strong>offline-first</strong> application. All your order history and menu data are stored directly on your device using browser local storage. We do not transmit your data to any external servers.</p>
           </div>
-        </div>
-
-        <div class="info-footer">
-          &copy; 2026 Mushtaq Ahmad
+          <div class="policy-section">
+            <h3>2. Zero Tracking</h3>
+            <p>We do not use cookies, trackers, or any third-party analytics. Your activities within the app are strictly private to you and your device.</p>
+          </div>
+          <div class="policy-section">
+            <h3>3. Security</h3>
+            <p>Admin functions are protected by a local passcode. It is your responsibility to keep this passcode secure to prevent unauthorized changes to your menu or history.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -325,31 +329,27 @@
       <div class="page-nav-header">
         <button class="btn-back" onclick="navigateTo('pageHome')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
       </div>
-      <div class="info-header">
-        <div class="info-icon-badge"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--bg-primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
-        <h2 class="info-title">Terms of Service</h2>
-        <div class="info-version">Legal Agreement</div>
-      </div>
 
-      <div class="info-card">
-        <div class="info-block">
-          <div class="info-block-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
-          <div class="info-block-content">
-            <h3>Intellectual Property</h3>
-            <p>All rights, title, and interest in and to the Waiter Helper software, including its design and code, are the exclusive property of <strong>Mushtaq Ahmad</strong>.</p>
-          </div>
+      <div class="premium-card policy-card">
+        <div class="policy-header">
+          <div class="policy-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <h2>Terms of Service</h2>
+          <p>Usage Guidelines</p>
         </div>
 
-        <div class="info-block">
-          <div class="info-block-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-          <div class="info-block-content">
-            <h3>License Grant</h3>
-            <p>You are granted a limited, personal, non-exclusive license to use this application for standard restaurant management purposes.</p>
+        <div class="policy-body">
+          <div class="policy-section">
+            <h3>1. License to Use</h3>
+            <p>Mushtaq Ahmad grants you a non-exclusive license to use Smart Menu for your restaurant operations. You may not reverse engineer or distribute modified versions of the app without permission.</p>
           </div>
-        </div>
-
-        <div class="info-footer">
-          &copy; 2026 Mushtaq Ahmad<br>All rights reserved.
+          <div class="policy-section">
+            <h3>2. Limitation of Liability</h3>
+            <p>The app is provided "as is". While we strive for perfection, we are not responsible for any data loss caused by clearing browser cache or device failure. Please maintain regular backups of your important data.</p>
+          </div>
+          <div class="policy-section">
+            <h3>3. Updates</h3>
+            <p>We may update the app's features and design periodically to improve your experience. These updates will be applied automatically via PWA service workers.</p>
+          </div>
         </div>
       </div>
     </section>
