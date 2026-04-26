@@ -1,4 +1,18 @@
-// ===== Waiter Helper - App Logic =====
+// ===== Smart Menu - App Logic (Firebase Enabled) =====
+const firebaseConfig = {
+  apiKey: "AIzaSyD8Bnk7T8U-E6uGUD0PvWeMTj4rc_VGIRA",
+  authDomain: "smart-menu-37700.firebaseapp.com",
+  projectId: "smart-menu-37700",
+  storageBucket: "smart-menu-37700.firebasestorage.app",
+  messagingSenderId: "585189865885",
+  appId: "1:585189865885:web:06fdef55003cf8ea105774",
+  measurementId: "G-ECW2XGR6VV"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 (function () {
   'use strict';
 
@@ -212,32 +226,77 @@
     registerSW();
   }
 
-  // --- LocalStorage ---
-  const MENU_VERSION = '6'; // Bump this to force menu reset
-
+  // --- Cloud Persistence (Firebase) ---
   function loadData() {
-    const storedVersion = localStorage.getItem('wh_menu_version');
-    const storedMenu = localStorage.getItem('wh_menu');
+    console.log('📡 Connecting to Smart Menu Cloud...');
+    
+    // 1. Sync Menu Items
+    db.collection('settings').doc('menuData').onSnapshot((doc) => {
+      if (doc.exists) {
+        menuItems = doc.data().items || DEFAULT_MENU;
+      } else {
+        menuItems = [...DEFAULT_MENU];
+        db.collection('settings').doc('menuData').set({ items: menuItems });
+      }
+      renderMenu();
+      renderAdminMenu();
+    });
 
-    // Reset menu if version changed (new menu data)
-    if (storedVersion !== MENU_VERSION) {
-      menuItems = [...DEFAULT_MENU];
-      saveMenu();
-      localStorage.setItem('wh_menu_version', MENU_VERSION);
-    } else {
-      menuItems = storedMenu ? JSON.parse(storedMenu) : [...DEFAULT_MENU];
-      if (!storedMenu) saveMenu();
-    }
+    // 2. Sync Table Presets
+    db.collection('settings').doc('tableData').onSnapshot((doc) => {
+      if (doc.exists) {
+        tablePresets = doc.data().items || DEFAULT_TABLE_PRESETS;
+      } else {
+        tablePresets = DEFAULT_TABLE_PRESETS;
+        db.collection('settings').doc('tableData').set({ items: tablePresets });
+      }
+      renderTablePresets();
+      renderAdminTables();
+    });
 
-    const storedOrders = localStorage.getItem('wh_orders');
-    orders = storedOrders ? JSON.parse(storedOrders) : [];
+    // 3. Sync Orders (Global History)
+    db.collection('orders').orderBy('timestamp', 'desc').limit(50).onSnapshot((snapshot) => {
+      orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderOrder();
+      renderHistoryPreview();
+    });
 
-    const storedNextId = localStorage.getItem('wh_nextId');
-    nextMenuId = storedNextId ? parseInt(storedNextId) : 100;
+    isAdmin = localStorage.getItem('wh_is_admin') === 'true';
+    applyAdminState();
   }
 
-  function saveMenu() { localStorage.setItem('wh_menu', JSON.stringify(menuItems)); }
-  function saveOrders() { localStorage.setItem('wh_orders', JSON.stringify(orders)); }
+  // Helper to upload base64/dataURL to Firebase Storage
+  async function uploadToCloud(dataUrl, path) {
+    if (!dataUrl || !dataUrl.startsWith('data:')) return dataUrl; // Already a URL or null
+    try {
+      const ref = storage.ref().child(path);
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+      const snapshot = await ref.put(blob);
+      return await snapshot.ref.getDownloadURL();
+    } catch (e) {
+      console.error("Upload failed:", e);
+      return dataUrl;
+    }
+  }
+
+  function saveMenu() {
+    localStorage.setItem('wh_menu', JSON.stringify(menuItems));
+    db.collection('settings').doc('menuData').set({ items: menuItems });
+  }
+
+  function saveOrders() {
+    // For cloud orders, we usually add new docs rather than overwriting a list
+    // But for a simple sync, we'll keep it consistent with your current logic
+    localStorage.setItem('wh_orders', JSON.stringify(orders));
+    db.collection('settings').doc('orderHistory').set({ items: orders });
+  }
+
+  function saveTablePresets() {
+    localStorage.setItem('waiter_table_presets', JSON.stringify(tablePresets));
+    db.collection('settings').doc('tableData').set({ items: tablePresets });
+  }
+
   function saveNextId() { localStorage.setItem('wh_nextId', nextMenuId.toString()); }
 
   // --- Admin Logic ---
@@ -570,6 +629,9 @@
 
     orders.unshift(order);
     saveOrders();
+    
+    // Sync to Cloud
+    db.collection('orders').add(order).catch(e => console.error("Cloud order failed:", e));
 
     currentOrder = [];
     renderOrder();
@@ -793,7 +855,7 @@
     setTimeout(() => els.newItemName.focus(), 300);
   }
 
-  function confirmAddItem() {
+  async function confirmAddItem() {
     const name = els.newItemName.value.trim();
     const price = parseFloat(els.newItemPrice.value);
     const category = els.newItemCategory.value;
@@ -802,22 +864,40 @@
     if (!name) { showToast('⚠️ Please enter item name'); return; }
     if (isNaN(price) || price <= 0) { showToast('⚠️ Please enter a valid price'); return; }
 
-    const thumbImg = pendingGallery.find(g => g.isThumbnail);
+    showToast('⏳ Uploading to cloud...');
+
+    // Process gallery (Upload each to cloud)
+    const cloudGallery = [];
+    for (let p of pendingGallery) {
+      const cloudUrl = await uploadToCloud(p.data, `menu/${Date.now()}-${Math.random()}.jpg`);
+      cloudGallery.push({ ...p, data: cloudUrl });
+    }
+
+    const thumbImg = cloudGallery.find(g => g.isThumbnail) || cloudGallery[0];
+
     const newItem = {
       id: nextMenuId++,
-      name, price, category, description,
+      name,
+      price,
+      category,
+      description,
       image: thumbImg ? thumbImg.data : null,
-      gallery: pendingGallery.map(g => g.data)
+      gallery: cloudGallery.map(g => g.data)
     };
 
     menuItems.push(newItem);
     saveMenu();
     saveNextId();
-
     renderMenu();
     renderMenuManage();
+    
     els.addItemModal.classList.add('hidden');
-    showToast('✅ Item added!');
+    // resetAddItemForm(); // Ensure this exists or just reset variables
+    pendingGallery = [];
+    els.newItemName.value = '';
+    els.newItemPrice.value = '';
+    els.newItemDesc.value = '';
+    showToast('✅ Item added to cloud!');
   }
 
   // --- Edit Menu Item ---
@@ -878,7 +958,7 @@
     setTimeout(() => els.editItemName.focus(), 300);
   }
 
-  function confirmEditItem() {
+  async function confirmEditItem() {
     const id = parseInt(els.editItemId.value);
     const name = els.editItemName.value.trim();
     const price = parseFloat(els.editItemPrice.value);
@@ -891,14 +971,23 @@
     const item = menuItems.find((m) => m.id === id);
     if (!item) return;
 
+    showToast('⏳ Updating cloud...');
+
+    // Process gallery (Upload new images)
+    const cloudGallery = [];
+    for (let p of editPendingGallery) {
+      const cloudUrl = await uploadToCloud(p.data, `menu/${Date.now()}-${Math.random()}.jpg`);
+      cloudGallery.push({ ...p, data: cloudUrl });
+    }
+
     item.name = name;
     item.price = price;
     item.category = category;
     item.description = description;
     
-    const thumbImg = editPendingGallery.find(g => g.isThumbnail);
+    const thumbImg = cloudGallery.find(g => g.isThumbnail) || cloudGallery[0];
     item.image = thumbImg ? thumbImg.data : null;
-    item.gallery = editPendingGallery.map(g => g.data);
+    item.gallery = cloudGallery.map(g => g.data);
 
     // Also update price in current order if present
     const orderItemsToUpdate = currentOrder.filter((o) => o.id === id);
@@ -912,7 +1001,7 @@
     renderOrder();
     renderMenuManage();
     els.editItemModal.classList.add('hidden');
-    showToast('✅ Item updated!');
+    showToast('✅ Cloud updated!');
   }
 
   function deleteMenuItem(id) {
@@ -928,6 +1017,7 @@
   // --- Table Management ---
   function saveTablePresets() {
     localStorage.setItem('waiter_table_presets', JSON.stringify(tablePresets));
+    db.collection('settings').doc('tableData').set({ items: tablePresets });
   }
 
   function renderTablePresets() {
