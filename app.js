@@ -138,8 +138,10 @@
     adminLoginModal: $('#adminLoginModal'),
     adminPinInput: $('#adminPinInput'),
     // Header & Search
+    searchWrap: $('#searchWrap'),
+    searchToggleBtn: $('#searchToggleBtn'),
+    searchCloseBtn: $('#searchCloseBtn'),
     menuSearchInput: $('#menuSearchInput'),
-    headerTableBtn: $('#headerTableBtn'),
     // Table select modal
     tableSelectModal: $('#tableSelectModal'),
     closeTableModal: $('#closeTableModal'),
@@ -1222,7 +1224,22 @@
       if (e.target === els.drawerOverlay) closeDrawer();
     });
 
-    // Search Input
+    // Search Interaction
+    if (els.searchToggleBtn) {
+      els.searchToggleBtn.onclick = () => {
+        els.searchWrap.classList.add('search-active');
+        setTimeout(() => els.menuSearchInput.focus(), 100);
+      };
+    }
+
+    if (els.searchCloseBtn) {
+      els.searchCloseBtn.onclick = () => {
+        els.searchWrap.classList.remove('search-active');
+        els.menuSearchInput.value = '';
+        renderMenu();
+      };
+    }
+
     if (els.menuSearchInput) {
       els.menuSearchInput.oninput = () => renderMenu();
     }
