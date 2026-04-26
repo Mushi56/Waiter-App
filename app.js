@@ -137,9 +137,13 @@
     // Admin Modal
     adminLoginModal: $('#adminLoginModal'),
     adminPinInput: $('#adminPinInput'),
-    // Table select
-    tableNumberInput: $('#tableNumberInput'),
-    tablePresetsList: $('#tablePresetsList'),
+    // Table select modal
+    tableSelectModal: $('#tableSelectModal'),
+    openTableModalBtn: $('#openTableModalBtn'),
+    closeTableModal: $('#closeTableModal'),
+    tableGridPresets: $('#tableGridPresets'),
+    customTableInput: $('#customTableInput'),
+    confirmTableBtn: $('#confirmTableBtn'),
     activeTableBanner: $('#activeTableBanner'),
     tableManageList: $('#tableManageList'),
     manageTableGroup: $('#manageTableGroup'),
@@ -956,14 +960,21 @@
   }
 
   function renderTablePresets() {
-    if (!els.tablePresetsList) return;
+    if (!els.tableGridPresets) return;
     let html = '';
     Object.keys(tablePresets).forEach((group) => {
       tablePresets[group].forEach((table) => {
-        html += `<option value="${table}">${group} Group</option>`;
+        html += `<button class="table-btn" data-table="${table}">${table}</button>`;
       });
     });
-    els.tablePresetsList.innerHTML = html;
+    els.tableGridPresets.innerHTML = html || '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No tables added yet. Add them in Management.</div>';
+
+    // Bind clicks to the newly created table buttons
+    els.tableGridPresets.querySelectorAll('.table-btn').forEach(btn => {
+      btn.onclick = () => {
+        setTable(btn.dataset.table);
+      };
+    });
   }
 
   function renderTableManageList() {
@@ -1074,29 +1085,43 @@
   }
 
   // --- Table Number ---
-  function setTable() {
-    const val = els.tableNumberInput.value.trim().toUpperCase();
-    if (!val) { showToast('⚠️ Enter or select a table number'); return; }
+  function setTable(val) {
+    const tableVal = val || (els.customTableInput ? els.customTableInput.value.trim() : '');
+    if (!tableVal) {
+      showToast('⚠️ Please enter or select a table number');
+      return;
+    }
 
-    // Automatically add to Others if not in presets
-    let found = false;
-    Object.values(tablePresets).forEach(arr => { if (arr.includes(val)) found = true; });
-    if (!found) addTableToPresets(val, 'Others');
+    tableNumber = tableVal.toUpperCase();
+    localStorage.setItem('waiter_table_number', tableNumber);
 
-    tableNumber = val;
-    els.activeTableNum.textContent = val;
-    els.tableSection.classList.add('hidden');
-    els.activeTableBanner.classList.remove('hidden');
-    showToast(`Table ${val} selected`);
-    hapticFeedback();
+    // Update Banner
+    if (els.activeTableBanner) {
+      els.activeTableBanner.classList.remove('hidden');
+      const tableIdEl = els.activeTableBanner.querySelector('.table-id');
+      if (tableIdEl) tableIdEl.textContent = tableNumber;
+    }
+
+    // Hide selection button
+    if (els.tableSection) els.tableSection.classList.add('hidden');
+
+    // Close Modal
+    if (els.tableSelectModal) els.tableSelectModal.classList.add('hidden');
+    if (els.customTableInput) els.customTableInput.value = '';
+
+    showToast(`Table ${tableNumber} Set`);
   }
 
   function changeTable() {
-    els.tableSection.classList.remove('hidden');
-    els.activeTableBanner.classList.add('hidden');
     tableNumber = '';
-    els.tableNumberInput.value = '';
-    els.tableNumberInput.focus();
+    localStorage.removeItem('waiter_table_number');
+    if (els.activeTableBanner) els.activeTableBanner.classList.add('hidden');
+    if (els.tableSection) {
+      els.tableSection.classList.remove('hidden');
+      // If we are changing, open the modal automatically
+      if (els.tableSelectModal) els.tableSelectModal.classList.remove('hidden');
+    }
+    showToast('Table cleared');
   }
 
   // --- Toast ---
@@ -1185,10 +1210,33 @@
       if (e.target === els.drawerOverlay) closeDrawer();
     });
 
-    // Set table
-    $('#setTableBtn').addEventListener('click', setTable);
-    els.tableNumberInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') setTable(); });
-    $('#changeTableBtn').addEventListener('click', changeTable);
+    // Table Selection Modal
+    if (els.openTableModalBtn) {
+      els.openTableModalBtn.onclick = () => {
+        els.tableSelectModal.classList.remove('hidden');
+        renderTablePresets();
+      };
+    }
+
+    if (els.closeTableModal) {
+      els.closeTableModal.onclick = () => {
+        els.tableSelectModal.classList.add('hidden');
+      };
+    }
+
+    if (els.confirmTableBtn) {
+      els.confirmTableBtn.onclick = () => setTable();
+    }
+
+    if (els.customTableInput) {
+      els.customTableInput.onkeydown = (e) => {
+        if (e.key === 'Enter') setTable();
+      };
+    }
+
+    if (els.activeTableBanner) {
+      els.activeTableBanner.onclick = changeTable;
+    }
 
     // Table management page
     els.manageAddTableBtn.addEventListener('click', () => {

@@ -457,6 +457,128 @@ button {
   margin-right: 12px;
 }
 
+/* Table Selection Action Button */
+.table-action-container {
+  margin-bottom: 24px;
+}
+
+.btn-select-table-main {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  padding: 16px 20px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: var(--shadow);
+}
+
+.btn-select-table-main:active {
+  transform: scale(0.98);
+  background: var(--bg-tertiary);
+  border-color: var(--accent);
+}
+
+.btn-select-table-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(231, 160, 30, 0.1);
+  color: var(--accent);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-select-table-main span {
+  flex: 1;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.btn-select-table-main svg:last-child {
+  color: var(--text-muted);
+}
+
+/* Table Modal & Grid */
+.table-grid-presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.table-btn {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 14px 8px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.table-btn:active {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.custom-table-input-wrap {
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+
+.custom-table-input-wrap label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.input-with-btn {
+  display: flex;
+  gap: 12px;
+}
+
+.input-with-btn input {
+  flex: 1;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+}
+
+.input-with-btn input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.btn-confirm-table {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  padding: 0 24px;
+  border-radius: var(--radius-md);
+  font-weight: 800;
+  cursor: pointer;
+}
+
 .table-picker-input-wrapper {
   flex: 1;
 }
