@@ -137,9 +137,11 @@
     // Admin Modal
     adminLoginModal: $('#adminLoginModal'),
     adminPinInput: $('#adminPinInput'),
+    // Header & Search
+    menuSearchInput: $('#menuSearchInput'),
+    headerTableBtn: $('#headerTableBtn'),
     // Table select modal
     tableSelectModal: $('#tableSelectModal'),
-    openTableModalBtn: $('#openTableModalBtn'),
     closeTableModal: $('#closeTableModal'),
     tableGridPresets: $('#tableGridPresets'),
     customTableInput: $('#customTableInput'),
@@ -319,11 +321,21 @@
 
   // --- Render Menu Grid ---
   function renderMenu() {
+    const query = els.menuSearchInput ? els.menuSearchInput.value.toLowerCase().trim() : '';
+
     let filtered = activeCategory === 'All'
       ? [...menuItems]
       : menuItems.filter((i) => i.category === activeCategory);
 
-    if (activeCategory === 'All') {
+    // Apply search filter
+    if (query) {
+      filtered = filtered.filter(i => 
+        i.name.toLowerCase().includes(query) || 
+        (i.desc && i.desc.toLowerCase().includes(query))
+      );
+    }
+
+    if (activeCategory === 'All' && !query) {
       const categoryOrder = [
         'Main Course', 'Burgers', 'Pasta', 'Salted Egg', 'Wraps',
         'Snacks', 'Mocktails', 'Coffee', 'Non Coffee', 'Desserts'
@@ -1210,9 +1222,14 @@
       if (e.target === els.drawerOverlay) closeDrawer();
     });
 
+    // Search Input
+    if (els.menuSearchInput) {
+      els.menuSearchInput.oninput = () => renderMenu();
+    }
+
     // Table Selection Modal
-    if (els.openTableModalBtn) {
-      els.openTableModalBtn.onclick = () => {
+    if (els.headerTableBtn) {
+      els.headerTableBtn.onclick = () => {
         els.tableSelectModal.classList.remove('hidden');
         renderTablePresets();
       };
