@@ -211,6 +211,23 @@
     renderTablePresets();
     bindEvents();
     registerSW();
+
+    // Handle initial hash or back button
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && document.getElementById(hash)) {
+        navigateTo(hash, false);
+      } else {
+        navigateTo('pageHome', false);
+      }
+    });
+
+    if (window.location.hash) {
+      const hash = window.location.hash.replace('#', '');
+      if (document.getElementById(hash)) {
+        navigateTo(hash, false);
+      }
+    }
   }
 
   // --- LocalStorage ---
@@ -1018,11 +1035,10 @@
 
 
   // --- Navigation ---
-  function navigateTo(pageId, push = true) {
+  function navigateTo(pageId, updateHash = true) {
     $$('.page').forEach((p) => p.classList.remove('active'));
     const target = $(`#${pageId}`);
-    if (!target) return;
-    target.classList.add('active');
+    if (target) target.classList.add('active');
     
     $$('.nav-btn, .drawer-item').forEach((b) => b.classList.remove('active'));
     $$(`[data-page="${pageId}"]`).forEach(el => el.classList.add('active'));
@@ -1031,82 +1047,23 @@
     if (pageId === 'pageTables') renderTableManageList();
     if (pageId === 'pageMenu') renderMenuManage();
     if (pageId === 'pageHistory') renderHistoryPage();
+    
     if (pageId === 'pageAbout' || pageId === 'pagePrivacy' || pageId === 'pageTerms') {
       if (els.bottomNav) els.bottomNav.classList.add('hidden');
     } else {
       if (els.bottomNav) els.bottomNav.classList.remove('hidden');
     }
 
+    if (updateHash) {
+      window.location.hash = pageId;
+    }
+
     closeDrawer();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    if (push) {
-      history.pushState({ page: pageId }, '', `#${pageId}`);
-    }
   }
 
-  // Helper for opening modals with history support
-  function openModal(el) {
-    if (!el) return;
-    el.classList.remove('hidden');
-    // Push a dummy state so back button closes modal
-    const currentPage = $('.page.active')?.id || 'pageHome';
-    history.pushState({ page: currentPage, isModal: true }, '', window.location.hash || `#${currentPage}`);
-  }
-
-  // Helper for closing modals (triggers back if not from popstate)
-  function closeModal(el, fromPopState = false) {
-    if (!el || el.classList.contains('hidden')) return;
-    if (fromPopState) {
-      el.classList.add('hidden');
-    } else {
-      history.back(); // Let popstate handle the actual hiding
-    }
-  }
-
-  function handlePopState(e) {
-    // If we're going back and a modal is open, close it
-    const modals = [
-      els.orderModalOverlay,
-      els.itemDetailOverlay,
-      els.addItemModal,
-      els.editItemModal,
-      els.orderDetailModal,
-      els.addonModal,
-      els.adminLoginModal
-    ];
-    
-    const openModalEl = modals.find(m => m && !m.classList.contains('hidden'));
-
-    if (openModalEl) {
-      openModalEl.classList.add('hidden');
-      return; 
-    }
-
-    if (e.state && e.state.page) {
-      navigateTo(e.state.page, false);
-    } else {
-      navigateTo('pageHome', false);
-    }
-  }
-
-  function closeAllModals(doBack = true) {
-    const modals = [
-      els.orderModalOverlay,
-      els.itemDetailOverlay,
-      els.addItemModal,
-      els.editItemModal,
-      els.orderDetailModal,
-      els.addonModal,
-      els.adminLoginModal
-    ];
-    
-    modals.forEach(m => {
-      if (m && !m.classList.contains('hidden')) {
-        closeModal(m, !doBack);
-      }
-    });
-  }
+  // Expose to window for inline onclicks
+  window.navigateTo = navigateTo;
 
   function toggleDrawer() {
     els.drawerOverlay.classList.toggle('hidden');
@@ -1193,14 +1150,14 @@
 
     els.itemDetailAddBtn.onclick = () => {
       addToOrder(item.id);
-      closeModal(els.itemDetailOverlay);
+      els.itemDetailOverlay.classList.add('hidden');
     };
 
-    openModal(els.itemDetailOverlay);
+    els.itemDetailOverlay.classList.remove('hidden');
   }
 
   function closeItemDetail() {
-    closeModal(els.itemDetailOverlay);
+    els.itemDetailOverlay.classList.add('hidden');
   }
 
   // --- Event Binding ---
@@ -1212,8 +1169,8 @@
     }
     
     if (document.getElementById('closeAdminModal')) {
-      document.getElementById('closeAdminModal').addEventListener('click', () => closeModal(els.adminLoginModal));
-      document.getElementById('cancelAdminBtn').addEventListener('click', () => closeModal(els.adminLoginModal));
+      document.getElementById('closeAdminModal').addEventListener('click', () => els.adminLoginModal.classList.add('hidden'));
+      document.getElementById('cancelAdminBtn').addEventListener('click', () => els.adminLoginModal.classList.add('hidden'));
       document.getElementById('confirmAdminBtn').addEventListener('click', confirmAdminPin);
       els.adminPinInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') confirmAdminPin(); });
     }
@@ -1264,19 +1221,19 @@
     // Floating Cart & Bottom Sheet
     if (els.floatingCartBtn) {
       els.floatingCartBtn.addEventListener('click', () => {
-        openModal(els.orderModalOverlay);
+        els.orderModalOverlay.classList.remove('hidden');
       });
     }
     if (els.orderModalOverlay) {
       els.orderModalOverlay.addEventListener('click', (e) => {
         if (e.target === els.orderModalOverlay) {
-          closeModal(els.orderModalOverlay);
+          els.orderModalOverlay.classList.add('hidden');
         }
       });
     }
     if (els.closeOrderModal) {
       els.closeOrderModal.addEventListener('click', () => {
-        closeModal(els.orderModalOverlay);
+        els.orderModalOverlay.classList.add('hidden');
       });
     }
 
@@ -1328,10 +1285,10 @@
     }
 
     // Add item modal
-    $('#addItemBtn').addEventListener('click', () => openModal(els.addItemModal));
-    $('#addMenuItemFull').addEventListener('click', () => openModal(els.addItemModal));
-    $('#closeAddItemModal').addEventListener('click', () => closeModal(els.addItemModal));
-    $('#cancelAddItem').addEventListener('click', () => closeModal(els.addItemModal));
+    $('#addItemBtn').addEventListener('click', openAddItemModal);
+    $('#addMenuItemFull').addEventListener('click', openAddItemModal);
+    $('#closeAddItemModal').addEventListener('click', () => els.addItemModal.classList.add('hidden'));
+    $('#cancelAddItem').addEventListener('click', () => els.addItemModal.classList.add('hidden'));
     $('#confirmAddItem').addEventListener('click', confirmAddItem);
 
     // (Image upload logic moved to top-level event listeners)
@@ -1351,55 +1308,48 @@
       }
 
       const card = e.target.closest('.history-card');
-      if (card) {
-        showOrderDetail(parseInt(card.dataset.orderId));
-        openModal(els.orderDetailModal);
-      }
+      if (card) showOrderDetail(parseInt(card.dataset.orderId));
     });
 
     // View all history
     $('#viewAllHistoryBtn').addEventListener('click', () => navigateTo('pageHistory'));
 
     // Order detail modal close
-    $('#closeOrderDetail').addEventListener('click', () => closeModal(els.orderDetailModal));
-    $('#closeOrderDetailBtn').addEventListener('click', () => closeModal(els.orderDetailModal));
+    $('#closeOrderDetail').addEventListener('click', () => els.orderDetailModal.classList.add('hidden'));
+    $('#closeOrderDetailBtn').addEventListener('click', () => els.orderDetailModal.classList.add('hidden'));
 
     // Close modals on backdrop
     els.addItemModal.addEventListener('click', (e) => {
-      if (e.target === els.addItemModal) closeModal(els.addItemModal);
+      if (e.target === els.addItemModal) els.addItemModal.classList.add('hidden');
     });
     els.orderDetailModal.addEventListener('click', (e) => {
-      if (e.target === els.orderDetailModal) closeModal(els.orderDetailModal);
+      if (e.target === els.orderDetailModal) els.orderDetailModal.classList.add('hidden');
     });
 
     // Menu manage edit + delete (delegated)
     els.menuManageGrid.addEventListener('click', (e) => {
       const editBtn = e.target.closest('.manage-card-edit');
-      if (editBtn) { 
-        openEditItemModal(parseInt(editBtn.dataset.editId)); 
-        openModal(els.editItemModal);
-        return; 
-      }
+      if (editBtn) { openEditItemModal(parseInt(editBtn.dataset.editId)); return; }
       const delBtn = e.target.closest('.manage-card-delete');
       if (delBtn) deleteMenuItem(parseInt(delBtn.dataset.delId));
     });
 
     // Edit item modal
-    $('#closeEditItemModal').addEventListener('click', () => closeModal(els.editItemModal));
-    $('#cancelEditItem').addEventListener('click', () => closeModal(els.editItemModal));
+    $('#closeEditItemModal').addEventListener('click', () => els.editItemModal.classList.add('hidden'));
+    $('#cancelEditItem').addEventListener('click', () => els.editItemModal.classList.add('hidden'));
     $('#confirmEditItem').addEventListener('click', confirmEditItem);
     els.editItemModal.addEventListener('click', (e) => {
-      if (e.target === els.editItemModal) closeModal(els.editItemModal);
+      if (e.target === els.editItemModal) els.editItemModal.classList.add('hidden');
     });
 
     // (Edit image upload logic moved to top-level event listeners)
 
     // Addon modal
-    $('#closeAddonModal').addEventListener('click', () => closeModal(els.addonModal));
-    $('#cancelAddonBtn').addEventListener('click', () => closeModal(els.addonModal));
+    $('#closeAddonModal').addEventListener('click', () => els.addonModal.classList.add('hidden'));
+    $('#cancelAddonBtn').addEventListener('click', () => els.addonModal.classList.add('hidden'));
     $('#confirmAddonBtn').addEventListener('click', confirmAddons);
     els.addonModal.addEventListener('click', (e) => {
-      if (e.target === els.addonModal) closeModal(els.addonModal);
+      if (e.target === els.addonModal) els.addonModal.classList.add('hidden');
     });
 
     // Sidebar toggle (simple)
@@ -1414,21 +1364,5 @@
   }
 
   // --- Boot ---
-  function init() {
-    loadMenu();
-    loadOrders();
-    loadTablePresets();
-    renderMenu();
-    renderTablePresets();
-    renderHistoryPreview();
-    bindEvents();
-    registerSW();
-
-    // Set initial history state
-    const currentPage = $('.page.active')?.id || 'pageHome';
-    history.replaceState({ page: currentPage }, '', `#${currentPage}`);
-    window.addEventListener('popstate', handlePopState);
-  }
-
   document.addEventListener('DOMContentLoaded', init);
 })();
