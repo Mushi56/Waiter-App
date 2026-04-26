@@ -412,6 +412,26 @@
     </div>
   </div>
 
+  <!-- ===== ADMIN LOGIN MODAL ===== -->
+  <div class="modal-overlay hidden" id="adminLoginModal">
+    <div class="modal" style="max-width: 320px;">
+      <div class="modal-header">
+        <h3>Admin Login</h3>
+        <button class="modal-close" id="closeAdminModal" title="Close">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <p style="margin-bottom: 16px; color: var(--text-muted); font-size: 0.85rem;">Enter passcode to unlock management.</p>
+        <div class="form-group">
+          <input type="password" id="adminPinInput" placeholder="•••••" style="text-align: center; font-size: 1.8rem; letter-spacing: 12px; font-weight: 800; padding: 12px;" inputmode="numeric">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="cancelAdminBtn">Cancel</button>
+        <button class="btn-accent" id="confirmAdminBtn">Unlock</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ===== ORDER DETAIL MODAL ===== -->
   <div class="modal-overlay hidden" id="orderDetailModal">
     <div class="modal">

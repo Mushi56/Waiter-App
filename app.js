@@ -267,7 +267,11 @@
       if (activePage && (activePage.id === 'pageMenu' || activePage.id === 'pageTables')) {
         navigateTo('pageHome');
       }
+      if (typeof closeDrawer === 'function') closeDrawer();
     } else {
+      // Close drawer immediately so it doesn't block the modal
+      if (typeof closeDrawer === 'function') closeDrawer();
+      
       // Open custom modal instead of prompt
       if (els.adminPinInput) els.adminPinInput.value = '';
       if (els.adminLoginModal) els.adminLoginModal.classList.remove('hidden');
