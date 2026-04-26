@@ -109,6 +109,7 @@
     cartBadge: $('#cartBadge'),
     cartTotalBtn: $('#cartTotalBtn'),
     closeOrderModal: $('#closeOrderModal'),
+    orderNote: $('#orderNote'),
 
     addItemModal: $('#addItemModal'),
     orderDetailModal: $('#orderDetailModal'),
@@ -567,6 +568,7 @@
       id: Date.now(),
       table: tableNumber,
       items: [...currentOrder],
+      note: els.orderNote ? els.orderNote.value.trim() : '',
       totalQty,
       totalPrice,
       timestamp: new Date().toISOString(),
@@ -576,6 +578,7 @@
     saveOrders();
 
     currentOrder = [];
+    if (els.orderNote) els.orderNote.value = '';
     renderOrder();
     renderMenu();
     renderHistoryPreview();
@@ -646,6 +649,9 @@
     const timeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
 
     let html = `<div class="detail-row"><span class="detail-label">Date</span><span>${dateStr} • ${timeStr}</span></div>`;
+    if (order.note) {
+      html += `<div class="detail-row" style="background:rgba(231,160,30,0.08);padding:10px;border-radius:var(--radius-sm);margin:8px 0;"><span class="detail-label" style="color:var(--accent)">General Note</span><span style="font-style:italic;">${order.note}</span></div>`;
+    }
     html += `<div class="detail-row" style="font-weight:600;margin-top:8px"><span>Item</span><span>Qty × Price</span></div>`;
     order.items.forEach((item) => {
       let modText = item.modifiers && item.modifiers.length > 0 ? `<br><small style="color:var(--text-secondary);font-size:0.75rem;">+ ${item.modifiers.map(m => m.name).join(', ')}</small>` : '';
@@ -673,6 +679,7 @@
     els.tableNumberInput.value = tableNumber;
 
     currentOrder = JSON.parse(JSON.stringify(order.items)); // Deep copy
+    if (els.orderNote) els.orderNote.value = order.note || '';
     
     // Remove old order from history
     orders = orders.filter(o => o.id !== orderId);
@@ -1242,6 +1249,7 @@
     $('#clearAllBtn').addEventListener('click', () => {
       if (currentOrder.length === 0) return;
       currentOrder = [];
+      if (els.orderNote) els.orderNote.value = '';
       renderOrder();
       renderMenu();
       showToast('Order cleared');
