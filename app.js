@@ -102,7 +102,7 @@
     menuManageGrid: $('#menuManageGrid'),
     toast: $('#toast'),
     toastMsg: $('#toastMsg'),
-    
+
     // Order bottom sheet & cart
     floatingCartBtn: $('#floatingCartBtn'),
     orderModalOverlay: $('#orderModalOverlay'),
@@ -263,15 +263,15 @@
     const adminEls = $$('.admin-only');
     const badge = document.querySelector('.drawer-badge');
     const loginBtn = document.getElementById('adminLoginBtn');
-    
+
     if (isAdmin) {
       adminEls.forEach(el => el.classList.remove('hidden'));
-      if(badge) badge.textContent = 'Admin';
-      if(loginBtn) loginBtn.textContent = 'Logout Admin';
+      if (badge) badge.textContent = 'Admin';
+      if (loginBtn) loginBtn.textContent = 'Logout Admin';
     } else {
       adminEls.forEach(el => el.classList.add('hidden'));
-      if(badge) badge.textContent = 'Waiter';
-      if(loginBtn) loginBtn.textContent = 'Admin Login';
+      if (badge) badge.textContent = 'Waiter';
+      if (loginBtn) loginBtn.textContent = 'Admin Login';
     }
   }
 
@@ -289,7 +289,7 @@
     } else {
       // Close drawer immediately so it doesn't block the modal
       if (typeof closeDrawer === 'function') closeDrawer();
-      
+
       // Open custom modal instead of prompt
       if (els.adminPinInput) els.adminPinInput.value = '';
       if (els.adminLoginModal) els.adminLoginModal.classList.remove('hidden');
@@ -321,7 +321,7 @@
 
     if (activeCategory === 'All') {
       const categoryOrder = [
-        'Main Course', 'Burgers', 'Pasta', 'Salted Egg', 'Wraps', 
+        'Main Course', 'Burgers', 'Pasta', 'Salted Egg', 'Wraps',
         'Snacks', 'Mocktails', 'Coffee', 'Non Coffee', 'Desserts'
       ];
       filtered.sort((a, b) => {
@@ -339,9 +339,9 @@
         <div class="menu-card" data-id="${item.id}">
           <div class="menu-card-qty ${qty > 0 ? 'show' : ''}">${qty}</div>
           ${item.image
-            ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy">`
-            : `<div class="menu-card-placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`
-          }
+          ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy">`
+          : `<div class="menu-card-placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`
+        }
           <div class="menu-card-info">
             <div class="menu-card-name">${item.name}</div>
             <div class="menu-card-bottom">
@@ -373,26 +373,26 @@
       els.orderItems.innerHTML = '<div class="order-empty">No items added yet. Tap menu items to start.</div>';
       els.totalItemsCount.textContent = '0';
       els.totalAmount.textContent = 'RM 0.00';
-      if(els.cartBadge) els.cartBadge.textContent = '0';
-      if(els.cartTotalBtn) els.cartTotalBtn.textContent = 'RM 0.00';
-      if(els.floatingCartBtn) els.floatingCartBtn.classList.add('hidden');
-      if(els.orderModalOverlay) els.orderModalOverlay.classList.add('hidden');
+      if (els.cartBadge) els.cartBadge.textContent = '0';
+      if (els.cartTotalBtn) els.cartTotalBtn.textContent = 'RM 0.00';
+      if (els.floatingCartBtn) els.floatingCartBtn.classList.add('hidden');
+      if (els.orderModalOverlay) els.orderModalOverlay.classList.add('hidden');
       return;
     }
-    
-    if(els.floatingCartBtn) els.floatingCartBtn.classList.remove('hidden');
+
+    if (els.floatingCartBtn) els.floatingCartBtn.classList.remove('hidden');
 
     let totalQty = 0, totalPrice = 0;
     els.orderItems.innerHTML = currentOrder.map((item) => {
       totalQty += item.qty;
       totalPrice += item.price * item.qty;
-      
+
       const menuItem = menuItems.find(m => m.id === item.id);
       const category = item.category || (menuItem ? menuItem.category : '');
       const canEditAddons = ADDONS_DATA[category];
-      
-      const modText = item.modifiers && item.modifiers.length > 0 ? `<br><span style="color:var(--text-secondary);font-size:0.75rem;">+ ${item.modifiers.map(m=>m.name).join(', ')}</span>` : '';
-      
+
+      const modText = item.modifiers && item.modifiers.length > 0 ? `<br><span style="color:var(--text-secondary);font-size:0.75rem;">+ ${item.modifiers.map(m => m.name).join(', ')}</span>` : '';
+
       const editAddonBtn = canEditAddons ? `
         <button class="order-item-edit-addons" data-cart-id="${item.cartItemId}" data-action="edit-addons" title="Edit Add-ons">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -421,8 +421,8 @@
 
     els.totalItemsCount.textContent = totalQty;
     els.totalAmount.textContent = `RM ${totalPrice.toFixed(2)}`;
-    if(els.cartBadge) els.cartBadge.textContent = totalQty;
-    if(els.cartTotalBtn) els.cartTotalBtn.textContent = `RM ${totalPrice.toFixed(2)}`;
+    if (els.cartBadge) els.cartBadge.textContent = totalQty;
+    if (els.cartTotalBtn) els.cartTotalBtn.textContent = `RM ${totalPrice.toFixed(2)}`;
   }
 
   // --- Add to Order ---
@@ -461,7 +461,7 @@
   function openEditAddonModal(cartItemId) {
     const cartItem = currentOrder.find(o => o.cartItemId === cartItemId);
     if (!cartItem) return;
-    
+
     const menuItem = menuItems.find(m => m.id === cartItem.id);
     if (!menuItem) return;
 
@@ -474,7 +474,7 @@
     const addons = ADDONS_DATA[pendingAddonItem.category];
     const checkboxes = els.addonList.querySelectorAll('input[type="checkbox"]:checked');
     const selectedAddons = Array.from(checkboxes).map(cb => addons[parseInt(cb.value)]);
-    
+
     if (editingCartItemId) {
       updateCartItemModifiers(editingCartItemId, selectedAddons);
     } else {
@@ -596,7 +596,7 @@
     renderOrder();
     renderMenu();
     renderHistoryPreview();
-    if(els.orderModalOverlay) els.orderModalOverlay.classList.add('hidden');
+    if (els.orderModalOverlay) els.orderModalOverlay.classList.add('hidden');
     showToast('✅ Order saved successfully!');
   }
 
@@ -693,7 +693,7 @@
 
     currentOrder = JSON.parse(JSON.stringify(order.items)); // Deep copy
     if (els.orderNote) els.orderNote.value = order.note || '';
-    
+
     // Remove old order from history
     orders = orders.filter(o => o.id !== orderId);
     saveOrders();
@@ -776,7 +776,7 @@
 
   els.newItemImages.addEventListener('change', async (e) => {
     for (let file of e.target.files) {
-      if(!file.type.startsWith('image/')) continue;
+      if (!file.type.startsWith('image/')) continue;
       const croppedData = await autoCropSquare(file);
       pendingGallery.push({ id: Date.now() + Math.random(), data: croppedData, isThumbnail: pendingGallery.length === 0 });
     }
@@ -795,7 +795,7 @@
 
   window.setNewThumbnail = (index) => {
     pendingGallery.forEach(img => img.isThumbnail = false);
-    if(pendingGallery[index]) pendingGallery[index].isThumbnail = true;
+    if (pendingGallery[index]) pendingGallery[index].isThumbnail = true;
     renderNewGallery();
   };
 
@@ -850,7 +850,7 @@
 
   els.editItemImages.addEventListener('change', async (e) => {
     for (let file of e.target.files) {
-      if(!file.type.startsWith('image/')) continue;
+      if (!file.type.startsWith('image/')) continue;
       const croppedData = await autoCropSquare(file);
       editPendingGallery.push({ id: Date.now() + Math.random(), data: croppedData, isThumbnail: editPendingGallery.length === 0 });
     }
@@ -869,7 +869,7 @@
 
   window.setEditThumbnail = (index) => {
     editPendingGallery.forEach(img => img.isThumbnail = false);
-    if(editPendingGallery[index]) editPendingGallery[index].isThumbnail = true;
+    if (editPendingGallery[index]) editPendingGallery[index].isThumbnail = true;
     renderEditGallery();
   };
 
@@ -920,7 +920,7 @@
     item.price = price;
     item.category = category;
     item.description = description;
-    
+
     const thumbImg = editPendingGallery.find(g => g.isThumbnail);
     item.image = thumbImg ? thumbImg.data : null;
     item.gallery = editPendingGallery.map(g => g.data);
@@ -994,22 +994,22 @@
   function addTableToPresets(val, specificGroup = null) {
     if (!val) return;
     val = val.trim().toUpperCase();
-    
+
     let added = false;
     let group = specificGroup;
-    
+
     if (!group) {
       const prefix = val.charAt(0);
       group = tablePresets[prefix] ? prefix : 'Others';
     }
-    
+
     if (!tablePresets[group].includes(val)) {
       tablePresets[group].push(val);
       // Sort if numeric-ish
-      tablePresets[group].sort((a,b) => a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'}));
+      tablePresets[group].sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
       added = true;
     }
-    
+
     if (added) {
       saveTablePresets();
       renderTablePresets();
@@ -1039,7 +1039,7 @@
     $$('.page').forEach((p) => p.classList.remove('active'));
     const target = $(`#${pageId}`);
     if (target) target.classList.add('active');
-    
+
     $$('.nav-btn, .drawer-item').forEach((b) => b.classList.remove('active'));
     $$(`[data-page="${pageId}"]`).forEach(el => el.classList.add('active'));
 
@@ -1047,7 +1047,7 @@
     if (pageId === 'pageTables') renderTableManageList();
     if (pageId === 'pageMenu') renderMenuManage();
     if (pageId === 'pageHistory') renderHistoryPage();
-    
+
     if (pageId === 'pageAbout' || pageId === 'pagePrivacy' || pageId === 'pageTerms') {
       if (els.bottomNav) els.bottomNav.classList.add('hidden');
     } else {
@@ -1077,7 +1077,7 @@
   function setTable() {
     const val = els.tableNumberInput.value.trim().toUpperCase();
     if (!val) { showToast('⚠️ Enter or select a table number'); return; }
-    
+
     // Automatically add to Others if not in presets
     let found = false;
     Object.values(tablePresets).forEach(arr => { if (arr.includes(val)) found = true; });
@@ -1118,9 +1118,9 @@
 
     let galleryHtml = '';
     let dotsHtml = '';
-    
+
     const images = item.gallery && item.gallery.length > 0 ? item.gallery : (item.image ? [item.image] : []);
-    
+
     if (images.length > 0) {
       images.forEach((imgSrc, idx) => {
         galleryHtml += `<img src="${imgSrc}" alt="${item.name}">`;
@@ -1136,7 +1136,7 @@
     els.itemDetailName.textContent = item.name;
     els.itemDetailDesc.textContent = item.description || 'No description available.';
     els.itemDetailPrice.textContent = `RM ${item.price.toFixed(2)}`;
-    
+
     // Carousel scroll listener to update dots
     els.itemDetailGallery.onscroll = () => {
       const scrollPos = els.itemDetailGallery.scrollLeft;
@@ -1167,7 +1167,7 @@
     if (adminLoginBtn) {
       adminLoginBtn.addEventListener('click', toggleAdminLogin);
     }
-    
+
     if (document.getElementById('closeAdminModal')) {
       document.getElementById('closeAdminModal').addEventListener('click', () => els.adminLoginModal.classList.add('hidden'));
       document.getElementById('cancelAdminBtn').addEventListener('click', () => els.adminLoginModal.classList.add('hidden'));
@@ -1359,7 +1359,7 @@
   // --- Service Worker ---
   function registerSW() {
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
+      navigator.serviceWorker.register('./sw.js').catch(() => { });
     }
   }
 

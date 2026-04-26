@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -17,562 +18,692 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <div class="app-container">
 
-  <!-- ===== HEADER ===== -->
-  <header class="app-header" id="appHeader">
-    <div class="header-title">
-      <div class="header-logo-wrap">
-        <img src="icons/icon-192.svg" alt="Logo" class="header-logo">
-        <div>
-          <h1>SMART <span class="accent">MENU</span></h1>
-          <p class="header-subtitle">Take Order, Save Time</p>
-        </div>
-      </div>
-    </div>
-    <div class="header-actions">
-      <button class="header-btn" id="menuToggleBtn" aria-label="Menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-    </div>
-  </header>
-
-  <!-- ===== SIDE DRAWER ===== -->
-  <div class="drawer-overlay hidden" id="drawerOverlay">
-    <aside class="side-drawer" id="sideDrawer">
-      <div class="drawer-header">
-        <div class="drawer-header-bg"></div>
-        <div class="drawer-branding">
-          <div class="drawer-avatar">
-            <img src="icons/icon-192.svg" alt="Smart Menu Logo">
-          </div>
-          <div class="drawer-info">
-            <h3>Smart Menu</h3>
-            <span class="drawer-badge">Admin</span>
+    <!-- ===== HEADER ===== -->
+    <header class="app-header" id="appHeader">
+      <div class="header-title">
+        <div class="header-logo-wrap">
+          <img src="icons/icon-192.svg" alt="Logo" class="header-logo">
+          <div>
+            <h1>SMART <span class="accent">MENU</span></h1>
+            <p class="header-subtitle">Take Order, Save Time</p>
           </div>
         </div>
       </div>
-      <div class="drawer-menu">
-
-        <div class="drawer-section-label admin-only hidden">Management</div>
-        <button class="drawer-item admin-only hidden" data-page="pageTables">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="12" rx="2"/><line x1="7" y1="19" x2="7" y2="15"/><line x1="17" y1="19" x2="17" y2="15"/></svg>
-          Manage Tables
-        </button>
-        <button class="drawer-item admin-only hidden" data-page="pageMenu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="1" fill="currentColor"/><circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="18" r="1" fill="currentColor"/></svg>
-          Manage Menu
-        </button>
-
-        <div class="drawer-section-label">Information</div>
-        <button class="drawer-item" data-page="pageAbout">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          About Waiter Helper
-        </button>
-        <button class="drawer-item" data-page="pagePrivacy">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Privacy Policy
-        </button>
-        <button class="drawer-item" data-page="pageTerms">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          Terms of Service
+      <div class="header-actions">
+        <button class="header-btn" id="menuToggleBtn" aria-label="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
         </button>
       </div>
-      <div class="drawer-footer">
-        <button class="btn-admin-login" id="adminLoginBtn">Admin Login</button>
-        <p>&copy; 2026 Mushtaq Ahmad</p>
-        <p style="font-size: 0.65rem; margin-top: 4px;">All Rights Reserved</p>
-      </div>
-    </aside>
-  </div>
+    </header>
 
-  <!-- ===== MAIN CONTENT (scrollable) ===== -->
-  <main class="main-content" id="mainContent">
-
-    <!-- PAGE: HOME -->
-    <section class="page active" id="pageHome">
-
-      <!-- Table Selection Redesign -->
-      <div class="table-picker-container" id="tableSection">
-        <div class="table-picker-card">
-          <div class="table-picker-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="12" rx="2"/><line x1="7" y1="19" x2="7" y2="15"/><line x1="17" y1="19" x2="17" y2="15"/></svg>
+    <!-- ===== SIDE DRAWER ===== -->
+    <div class="drawer-overlay hidden" id="drawerOverlay">
+      <aside class="side-drawer" id="sideDrawer">
+        <div class="drawer-header">
+          <div class="drawer-header-bg"></div>
+          <div class="drawer-branding">
+            <div class="drawer-avatar">
+              <img src="icons/icon-192.svg" alt="Smart Menu Logo">
+            </div>
+            <div class="drawer-info">
+              <h3>Smart Menu</h3>
+              <span class="drawer-badge">Admin</span>
+            </div>
           </div>
-          <div class="table-picker-input-wrapper">
-            <input type="text" id="tableNumberInput" list="tablePresetsList" placeholder="Enter Table Number..." autocomplete="off">
-            <datalist id="tablePresetsList"></datalist>
-          </div>
-          <button class="table-picker-btn" id="setTableBtn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="drawer-menu">
+
+          <div class="drawer-section-label admin-only hidden">Management</div>
+          <button class="drawer-item admin-only hidden" data-page="pageTables">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="12" rx="2" />
+              <line x1="7" y1="19" x2="7" y2="15" />
+              <line x1="17" y1="19" x2="17" y2="15" />
+            </svg>
+            Manage Tables
+          </button>
+          <button class="drawer-item admin-only hidden" data-page="pageMenu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+              <circle cx="8" cy="6" r="1" fill="currentColor" />
+              <circle cx="8" cy="12" r="1" fill="currentColor" />
+              <circle cx="8" cy="18" r="1" fill="currentColor" />
+            </svg>
+            Manage Menu
+          </button>
+
+          <div class="drawer-section-label">Information</div>
+          <button class="drawer-item" data-page="pageAbout">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="16" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12.01" y2="8" />
+            </svg>
+            About
+          </button>
+          <button class="drawer-item" data-page="pagePrivacy">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            Privacy Policy
+          </button>
+          <button class="drawer-item" data-page="pageTerms">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" />
+            </svg>
+            Terms of Service
           </button>
         </div>
-      </div>
-
-      <!-- Active Table Banner -->
-      <div class="active-table-banner hidden" id="activeTableBanner">
-        <div class="active-table-info">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E7A01E" stroke-width="2"><rect x="3" y="3" width="18" height="12" rx="2"/><line x1="7" y1="19" x2="7" y2="15"/><line x1="17" y1="19" x2="17" y2="15"/></svg>
-          <span>Table <strong id="activeTableNum"></strong></span>
+        <div class="drawer-footer">
+          <button class="btn-admin-login" id="adminLoginBtn">Admin Login</button>
+          <p>&copy; 2026 Mushtaq Ahmad</p>
+          <p style="font-size: 0.65rem; margin-top: 4px;">All Rights Reserved</p>
         </div>
-        <button class="btn-change-table" id="changeTableBtn">Change</button>
-      </div>
+      </aside>
+    </div>
 
-      <!-- Menu Section -->
-      <div class="section-header">
-        <h2>MENU</h2>
-        <button class="btn-add-item admin-only hidden" id="addItemBtn">+ Add Item <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E7A01E" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></button>
-      </div>
+    <!-- ===== MAIN CONTENT (scrollable) ===== -->
+    <main class="main-content" id="mainContent">
 
-      <!-- Category Tabs -->
-      <div class="category-tabs" id="categoryTabs">
-        <button class="cat-tab active" data-category="All">All</button>
-        <button class="cat-tab" data-category="Main Course">Main Course</button>
-        <button class="cat-tab" data-category="Burgers">Burgers</button>
-        <button class="cat-tab" data-category="Pasta">Pasta</button>
-        <button class="cat-tab" data-category="Salted Egg">Salted Egg</button>
-        <button class="cat-tab" data-category="Wraps">Wraps</button>
-        <button class="cat-tab" data-category="Snacks">Snacks</button>
-        <button class="cat-tab" data-category="Mocktails">Mocktails</button>
-        <button class="cat-tab" data-category="Coffee">Coffee</button>
-        <button class="cat-tab" data-category="Non Coffee">Non Coffee</button>
-        <button class="cat-tab" data-category="Desserts">Desserts</button>
-      </div>
+      <!-- PAGE: HOME -->
+      <section class="page active" id="pageHome">
 
-      <!-- Menu Grid -->
-      <div class="menu-grid" id="menuGrid">
-        <!-- Filled dynamically -->
-      </div>
-
-      <!-- Floating Cart Button -->
-      <button class="floating-cart-btn hidden" id="floatingCartBtn">
-        <div class="cart-icon-wrapper">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
-          <span class="cart-badge" id="cartBadge">0</span>
-        </div>
-        <span class="cart-label">View Order</span>
-        <span class="cart-total" id="cartTotalBtn">RM 0.00</span>
-      </button>
-
-      <!-- Order Modal (Bottom Sheet) -->
-      <div class="modal-overlay hidden" id="orderModalOverlay">
-        <div class="bottom-sheet">
-          <div class="sheet-handle"></div>
-          <div class="sheet-header">
-            <h2>Current Order</h2>
-            <button class="btn-clear-all" id="clearAllBtn">Clear All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
-          </div>
-          <div class="order-section" id="orderSection">
-            <div class="order-items" id="orderItems">
-              <!-- Filled dynamically -->
+        <!-- Table Selection Redesign -->
+        <div class="table-picker-container" id="tableSection">
+          <div class="table-picker-card">
+            <div class="table-picker-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="12" rx="2" />
+                <line x1="7" y1="19" x2="7" y2="15" />
+                <line x1="17" y1="19" x2="17" y2="15" />
+              </svg>
             </div>
-            <div class="order-summary" id="orderSummary">
-              <div class="order-summary-row">
-                <span>Total Items: <strong id="totalItemsCount">0</strong></span>
-                <span>Total Amount: <strong class="accent" id="totalAmount">RM 0.00</strong></span>
+            <div class="table-picker-input-wrapper">
+              <input type="text" id="tableNumberInput" list="tablePresetsList" placeholder="Enter Table Number..."
+                autocomplete="off">
+              <datalist id="tablePresetsList"></datalist>
+            </div>
+            <button class="table-picker-btn" id="setTableBtn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Active Table Banner -->
+        <div class="active-table-banner hidden" id="activeTableBanner">
+          <div class="active-table-info">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E7A01E" stroke-width="2">
+              <rect x="3" y="3" width="18" height="12" rx="2" />
+              <line x1="7" y1="19" x2="7" y2="15" />
+              <line x1="17" y1="19" x2="17" y2="15" />
+            </svg>
+            <span>Table <strong id="activeTableNum"></strong></span>
+          </div>
+          <button class="btn-change-table" id="changeTableBtn">Change</button>
+        </div>
+
+        <!-- Menu Section -->
+        <div class="section-header">
+          <h2>MENU</h2>
+          <button class="btn-add-item admin-only hidden" id="addItemBtn">+ Add Item <svg width="16" height="16"
+              viewBox="0 0 24 24" fill="none" stroke="#E7A01E" stroke-width="2.5">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="16" />
+              <line x1="8" y1="12" x2="16" y2="12" />
+            </svg></button>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="category-tabs" id="categoryTabs">
+          <button class="cat-tab active" data-category="All">All</button>
+          <button class="cat-tab" data-category="Main Course">Main Course</button>
+          <button class="cat-tab" data-category="Burgers">Burgers</button>
+          <button class="cat-tab" data-category="Pasta">Pasta</button>
+          <button class="cat-tab" data-category="Salted Egg">Salted Egg</button>
+          <button class="cat-tab" data-category="Wraps">Wraps</button>
+          <button class="cat-tab" data-category="Snacks">Snacks</button>
+          <button class="cat-tab" data-category="Mocktails">Mocktails</button>
+          <button class="cat-tab" data-category="Coffee">Coffee</button>
+          <button class="cat-tab" data-category="Non Coffee">Non Coffee</button>
+          <button class="cat-tab" data-category="Desserts">Desserts</button>
+        </div>
+
+        <!-- Menu Grid -->
+        <div class="menu-grid" id="menuGrid">
+          <!-- Filled dynamically -->
+        </div>
+
+        <!-- Floating Cart Button -->
+        <button class="floating-cart-btn hidden" id="floatingCartBtn">
+          <div class="cart-icon-wrapper">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
+            </svg>
+            <span class="cart-badge" id="cartBadge">0</span>
+          </div>
+          <span class="cart-label">View Order</span>
+          <span class="cart-total" id="cartTotalBtn">RM 0.00</span>
+        </button>
+
+        <!-- Order Modal (Bottom Sheet) -->
+        <div class="modal-overlay hidden" id="orderModalOverlay">
+          <div class="bottom-sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-header">
+              <h2>Current Order</h2>
+              <button class="btn-clear-all" id="clearAllBtn">Clear All <svg width="14" height="14" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6l-1 14H6L5 6" />
+                  <path d="M10 11v6" />
+                  <path d="M14 11v6" />
+                  <path d="M9 6V4h6v2" />
+                </svg></button>
+            </div>
+            <div class="order-section" id="orderSection">
+              <div class="order-items" id="orderItems">
+                <!-- Filled dynamically -->
+              </div>
+              <div class="order-summary" id="orderSummary">
+                <div class="order-summary-row">
+                  <span>Total Items: <strong id="totalItemsCount">0</strong></span>
+                  <span>Total Amount: <strong class="accent" id="totalAmount">RM 0.00</strong></span>
+                </div>
+              </div>
+              <div class="form-group" style="margin: 0 16px 16px;">
+                <label
+                  style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px; display: block;">General
+                  Order Instructions</label>
+                <textarea id="orderNote" class="order-item-input"
+                  placeholder="e.g. Table is in a hurry, No peanuts for anyone..." rows="2"
+                  style="background: rgba(255,255,255,0.05);"></textarea>
+              </div>
+              <button class="btn-save-order" id="saveOrderBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+                  <polyline points="17 21 17 13 7 13 7 21" />
+                  <polyline points="7 3 7 8 15 8" />
+                </svg>
+                Save Order
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order History Preview -->
+        <div class="history-preview" id="historyPreview">
+          <div class="section-header">
+            <h2>ORDER HISTORY</h2>
+            <button class="btn-view-all" id="viewAllHistoryBtn">View All <svg width="14" height="14" viewBox="0 0 24 24"
+                fill="none" stroke="#E7A01E" stroke-width="2.5">
+                <polyline points="9 18 15 12 9 6" />
+              </svg></button>
+          </div>
+          <div class="history-preview-list" id="historyPreviewList">
+            <!-- Filled dynamically -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- PAGE: ORDERS (full list) -->
+      <section class="page" id="pageOrders">
+        <h2 class="page-title">All Orders</h2>
+        <div class="orders-full-list" id="ordersFullList">
+          <!-- Filled dynamically -->
+        </div>
+      </section>
+
+      <!-- PAGE: MENU MANAGEMENT -->
+      <section class="page" id="pageMenu">
+        <h2 class="page-title">Menu Management</h2>
+        <button class="btn-accent btn-add-menu-full" id="addMenuItemFull">+ Add New Item</button>
+        <div class="menu-manage-grid" id="menuManageGrid">
+          <!-- Filled dynamically -->
+        </div>
+      </section>
+
+      <!-- PAGE: TABLE MANAGEMENT -->
+      <section class="page" id="pageTables">
+        <h2 class="page-title">Table Management</h2>
+
+        <div class="table-add-form">
+          <label>Add New Table</label>
+          <div class="manage-input-row">
+            <select id="manageTableGroup" class="manage-select">
+              <option value="B">B Tables</option>
+              <option value="S">S Tables</option>
+              <option value="L">L Tables</option>
+              <option value="Others">Others</option>
+            </select>
+            <input type="text" id="manageTableInput" placeholder="Table name (e.g. B12)">
+          </div>
+          <button class="btn-accent btn-manage-add" id="manageAddTableBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="margin-right: 8px;">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            Add Table
+          </button>
+        </div>
+
+        <div class="table-manage-list" id="tableManageList">
+          <!-- Filled dynamically by JS -->
+        </div>
+      </section>
+
+      <!-- PAGE: HISTORY -->
+      <section class="page" id="pageHistory">
+        <h2 class="page-title">Order History</h2>
+        <div class="history-full-list" id="historyFullList">
+          <!-- Filled dynamically -->
+        </div>
+      </section>
+
+      <!-- PAGE: ABOUT -->
+      <section class="page" id="pageAbout">
+        <div class="page-nav-header">
+          <button class="btn-back" onclick="navigateTo('pageHome')"><svg width="20" height="20" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6" />
+            </svg> Back</button>
+        </div>
+
+        <div class="premium-card about-card">
+          <div class="about-hero">
+            <img src="icons/icon-192.svg" alt="Smart Menu" class="about-logo">
+            <h1>Smart Menu</h1>
+            <p class="tagline">The Ultimate Order Management Solution</p>
+            <span class="version-pill">v2.5.0</span>
+          </div>
+
+          <div class="about-content">
+            <div class="info-section">
+              <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg> Mission</h3>
+              <p>Smart Menu is designed to transform the restaurant experience. By streamlining communication between
+                waiters and the kitchen, we ensure every guest enjoys faster service and perfectly accurate orders.</p>
+            </div>
+
+            <div class="info-grid">
+              <div class="info-feature">
+                <div class="feature-icon">⚡</div>
+                <h4>Fast</h4>
+                <p>Lightning quick order entry</p>
+              </div>
+              <div class="info-feature">
+                <div class="feature-icon">🔒</div>
+                <h4>Secure</h4>
+                <p>Offline-first data storage</p>
               </div>
             </div>
-            <div class="form-group" style="margin: 0 16px 16px;">
-              <label style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px; display: block;">General Order Instructions</label>
-              <textarea id="orderNote" class="order-item-input" placeholder="e.g. Table is in a hurry, No peanuts for anyone..." rows="2" style="background: rgba(255,255,255,0.05);"></textarea>
+
+            <div class="dev-box">
+              <div class="dev-label">Developed By</div>
+              <div class="dev-name">Mushtaq Ahmad</div>
+              <div class="dev-title">Lead Engineer & UI Designer</div>
             </div>
-            <button class="btn-save-order" id="saveOrderBtn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-              Save Order
+          </div>
+
+          <div class="about-footer">
+            &copy; 2026 Smart Menu Systems. All Rights Reserved.
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: PRIVACY -->
+      <section class="page" id="pagePrivacy">
+        <div class="page-nav-header">
+          <button class="btn-back" onclick="navigateTo('pageHome')"><svg width="20" height="20" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6" />
+            </svg> Back</button>
+        </div>
+
+        <div class="premium-card policy-card">
+          <div class="policy-header">
+            <div class="policy-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg></div>
+            <h2>Privacy Policy</h2>
+            <p>Your Data, Your Control</p>
+          </div>
+
+          <div class="policy-body">
+            <div class="policy-section">
+              <h3>1. Local Data Storage</h3>
+              <p>Smart Menu is an <strong>offline-first</strong> application. All your order history and menu data are
+                stored directly on your device using browser local storage. We do not transmit your data to any external
+                servers.</p>
+            </div>
+            <div class="policy-section">
+              <h3>2. Zero Tracking</h3>
+              <p>We do not use cookies, trackers, or any third-party analytics. Your activities within the app are
+                strictly private to you and your device.</p>
+            </div>
+            <div class="policy-section">
+              <h3>3. Security</h3>
+              <p>Admin functions are protected by a local passcode. It is your responsibility to keep this passcode
+                secure to prevent unauthorized changes to your menu or history.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: TERMS -->
+      <section class="page" id="pageTerms">
+        <div class="page-nav-header">
+          <button class="btn-back" onclick="navigateTo('pageHome')"><svg width="20" height="20" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6" />
+            </svg> Back</button>
+        </div>
+
+        <div class="premium-card policy-card">
+          <div class="policy-header">
+            <div class="policy-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg></div>
+            <h2>Terms of Service</h2>
+            <p>Usage Guidelines</p>
+          </div>
+
+          <div class="policy-body">
+            <div class="policy-section">
+              <h3>1. License to Use</h3>
+              <p>Mushtaq Ahmad grants you a non-exclusive license to use Smart Menu for your restaurant operations. You
+                may not reverse engineer or distribute modified versions of the app without permission.</p>
+            </div>
+            <div class="policy-section">
+              <h3>2. Limitation of Liability</h3>
+              <p>The app is provided "as is". While we strive for perfection, we are not responsible for any data loss
+                caused by clearing browser cache or device failure. Please maintain regular backups of your important
+                data.</p>
+            </div>
+            <div class="policy-section">
+              <h3>3. Updates</h3>
+              <p>We may update the app's features and design periodically to improve your experience. These updates will
+                be applied automatically via PWA service workers.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="bottom-nav" id="bottomNav">
+      <button class="nav-btn active" data-page="pageHome" id="navHome">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1" />
+        </svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-btn" data-page="pageOrders" id="navOrders">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="3" />
+          <line x1="8" y1="8" x2="16" y2="8" />
+          <line x1="8" y1="12" x2="16" y2="12" />
+          <line x1="8" y1="16" x2="12" y2="16" />
+        </svg>
+        <span>Orders</span>
+      </button>
+      <button class="nav-btn" data-page="pageHistory" id="navHistory">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="9" />
+          <polyline points="12 7 12 12 15 15" />
+        </svg>
+        <span>History</span>
+      </button>
+    </nav>
+
+    <!-- ===== ADD ITEM MODAL ===== -->
+    <div class="modal-overlay hidden" id="addItemModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Add Menu Item</h3>
+          <button class="modal-close" id="closeAddItemModal" title="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="newItemName">Item Name *</label>
+            <input type="text" id="newItemName" placeholder="e.g. Caesar Salad" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="newItemPrice">Price (RM) *</label>
+            <input type="number" id="newItemPrice" placeholder="0.00" step="0.01" min="0" inputmode="decimal">
+          </div>
+          <div class="form-group">
+            <label for="newItemCategory">Category</label>
+            <select id="newItemCategory">
+              <option value="Wraps">Wraps</option>
+              <option value="Burgers">Burgers</option>
+              <option value="Main Course">Main Course</option>
+              <option value="Pasta">Pasta</option>
+              <option value="Salted Egg">Salted Egg</option>
+              <option value="Snacks">Snacks</option>
+              <option value="Coffee">Coffee</option>
+              <option value="Non Coffee">Non Coffee</option>
+              <option value="Mocktails">Mocktails</option>
+              <option value="Desserts">Desserts</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="newItemDesc">Description (optional)</label>
+            <textarea id="newItemDesc" placeholder="Brief description of the item"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Images (Multiple photos & Auto-Crop)</label>
+            <div class="gallery-upload-container">
+              <div id="newGalleryPreviews" style="display:contents"></div>
+              <label class="gallery-upload-btn" id="newGalleryBtn">
+                <input type="file" id="newItemImages" accept="image/*" multiple hidden>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg>
+                <span>Add Photos</span>
+              </label>
+            </div>
+            <small class="text-muted" style="margin-top:6px;display:block;font-size:0.75rem;">Images are auto-cropped
+              1:1 perfectly. Tap an image to set as Thumbnail.</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel" id="cancelAddItem">Cancel</button>
+          <button class="btn-accent" id="confirmAddItem">Add Item</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ADMIN LOGIN MODAL ===== -->
+    <div class="modal-overlay hidden" id="adminLoginModal">
+      <div class="modal" style="max-width: 320px;">
+        <div class="modal-header">
+          <h3>Admin Login</h3>
+          <button class="modal-close" id="closeAdminModal" title="Close">&times;</button>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+          <p style="margin-bottom: 16px; color: var(--text-muted); font-size: 0.85rem;">Enter passcode to unlock
+            management.</p>
+          <div class="form-group">
+            <input type="password" id="adminPinInput" placeholder="•••••"
+              style="text-align: center; font-size: 1.8rem; letter-spacing: 12px; font-weight: 800; padding: 12px;"
+              inputmode="numeric">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel" id="cancelAdminBtn">Cancel</button>
+          <button class="btn-accent" id="confirmAdminBtn">Unlock</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ORDER DETAIL MODAL ===== -->
+    <div class="modal-overlay hidden" id="orderDetailModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 id="orderDetailTitle">Order Details</h3>
+          <button class="modal-close" id="closeOrderDetail" title="Close">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body" id="orderDetailBody">
+          <!-- Filled dynamically -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn-accent" id="closeOrderDetailBtn">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== EDIT ITEM MODAL ===== -->
+    <div class="modal-overlay hidden" id="editItemModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Edit Menu Item</h3>
+          <button class="modal-close" id="closeEditItemModal" title="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editItemId">
+          <div class="form-group">
+            <label for="editItemName">Item Name *</label>
+            <input type="text" id="editItemName" placeholder="Item name" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="editItemPrice">Price (RM) *</label>
+            <input type="number" id="editItemPrice" placeholder="0.00" step="0.01" min="0" inputmode="decimal">
+          </div>
+          <div class="form-group">
+            <label for="editItemCategory">Category</label>
+            <select id="editItemCategory">
+              <option value="Wraps">Wraps</option>
+              <option value="Burgers">Burgers</option>
+              <option value="Main Course">Main Course</option>
+              <option value="Pasta">Pasta</option>
+              <option value="Salted Egg">Salted Egg</option>
+              <option value="Snacks">Snacks</option>
+              <option value="Coffee">Coffee</option>
+              <option value="Non Coffee">Non Coffee</option>
+              <option value="Mocktails">Mocktails</option>
+              <option value="Desserts">Desserts</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editItemDesc">Description (optional)</label>
+            <textarea id="editItemDesc" placeholder="Brief description"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Images (Multiple photos & Auto-Crop)</label>
+            <div class="gallery-upload-container">
+              <div id="editGalleryPreviews" style="display:contents"></div>
+              <label class="gallery-upload-btn" id="editGalleryBtn">
+                <input type="file" id="editItemImages" accept="image/*" multiple hidden>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg>
+                <span>Add Photos</span>
+              </label>
+            </div>
+            <small class="text-muted" style="margin-top:6px;display:block;font-size:0.75rem;">Images are auto-cropped
+              1:1 perfectly. Tap an image to set as Thumbnail.</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel" id="cancelEditItem">Cancel</button>
+          <button class="btn-accent" id="confirmEditItem">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ITEM DETAIL MODAL (Customer UX) ===== -->
+    <div class="modal-overlay hidden" id="itemDetailOverlay">
+      <div class="item-detail-sheet">
+        <div class="sheet-handle"></div>
+        <div class="item-detail-gallery-wrap" style="position:relative">
+          <div class="item-detail-gallery" id="itemDetailGallery">
+            <!-- Filled dynamically -->
+          </div>
+          <div class="item-detail-dots" id="itemDetailDots"></div>
+        </div>
+        <div class="item-detail-body">
+          <div class="item-detail-tags">
+            <span class="item-detail-category" id="itemDetailCategory"></span>
+          </div>
+          <h2 class="item-detail-name" id="itemDetailName"></h2>
+          <p class="item-detail-desc" id="itemDetailDesc"></p>
+          <div class="item-detail-footer">
+            <div class="item-detail-price" id="itemDetailPrice"></div>
+            <button class="item-detail-add-btn" id="itemDetailAddBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                stroke-linecap="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="16" />
+                <line x1="8" y1="12" x2="16" y2="12" />
+              </svg>
+              Add to Order
             </button>
           </div>
         </div>
       </div>
-
-      <!-- Order History Preview -->
-      <div class="history-preview" id="historyPreview">
-        <div class="section-header">
-          <h2>ORDER HISTORY</h2>
-          <button class="btn-view-all" id="viewAllHistoryBtn">View All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E7A01E" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
-        </div>
-        <div class="history-preview-list" id="historyPreviewList">
-          <!-- Filled dynamically -->
-        </div>
-      </div>
-
-    </section>
-
-    <!-- PAGE: ORDERS (full list) -->
-    <section class="page" id="pageOrders">
-      <h2 class="page-title">All Orders</h2>
-      <div class="orders-full-list" id="ordersFullList">
-        <!-- Filled dynamically -->
-      </div>
-    </section>
-
-    <!-- PAGE: MENU MANAGEMENT -->
-    <section class="page" id="pageMenu">
-      <h2 class="page-title">Menu Management</h2>
-      <button class="btn-accent btn-add-menu-full" id="addMenuItemFull">+ Add New Item</button>
-      <div class="menu-manage-grid" id="menuManageGrid">
-        <!-- Filled dynamically -->
-      </div>
-    </section>
-
-    <!-- PAGE: TABLE MANAGEMENT -->
-    <section class="page" id="pageTables">
-      <h2 class="page-title">Table Management</h2>
-      
-      <div class="table-add-form">
-        <label>Add New Table</label>
-        <div class="manage-input-row">
-          <select id="manageTableGroup" class="manage-select">
-            <option value="B">B Tables</option>
-            <option value="S">S Tables</option>
-            <option value="L">L Tables</option>
-            <option value="Others">Others</option>
-          </select>
-          <input type="text" id="manageTableInput" placeholder="Table name (e.g. B12)">
-        </div>
-        <button class="btn-accent btn-manage-add" id="manageAddTableBtn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Add Table
-        </button>
-      </div>
-
-      <div class="table-manage-list" id="tableManageList">
-        <!-- Filled dynamically by JS -->
-      </div>
-    </section>
-
-    <!-- PAGE: HISTORY -->
-    <section class="page" id="pageHistory">
-      <h2 class="page-title">Order History</h2>
-      <div class="history-full-list" id="historyFullList">
-        <!-- Filled dynamically -->
-      </div>
-    </section>
-
-    <!-- PAGE: ABOUT -->
-    <section class="page" id="pageAbout">
-      <div class="page-nav-header">
-        <button class="btn-back" onclick="navigateTo('pageHome')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
-      </div>
-      
-      <div class="premium-card about-card">
-        <div class="about-hero">
-          <img src="icons/icon-192.svg" alt="Smart Menu" class="about-logo">
-          <h1>Smart Menu</h1>
-          <p class="tagline">The Ultimate Order Management Solution</p>
-          <span class="version-pill">v2.5.0</span>
-        </div>
-
-        <div class="about-content">
-          <div class="info-section">
-            <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> Mission</h3>
-            <p>Smart Menu is designed to transform the restaurant experience. By streamlining communication between waiters and the kitchen, we ensure every guest enjoys faster service and perfectly accurate orders.</p>
-          </div>
-
-          <div class="info-grid">
-            <div class="info-feature">
-              <div class="feature-icon">⚡</div>
-              <h4>Fast</h4>
-              <p>Lightning quick order entry</p>
-            </div>
-            <div class="info-feature">
-              <div class="feature-icon">🔒</div>
-              <h4>Secure</h4>
-              <p>Offline-first data storage</p>
-            </div>
-          </div>
-
-          <div class="dev-box">
-            <div class="dev-label">Developed By</div>
-            <div class="dev-name">Mushtaq Ahmad</div>
-            <div class="dev-title">Lead Engineer & UI Designer</div>
-          </div>
-        </div>
-        
-        <div class="about-footer">
-          &copy; 2026 Smart Menu Systems. All Rights Reserved.
-        </div>
-      </div>
-    </section>
-
-    <!-- PAGE: PRIVACY -->
-    <section class="page" id="pagePrivacy">
-      <div class="page-nav-header">
-        <button class="btn-back" onclick="navigateTo('pageHome')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
-      </div>
-
-      <div class="premium-card policy-card">
-        <div class="policy-header">
-          <div class="policy-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <h2>Privacy Policy</h2>
-          <p>Your Data, Your Control</p>
-        </div>
-
-        <div class="policy-body">
-          <div class="policy-section">
-            <h3>1. Local Data Storage</h3>
-            <p>Smart Menu is an <strong>offline-first</strong> application. All your order history and menu data are stored directly on your device using browser local storage. We do not transmit your data to any external servers.</p>
-          </div>
-          <div class="policy-section">
-            <h3>2. Zero Tracking</h3>
-            <p>We do not use cookies, trackers, or any third-party analytics. Your activities within the app are strictly private to you and your device.</p>
-          </div>
-          <div class="policy-section">
-            <h3>3. Security</h3>
-            <p>Admin functions are protected by a local passcode. It is your responsibility to keep this passcode secure to prevent unauthorized changes to your menu or history.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PAGE: TERMS -->
-    <section class="page" id="pageTerms">
-      <div class="page-nav-header">
-        <button class="btn-back" onclick="navigateTo('pageHome')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
-      </div>
-
-      <div class="premium-card policy-card">
-        <div class="policy-header">
-          <div class="policy-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-          <h2>Terms of Service</h2>
-          <p>Usage Guidelines</p>
-        </div>
-
-        <div class="policy-body">
-          <div class="policy-section">
-            <h3>1. License to Use</h3>
-            <p>Mushtaq Ahmad grants you a non-exclusive license to use Smart Menu for your restaurant operations. You may not reverse engineer or distribute modified versions of the app without permission.</p>
-          </div>
-          <div class="policy-section">
-            <h3>2. Limitation of Liability</h3>
-            <p>The app is provided "as is". While we strive for perfection, we are not responsible for any data loss caused by clearing browser cache or device failure. Please maintain regular backups of your important data.</p>
-          </div>
-          <div class="policy-section">
-            <h3>3. Updates</h3>
-            <p>We may update the app's features and design periodically to improve your experience. These updates will be applied automatically via PWA service workers.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ===== BOTTOM NAV ===== -->
-  <nav class="bottom-nav" id="bottomNav">
-    <button class="nav-btn active" data-page="pageHome" id="navHome">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
-      <span>Home</span>
-    </button>
-    <button class="nav-btn" data-page="pageOrders" id="navOrders">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
-      <span>Orders</span>
-    </button>
-    <button class="nav-btn" data-page="pageHistory" id="navHistory">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
-      <span>History</span>
-    </button>
-  </nav>
-
-  <!-- ===== ADD ITEM MODAL ===== -->
-  <div class="modal-overlay hidden" id="addItemModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Add Menu Item</h3>
-        <button class="modal-close" id="closeAddItemModal" title="Close">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="newItemName">Item Name *</label>
-          <input type="text" id="newItemName" placeholder="e.g. Caesar Salad" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label for="newItemPrice">Price (RM) *</label>
-          <input type="number" id="newItemPrice" placeholder="0.00" step="0.01" min="0" inputmode="decimal">
-        </div>
-        <div class="form-group">
-          <label for="newItemCategory">Category</label>
-          <select id="newItemCategory">
-            <option value="Wraps">Wraps</option>
-            <option value="Burgers">Burgers</option>
-            <option value="Main Course">Main Course</option>
-            <option value="Pasta">Pasta</option>
-            <option value="Salted Egg">Salted Egg</option>
-            <option value="Snacks">Snacks</option>
-            <option value="Coffee">Coffee</option>
-            <option value="Non Coffee">Non Coffee</option>
-            <option value="Mocktails">Mocktails</option>
-            <option value="Desserts">Desserts</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="newItemDesc">Description (optional)</label>
-          <textarea id="newItemDesc" placeholder="Brief description of the item"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Images (Multiple photos & Auto-Crop)</label>
-          <div class="gallery-upload-container">
-            <div id="newGalleryPreviews" style="display:contents"></div>
-            <label class="gallery-upload-btn" id="newGalleryBtn">
-              <input type="file" id="newItemImages" accept="image/*" multiple hidden>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span>Add Photos</span>
-            </label>
-          </div>
-          <small class="text-muted" style="margin-top:6px;display:block;font-size:0.75rem;">Images are auto-cropped 1:1 perfectly. Tap an image to set as Thumbnail.</small>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-cancel" id="cancelAddItem">Cancel</button>
-        <button class="btn-accent" id="confirmAddItem">Add Item</button>
-      </div>
     </div>
-  </div>
 
-  <!-- ===== ADMIN LOGIN MODAL ===== -->
-  <div class="modal-overlay hidden" id="adminLoginModal">
-    <div class="modal" style="max-width: 320px;">
-      <div class="modal-header">
-        <h3>Admin Login</h3>
-        <button class="modal-close" id="closeAdminModal" title="Close">&times;</button>
-      </div>
-      <div class="modal-body" style="text-align: center;">
-        <p style="margin-bottom: 16px; color: var(--text-muted); font-size: 0.85rem;">Enter passcode to unlock management.</p>
-        <div class="form-group">
-          <input type="password" id="adminPinInput" placeholder="•••••" style="text-align: center; font-size: 1.8rem; letter-spacing: 12px; font-weight: 800; padding: 12px;" inputmode="numeric">
+    <!-- ===== ADDON MODAL ===== -->
+    <div class="modal-overlay hidden" id="addonModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 id="addonTitle">Select Add-ons</h3>
+          <button class="modal-close" id="closeAddonModal">&times;</button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-cancel" id="cancelAdminBtn">Cancel</button>
-        <button class="btn-accent" id="confirmAdminBtn">Unlock</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== ORDER DETAIL MODAL ===== -->
-  <div class="modal-overlay hidden" id="orderDetailModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 id="orderDetailTitle">Order Details</h3>
-        <button class="modal-close" id="closeOrderDetail" title="Close">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="modal-body" id="orderDetailBody">
-        <!-- Filled dynamically -->
-      </div>
-      <div class="modal-footer">
-        <button class="btn-accent" id="closeOrderDetailBtn">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== EDIT ITEM MODAL ===== -->
-  <div class="modal-overlay hidden" id="editItemModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Edit Menu Item</h3>
-        <button class="modal-close" id="closeEditItemModal" title="Close">&times;</button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="editItemId">
-        <div class="form-group">
-          <label for="editItemName">Item Name *</label>
-          <input type="text" id="editItemName" placeholder="Item name" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label for="editItemPrice">Price (RM) *</label>
-          <input type="number" id="editItemPrice" placeholder="0.00" step="0.01" min="0" inputmode="decimal">
-        </div>
-        <div class="form-group">
-          <label for="editItemCategory">Category</label>
-          <select id="editItemCategory">
-            <option value="Wraps">Wraps</option>
-            <option value="Burgers">Burgers</option>
-            <option value="Main Course">Main Course</option>
-            <option value="Pasta">Pasta</option>
-            <option value="Salted Egg">Salted Egg</option>
-            <option value="Snacks">Snacks</option>
-            <option value="Coffee">Coffee</option>
-            <option value="Non Coffee">Non Coffee</option>
-            <option value="Mocktails">Mocktails</option>
-            <option value="Desserts">Desserts</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="editItemDesc">Description (optional)</label>
-          <textarea id="editItemDesc" placeholder="Brief description"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Images (Multiple photos & Auto-Crop)</label>
-          <div class="gallery-upload-container">
-            <div id="editGalleryPreviews" style="display:contents"></div>
-            <label class="gallery-upload-btn" id="editGalleryBtn">
-              <input type="file" id="editItemImages" accept="image/*" multiple hidden>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span>Add Photos</span>
-            </label>
+        <div class="modal-body">
+          <div class="addon-list" id="addonList">
+            <!-- Populated via JS -->
           </div>
-          <small class="text-muted" style="margin-top:6px;display:block;font-size:0.75rem;">Images are auto-cropped 1:1 perfectly. Tap an image to set as Thumbnail.</small>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-cancel" id="cancelEditItem">Cancel</button>
-        <button class="btn-accent" id="confirmEditItem">Save Changes</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== ITEM DETAIL MODAL (Customer UX) ===== -->
-  <div class="modal-overlay hidden" id="itemDetailOverlay">
-    <div class="item-detail-sheet">
-      <div class="sheet-handle"></div>
-      <div class="item-detail-gallery-wrap" style="position:relative">
-        <div class="item-detail-gallery" id="itemDetailGallery">
-          <!-- Filled dynamically -->
-        </div>
-        <div class="item-detail-dots" id="itemDetailDots"></div>
-      </div>
-      <div class="item-detail-body">
-        <div class="item-detail-tags">
-          <span class="item-detail-category" id="itemDetailCategory"></span>
-        </div>
-        <h2 class="item-detail-name" id="itemDetailName"></h2>
-        <p class="item-detail-desc" id="itemDetailDesc"></p>
-        <div class="item-detail-footer">
-          <div class="item-detail-price" id="itemDetailPrice"></div>
-          <button class="item-detail-add-btn" id="itemDetailAddBtn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            Add to Order
-          </button>
+        <div class="modal-footer">
+          <button class="btn-cancel" id="cancelAddonBtn">Cancel</button>
+          <button class="btn-accent" id="confirmAddonBtn">Add to Order</button>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ===== ADDON MODAL ===== -->
-  <div class="modal-overlay hidden" id="addonModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 id="addonTitle">Select Add-ons</h3>
-        <button class="modal-close" id="closeAddonModal">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="addon-list" id="addonList">
-          <!-- Populated via JS -->
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-cancel" id="cancelAddonBtn">Cancel</button>
-        <button class="btn-accent" id="confirmAddonBtn">Add to Order</button>
-      </div>
+    <!-- ===== TOAST ===== -->
+    <div class="toast hidden" id="toast">
+      <span id="toastMsg"></span>
     </div>
-  </div>
 
-  <!-- ===== TOAST ===== -->
-  <div class="toast hidden" id="toast">
-    <span id="toastMsg"></span>
-  </div>
-
-  <script src="app.js"></script>
+    <script src="app.js"></script>
   </div><!-- end app-container -->
 </body>
+
+</html>
+
 </html>
