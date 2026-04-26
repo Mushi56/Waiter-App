@@ -1018,9 +1018,11 @@
 
 
   // --- Navigation ---
-  function navigateTo(pageId) {
+  function navigateTo(pageId, push = true) {
     $$('.page').forEach((p) => p.classList.remove('active'));
-    $(`#${pageId}`).classList.add('active');
+    const target = $(`#${pageId}`);
+    if (!target) return;
+    target.classList.add('active');
     
     $$('.nav-btn, .drawer-item').forEach((b) => b.classList.remove('active'));
     $$(`[data-page="${pageId}"]`).forEach(el => el.classList.add('active'));
@@ -1037,6 +1039,73 @@
 
     closeDrawer();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (push) {
+      history.pushState({ page: pageId }, '', `#${pageId}`);
+    }
+  }
+
+  // Helper for opening modals with history support
+  function openModal(el) {
+    if (!el) return;
+    el.classList.remove('hidden');
+    // Push a dummy state so back button closes modal
+    const currentPage = $('.page.active')?.id || 'pageHome';
+    history.pushState({ page: currentPage, isModal: true }, '', window.location.hash || `#${currentPage}`);
+  }
+
+  // Helper for closing modals (triggers back if not from popstate)
+  function closeModal(el, fromPopState = false) {
+    if (!el || el.classList.contains('hidden')) return;
+    if (fromPopState) {
+      el.classList.add('hidden');
+    } else {
+      history.back(); // Let popstate handle the actual hiding
+    }
+  }
+
+  function handlePopState(e) {
+    // If we're going back and a modal is open, close it
+    const modals = [
+      els.orderModalOverlay,
+      els.itemDetailOverlay,
+      els.addItemModal,
+      els.editItemModal,
+      els.orderDetailModal,
+      els.addonModal,
+      els.adminLoginModal
+    ];
+    
+    const openModalEl = modals.find(m => m && !m.classList.contains('hidden'));
+
+    if (openModalEl) {
+      openModalEl.classList.add('hidden');
+      return; 
+    }
+
+    if (e.state && e.state.page) {
+      navigateTo(e.state.page, false);
+    } else {
+      navigateTo('pageHome', false);
+    }
+  }
+
+  function closeAllModals(doBack = true) {
+    const modals = [
+      els.orderModalOverlay,
+      els.itemDetailOverlay,
+      els.addItemModal,
+      els.editItemModal,
+      els.orderDetailModal,
+      els.addonModal,
+      els.adminLoginModal
+    ];
+    
+    modals.forEach(m => {
+      if (m && !m.classList.contains('hidden')) {
+        closeModal(m, !doBack);
+      }
+    });
   }
 
   function toggleDrawer() {
@@ -1124,14 +1193,14 @@
 
     els.itemDetailAddBtn.onclick = () => {
       addToOrder(item.id);
-      els.itemDetailOverlay.classList.add('hidden');
+      closeModal(els.itemDetailOverlay);
     };
 
-    els.itemDetailOverlay.classList.remove('hidden');
+    openModal(els.itemDetailOverlay);
   }
 
   function closeItemDetail() {
-    els.itemDetailOverlay.classList.add('hidden');
+    closeModal(els.itemDetailOverlay);
   }
 
   // --- Event Binding ---
@@ -1143,8 +1212,8 @@
     }
     
     if (document.getElementById('closeAdminModal')) {
-      document.getElementById('closeAdminModal').addEventListener('click', () => els.adminLoginModal.classList.add('hidden'));
-      document.getElementById('cancelAdminBtn').addEventListener('click', () => els.adminLoginModal.classList.add('hidden'));
+      document.getElementById('closeAdminModal').addEventListener('click', () => closeModal(els.adminLoginModal));
+      document.getElementById('cancelAdminBtn').addEventListener('click', () => closeModal(els.adminLoginModal));
       document.getElementById('confirmAdminBtn').addEventListener('click', confirmAdminPin);
       els.adminPinInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') confirmAdminPin(); });
     }
@@ -1195,19 +1264,19 @@
     // Floating Cart & Bottom Sheet
     if (els.floatingCartBtn) {
       els.floatingCartBtn.addEventListener('click', () => {
-        els.orderModalOverlay.classList.remove('hidden');
+        openModal(els.orderModalOverlay);
       });
     }
     if (els.orderModalOverlay) {
       els.orderModalOverlay.addEventListener('click', (e) => {
         if (e.target === els.orderModalOverlay) {
-          els.orderModalOverlay.classList.add('hidden');
+          closeModal(els.orderModalOverlay);
         }
       });
     }
     if (els.closeOrderModal) {
       els.closeOrderModal.addEventListener('click', () => {
-        els.orderModalOverlay.classList.add('hidden');
+        closeModal(els.orderModalOverlay);
       });
     }
 
@@ -1259,10 +1328,10 @@
     }
 
     // Add item modal
-    $('#addItemBtn').addEventListener('click', openAddItemModal);
-    $('#addMenuItemFull').addEventListener('click', openAddItemModal);
-    $('#closeAddItemModal').addEventListener('click', () => els.addItemModal.classList.add('hidden'));
-    $('#cancelAddItem').addEventListener('click', () => els.addItemModal.classList.add('hidden'));
+    $('#addItemBtn').addEventListener('click', () => openModal(els.addItemModal));
+    $('#addMenuItemFull').addEventListener('click', () => openModal(els.addItemModal));
+    $('#closeAddItemModal').addEventListener('click', () => closeModal(els.addItemModal));
+    $('#cancelAddItem').addEventListener('click', () => closeModal(els.addItemModal));
     $('#confirmAddItem').addEventListener('click', confirmAddItem);
 
     // (Image upload logic moved to top-level event listeners)
@@ -1282,48 +1351,55 @@
       }
 
       const card = e.target.closest('.history-card');
-      if (card) showOrderDetail(parseInt(card.dataset.orderId));
+      if (card) {
+        showOrderDetail(parseInt(card.dataset.orderId));
+        openModal(els.orderDetailModal);
+      }
     });
 
     // View all history
     $('#viewAllHistoryBtn').addEventListener('click', () => navigateTo('pageHistory'));
 
     // Order detail modal close
-    $('#closeOrderDetail').addEventListener('click', () => els.orderDetailModal.classList.add('hidden'));
-    $('#closeOrderDetailBtn').addEventListener('click', () => els.orderDetailModal.classList.add('hidden'));
+    $('#closeOrderDetail').addEventListener('click', () => closeModal(els.orderDetailModal));
+    $('#closeOrderDetailBtn').addEventListener('click', () => closeModal(els.orderDetailModal));
 
     // Close modals on backdrop
     els.addItemModal.addEventListener('click', (e) => {
-      if (e.target === els.addItemModal) els.addItemModal.classList.add('hidden');
+      if (e.target === els.addItemModal) closeModal(els.addItemModal);
     });
     els.orderDetailModal.addEventListener('click', (e) => {
-      if (e.target === els.orderDetailModal) els.orderDetailModal.classList.add('hidden');
+      if (e.target === els.orderDetailModal) closeModal(els.orderDetailModal);
     });
 
     // Menu manage edit + delete (delegated)
     els.menuManageGrid.addEventListener('click', (e) => {
       const editBtn = e.target.closest('.manage-card-edit');
-      if (editBtn) { openEditItemModal(parseInt(editBtn.dataset.editId)); return; }
+      if (editBtn) { 
+        openEditItemModal(parseInt(editBtn.dataset.editId)); 
+        openModal(els.editItemModal);
+        return; 
+      }
       const delBtn = e.target.closest('.manage-card-delete');
       if (delBtn) deleteMenuItem(parseInt(delBtn.dataset.delId));
     });
 
     // Edit item modal
-    $('#closeEditItemModal').addEventListener('click', () => els.editItemModal.classList.add('hidden'));
-    $('#cancelEditItem').addEventListener('click', () => els.editItemModal.classList.add('hidden'));
+    $('#closeEditItemModal').addEventListener('click', () => closeModal(els.editItemModal));
+    $('#cancelEditItem').addEventListener('click', () => closeModal(els.editItemModal));
     $('#confirmEditItem').addEventListener('click', confirmEditItem);
     els.editItemModal.addEventListener('click', (e) => {
-      if (e.target === els.editItemModal) els.editItemModal.classList.add('hidden');
+      if (e.target === els.editItemModal) closeModal(els.editItemModal);
     });
 
     // (Edit image upload logic moved to top-level event listeners)
 
     // Addon modal
-    $('#closeAddonModal').addEventListener('click', () => els.addonModal.classList.add('hidden'));
-    $('#cancelAddonBtn').addEventListener('click', () => els.addonModal.classList.add('hidden'));
+    $('#closeAddonModal').addEventListener('click', () => closeModal(els.addonModal));
+    $('#cancelAddonBtn').addEventListener('click', () => closeModal(els.addonModal));
     $('#confirmAddonBtn').addEventListener('click', confirmAddons);
     els.addonModal.addEventListener('click', (e) => {
-      if (e.target === els.addonModal) els.addonModal.classList.add('hidden');
+      if (e.target === els.addonModal) closeModal(els.addonModal);
     });
 
     // Sidebar toggle (simple)
@@ -1338,5 +1414,21 @@
   }
 
   // --- Boot ---
+  function init() {
+    loadMenu();
+    loadOrders();
+    loadTablePresets();
+    renderMenu();
+    renderTablePresets();
+    renderHistoryPreview();
+    bindEvents();
+    registerSW();
+
+    // Set initial history state
+    const currentPage = $('.page.active')?.id || 'pageHome';
+    history.replaceState({ page: currentPage }, '', `#${currentPage}`);
+    window.addEventListener('popstate', handlePopState);
+  }
+
   document.addEventListener('DOMContentLoaded', init);
 })();
