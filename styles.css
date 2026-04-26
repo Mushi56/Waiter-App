@@ -2335,4 +2335,43 @@ button {
 
 .floating-cart-btn.pulse {
   animation: cartPulse 0.6s ease;
+}
+
+/* Order Item Description/Note */
+.order-item-note {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.order-item-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-family: inherit;
+  resize: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.order-item-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.order-item-input::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.order-item-display-note {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin-top: 4px;
+  font-style: italic;
 }

@@ -398,6 +398,9 @@
               </svg>
             </button>
           </div>
+          <div class="order-item-note">
+            <textarea class="order-item-input" data-cart-id="${item.cartItemId}" placeholder="Add special instructions (e.g. no spicy, extra sauce...)" rows="1">${item.description || ''}</textarea>
+          </div>
         </div>`;
     }).join('');
 
@@ -483,6 +486,7 @@
         category: menuItem.category,
         price: unitPrice,
         qty: 1,
+        description: '',
         modifiers: modifiers,
         modifiersKey: modifiersKey
       });
@@ -645,7 +649,8 @@
     html += `<div class="detail-row" style="font-weight:600;margin-top:8px"><span>Item</span><span>Qty × Price</span></div>`;
     order.items.forEach((item) => {
       let modText = item.modifiers && item.modifiers.length > 0 ? `<br><small style="color:var(--text-secondary);font-size:0.75rem;">+ ${item.modifiers.map(m => m.name).join(', ')}</small>` : '';
-      html += `<div class="detail-row"><span>${item.name}${modText}</span><span>${item.qty} × RM ${item.price.toFixed(2)} = RM ${(item.qty * item.price).toFixed(2)}</span></div>`;
+      let noteText = item.description ? `<br><span class="order-item-display-note">Note: ${item.description}</span>` : '';
+      html += `<div class="detail-row"><span>${item.name}${modText}${noteText}</span><span>${item.qty} × RM ${item.price.toFixed(2)} = RM ${(item.qty * item.price).toFixed(2)}</span></div>`;
     });
     html += `<div class="detail-row detail-total"><span>Total</span><span>RM ${order.totalPrice.toFixed(2)}</span></div>`;
     els.orderDetailBody.innerHTML = html;
@@ -1220,6 +1225,16 @@
         } else {
           changeQty(btn.dataset.cartId, btn.dataset.action);
         }
+      }
+    });
+    
+    // Handle order item note input (delegated)
+    els.orderItems.addEventListener('input', (e) => {
+      if (e.target.classList.contains('order-item-input')) {
+        const cartItemId = e.target.dataset.cartId;
+        const val = e.target.value;
+        const item = currentOrder.find(o => o.cartItemId === cartItemId);
+        if (item) item.description = val;
       }
     });
 
