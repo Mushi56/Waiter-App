@@ -9,20 +9,20 @@
     { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: null },
     { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: null },
     // Burgers
-    { id: 4, name: 'Burger Wagyu Truffle', price: 49.90, category: 'Burgers', image: null },
+    { id: 4, name: 'Burger Wagyu Truffle', price: 49.90, category: 'Burgers', image: 'images/burger_wagyu_truffle.png' },
     { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: null },
     { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: null },
     { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: null },
     { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: null },
     { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: null },
     // Main Course
-    { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: null },
-    { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: null },
-    { id: 12, name: 'Grill Chicken Chop', price: 22.90, category: 'Main Course', image: null },
-    { id: 13, name: 'Lamb Grilled', price: 36.90, category: 'Main Course', image: null },
-    { id: 14, name: 'Lamb Grilled 1KG', price: 109.90, category: 'Main Course', image: null },
-    { id: 15, name: 'Lamb Grilled 500g', price: 59.90, category: 'Main Course', image: null },
-    { id: 16, name: 'Mix Platter', price: 38.90, category: 'Main Course', image: null },
+    { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: 'images/angus_ribeye_steak.png' },
+    { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/fried_chicken_chop.png' },
+    { id: 12, name: 'Grill Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/grill_chicken_chop.png' },
+    { id: 13, name: 'Lamb Grilled', price: 36.90, category: 'Main Course', image: 'images/lamb_grilled.png' },
+    { id: 14, name: 'Lamb Grilled 1KG', price: 109.90, category: 'Main Course', image: 'images/lamb_grilled.png' },
+    { id: 15, name: 'Lamb Grilled 500g', price: 59.90, category: 'Main Course', image: 'images/lamb_grilled.png' },
+    { id: 16, name: 'Mix Platter', price: 38.90, category: 'Main Course', image: 'images/mix_platter.png' },
     // Pasta
     { id: 17, name: 'Aglio Bolognaise', price: 18.90, category: 'Pasta', image: null },
     { id: 18, name: 'Aglio Olio', price: 15.90, category: 'Pasta', image: null },
@@ -213,7 +213,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '3'; // Bump this to force menu reset
+  const MENU_VERSION = '4'; // Bump this to force menu reset
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
