@@ -35,10 +35,10 @@
     { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=500&auto=format&fit=crop&q=60' },
     { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1626078436897-10903337996c?w=500&auto=format&fit=crop&q=60' },
     // Salted Egg
-    { id: 27, name: 'Salted Egg Calamari', price: 17.90, category: 'Salted Egg', image: null },
-    { id: 28, name: 'Salted Egg Chicken', price: 14.90, category: 'Salted Egg', image: null },
-    { id: 29, name: 'Salted Egg Prawn', price: 21.90, category: 'Salted Egg', image: null },
-    { id: 30, name: 'Salted Egg Zinger', price: 19.90, category: 'Salted Egg', image: null },
+    { id: 27, name: 'Salted Egg Calamari', price: 17.90, category: 'Salted Egg', image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&auto=format&fit=crop&q=60' },
+    { id: 28, name: 'Salted Egg Chicken', price: 14.90, category: 'Salted Egg', image: 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=500&auto=format&fit=crop&q=60' },
+    { id: 29, name: 'Salted Egg Prawn', price: 21.90, category: 'Salted Egg', image: 'https://images.unsplash.com/photo-1559742811-82410b49c00b?w=500&auto=format&fit=crop&q=60' },
+    { id: 30, name: 'Salted Egg Zinger', price: 19.90, category: 'Salted Egg', image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&auto=format&fit=crop&q=60' },
     // Snacks
     { id: 31, name: 'Cheesy Bacon Fries', price: 12.90, category: 'Snacks', image: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?w=500&auto=format&fit=crop&q=60' },
     { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=500&auto=format&fit=crop&q=60' },
@@ -57,11 +57,11 @@
     { id: 43, name: 'Ice Passionfruit Tea', price: 4.00, category: 'Non Coffee', image: 'https://images.unsplash.com/photo-1595981267035-7b04ca84a810?w=500&auto=format&fit=crop&q=60' },
     { id: 44, name: 'Ice Lemon Tea', price: 4.00, category: 'Non Coffee', image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop&q=60' },
     // Mocktails
-    { id: 45, name: 'Watermelon Blackcurrant', price: 6.90, category: 'Mocktails', image: null },
-    { id: 46, name: 'Virgin Mojitos', price: 6.90, category: 'Mocktails', image: null },
-    { id: 47, name: 'Tropical Sunrise', price: 6.90, category: 'Mocktails', image: null },
-    { id: 48, name: 'TripleBerries', price: 6.90, category: 'Mocktails', image: null },
-    { id: 49, name: 'Solero', price: 6.00, category: 'Mocktails', image: null },
+    { id: 45, name: 'Watermelon Blackcurrant', price: 6.90, category: 'Mocktails', image: 'https://images.unsplash.com/photo-1536935338218-d413d88e7a4a?w=500&auto=format&fit=crop&q=60' },
+    { id: 46, name: 'Virgin Mojitos', price: 6.90, category: 'Mocktails', image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500&auto=format&fit=crop&q=60' },
+    { id: 47, name: 'Tropical Sunrise', price: 6.90, category: 'Mocktails', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&auto=format&fit=crop&q=60' },
+    { id: 48, name: 'TripleBerries', price: 6.90, category: 'Mocktails', image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop&q=60' },
+    { id: 49, name: 'Solero', price: 6.00, category: 'Mocktails', image: 'https://images.unsplash.com/photo-1536935338218-d413d88e7a4a?w=500&auto=format&fit=crop&q=60' },
     // Desserts
     { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=500&auto=format&fit=crop&q=60' },
     { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&auto=format&fit=crop&q=60' },
@@ -213,7 +213,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '5'; // Bump this to force menu reset
+  const MENU_VERSION = '6'; // Bump this to force menu reset
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
