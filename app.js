@@ -1,18 +1,4 @@
-// ===== Smart Menu - App Logic (Firebase Enabled) =====
-const firebaseConfig = {
-  apiKey: "AIzaSyD8Bnk7T8U-E6uGUD0PvWeMTj4rc_VGIRA",
-  authDomain: "smart-menu-37700.firebaseapp.com",
-  projectId: "smart-menu-37700",
-  storageBucket: "smart-menu-37700.firebasestorage.app",
-  messagingSenderId: "585189865885",
-  appId: "1:585189865885:web:06fdef55003cf8ea105774",
-  measurementId: "G-ECW2XGR6VV"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
+// ===== Waiter Helper - App Logic =====
 (function () {
   'use strict';
 
@@ -20,15 +6,15 @@ const db = firebase.firestore();
   const DEFAULT_MENU = [
     // Wraps
     { id: 1, name: 'Beef Tortilla', price: 18.90, category: 'Wraps', image: 'images/beef_tortilla.png' },
-    { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&auto=format&fit=crop&q=60' },
-    { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&auto=format&fit=crop&q=60' },
+    { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: null },
+    { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: null },
     // Burgers
     { id: 4, name: 'Burger Wagyu Truffle', price: 49.90, category: 'Burgers', image: 'images/burger_wagyu_truffle.png' },
-    { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: 'https://images.unsplash.com/photo-1610440042657-6dd2c09893a4?w=500&auto=format&fit=crop&q=60' },
-    { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: 'https://images.unsplash.com/photo-1582196016295-f8c499b33d0a?w=500&auto=format&fit=crop&q=60' },
-    { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=60' },
-    { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500&auto=format&fit=crop&q=60' },
-    { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&auto=format&fit=crop&q=60' },
+    { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: null },
+    { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: null },
+    { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: null },
+    { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: null },
+    { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: null },
     // Main Course
     { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: 'images/angus_ribeye_steak.png' },
     { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/fried_chicken_chop.png' },
@@ -38,48 +24,48 @@ const db = firebase.firestore();
     { id: 15, name: 'Lamb Grilled 500g', price: 59.90, category: 'Main Course', image: 'images/lamb_grilled.png' },
     { id: 16, name: 'Mix Platter', price: 38.90, category: 'Main Course', image: 'images/mix_platter.png' },
     // Pasta
-    { id: 17, name: 'Aglio Bolognaise', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1546549032-9571cd6b27df?w=500&auto=format&fit=crop&q=60' },
-    { id: 18, name: 'Aglio Olio', price: 15.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=500&auto=format&fit=crop&q=60' },
-    { id: 19, name: 'Amatricana', price: 19.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1551892374-ecf57bb23e4b?w=500&auto=format&fit=crop&q=60' },
-    { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1598866594230-a7c02762a7b0?w=500&auto=format&fit=crop&q=60' },
-    { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1612450866873-41cc0b070498?w=500&auto=format&fit=crop&q=60' },
-    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=500&auto=format&fit=crop&q=60' },
-    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1473093226795-af9932fe5856?w=500&auto=format&fit=crop&q=60' },
-    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=500&auto=format&fit=crop&q=60' },
-    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=500&auto=format&fit=crop&q=60' },
-    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1626078436897-10903337996c?w=500&auto=format&fit=crop&q=60' },
+    { id: 17, name: 'Aglio Bolognaise', price: 18.90, category: 'Pasta', image: null },
+    { id: 18, name: 'Aglio Olio', price: 15.90, category: 'Pasta', image: null },
+    { id: 19, name: 'Amatricana', price: 19.90, category: 'Pasta', image: null },
+    { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: null },
+    { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: null },
+    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: null },
+    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: null },
+    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: null },
+    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: null },
+    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: null },
     // Salted Egg
-    { id: 27, name: 'Salted Egg Calamari', price: 17.90, category: 'Salted Egg', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&auto=format&fit=crop&q=60' },
-    { id: 28, name: 'Salted Egg Chicken', price: 14.90, category: 'Salted Egg', image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&auto=format&fit=crop&q=60' },
-    { id: 29, name: 'Salted Egg Prawn', price: 21.90, category: 'Salted Egg', image: 'https://images.unsplash.com/photo-1559742811-822873691df8?w=500&auto=format&fit=crop&q=60' },
-    { id: 30, name: 'Salted Egg Zinger', price: 19.90, category: 'Salted Egg', image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&auto=format&fit=crop&q=60' },
+    { id: 27, name: 'Salted Egg Calamari', price: 17.90, category: 'Salted Egg', image: null },
+    { id: 28, name: 'Salted Egg Chicken', price: 14.90, category: 'Salted Egg', image: null },
+    { id: 29, name: 'Salted Egg Prawn', price: 21.90, category: 'Salted Egg', image: null },
+    { id: 30, name: 'Salted Egg Zinger', price: 19.90, category: 'Salted Egg', image: null },
     // Snacks
-    { id: 31, name: 'Cheesy Bacon Fries', price: 12.90, category: 'Snacks', image: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?w=500&auto=format&fit=crop&q=60' },
-    { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=500&auto=format&fit=crop&q=60' },
-    { id: 33, name: 'Chicken n Fries', price: 12.90, category: 'Snacks', image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&auto=format&fit=crop&q=60' },
-    { id: 34, name: 'Onion Rings', price: 9.90, category: 'Snacks', image: 'https://images.unsplash.com/photo-1639024471283-03518883511d?w=500&auto=format&fit=crop&q=60' },
-    { id: 35, name: 'Plain Fries', price: 7.00, category: 'Snacks', image: 'https://images.unsplash.com/photo-1630384066202-187c662c118e?w=500&auto=format&fit=crop&q=60' },
-    { id: 36, name: 'Sober Cheese Snack', price: 5.00, category: 'Snacks', image: 'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=500&auto=format&fit=crop&q=60' },
+    { id: 31, name: 'Cheesy Bacon Fries', price: 12.90, category: 'Snacks', image: null },
+    { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: null },
+    { id: 33, name: 'Chicken n Fries', price: 12.90, category: 'Snacks', image: null },
+    { id: 34, name: 'Onion Rings', price: 9.90, category: 'Snacks', image: null },
+    { id: 35, name: 'Plain Fries', price: 7.00, category: 'Snacks', image: null },
+    { id: 36, name: 'Sober Cheese Snack', price: 5.00, category: 'Snacks', image: null },
     // Coffee
-    { id: 37, name: 'Mocha', price: 12.00, category: 'Coffee', image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&auto=format&fit=crop&q=60' },
-    { id: 38, name: 'Latte', price: 10.90, category: 'Coffee', image: 'https://images.unsplash.com/photo-1541167760496-162955ed8a9f?w=500&auto=format&fit=crop&q=60' },
-    { id: 39, name: 'Americano', price: 7.00, category: 'Coffee', image: 'https://images.unsplash.com/photo-1551033406-611cf9a28f67?w=500&auto=format&fit=crop&q=60' },
+    { id: 37, name: 'Mocha', price: 12.00, category: 'Coffee', image: null },
+    { id: 38, name: 'Latte', price: 10.90, category: 'Coffee', image: null },
+    { id: 39, name: 'Americano', price: 7.00, category: 'Coffee', image: null },
     // Non Coffee
-    { id: 40, name: 'Chocolate', price: 12.00, category: 'Non Coffee', image: 'https://images.unsplash.com/photo-1544787210-2211d7c9ad82?w=500&auto=format&fit=crop&q=60' },
-    { id: 41, name: 'Matcha', price: 11.00, category: 'Non Coffee', image: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=500&auto=format&fit=crop&q=60' },
-    { id: 42, name: 'Ice Peach Tea', price: 4.00, category: 'Non Coffee', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&auto=format&fit=crop&q=60' },
-    { id: 43, name: 'Ice Passionfruit Tea', price: 4.00, category: 'Non Coffee', image: 'https://images.unsplash.com/photo-1595981267035-7b04ca84a810?w=500&auto=format&fit=crop&q=60' },
-    { id: 44, name: 'Ice Lemon Tea', price: 4.00, category: 'Non Coffee', image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop&q=60' },
+    { id: 40, name: 'Chocolate', price: 12.00, category: 'Non Coffee', image: null },
+    { id: 41, name: 'Matcha', price: 11.00, category: 'Non Coffee', image: null },
+    { id: 42, name: 'Ice Peach Tea', price: 4.00, category: 'Non Coffee', image: null },
+    { id: 43, name: 'Ice Passionfruit Tea', price: 4.00, category: 'Non Coffee', image: null },
+    { id: 44, name: 'Ice Lemon Tea', price: 4.00, category: 'Non Coffee', image: null },
     // Mocktails
-    { id: 45, name: 'Watermelon Blackcurrant', price: 6.90, category: 'Mocktails', image: 'https://images.unsplash.com/photo-1563223771-5fe4038fbfc9?w=500&auto=format&fit=crop&q=60' },
-    { id: 46, name: 'Virgin Mojitos', price: 6.90, category: 'Mocktails', image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop&q=60' },
-    { id: 47, name: 'Tropical Sunrise', price: 6.90, category: 'Mocktails', image: 'https://images.unsplash.com/photo-1547514701-42782101795e?w=500&auto=format&fit=crop&q=60' },
-    { id: 48, name: 'TripleBerries', price: 6.90, category: 'Mocktails', image: 'https://images.unsplash.com/photo-1595981267035-7b04ca84a810?w=500&auto=format&fit=crop&q=60' },
-    { id: 49, name: 'Solero', price: 6.00, category: 'Mocktails', image: 'https://images.unsplash.com/photo-1488900128323-21503983a07e?w=500&auto=format&fit=crop&q=60' },
+    { id: 45, name: 'Watermelon Blackcurrant', price: 6.90, category: 'Mocktails', image: null },
+    { id: 46, name: 'Virgin Mojitos', price: 6.90, category: 'Mocktails', image: null },
+    { id: 47, name: 'Tropical Sunrise', price: 6.90, category: 'Mocktails', image: null },
+    { id: 48, name: 'TripleBerries', price: 6.90, category: 'Mocktails', image: null },
+    { id: 49, name: 'Solero', price: 6.00, category: 'Mocktails', image: null },
     // Desserts
-    { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=500&auto=format&fit=crop&q=60' },
-    { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&auto=format&fit=crop&q=60' },
-    { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&auto=format&fit=crop&q=60' },
+    { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: null },
+    { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: null },
+    { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: null },
   ];
 
   const EMOJI_MAP = {
@@ -226,77 +212,32 @@ const db = firebase.firestore();
     registerSW();
   }
 
-  // --- Cloud Persistence (Firebase) ---
+  // --- LocalStorage ---
+  const MENU_VERSION = '4'; // Bump this to force menu reset
+
   function loadData() {
-    console.log('📡 Connecting to Smart Menu Cloud...');
-    
-    // 1. Sync Menu Items
-    db.collection('settings').doc('menuData').onSnapshot((doc) => {
-      if (doc.exists) {
-        menuItems = doc.data().items || DEFAULT_MENU;
-      } else {
-        menuItems = [...DEFAULT_MENU];
-        db.collection('settings').doc('menuData').set({ items: menuItems });
-      }
-      renderMenu();
-      renderAdminMenu();
-    });
+    const storedVersion = localStorage.getItem('wh_menu_version');
+    const storedMenu = localStorage.getItem('wh_menu');
 
-    // 2. Sync Table Presets
-    db.collection('settings').doc('tableData').onSnapshot((doc) => {
-      if (doc.exists) {
-        tablePresets = doc.data().items || DEFAULT_TABLE_PRESETS;
-      } else {
-        tablePresets = DEFAULT_TABLE_PRESETS;
-        db.collection('settings').doc('tableData').set({ items: tablePresets });
-      }
-      renderTablePresets();
-      renderAdminTables();
-    });
-
-    // 3. Sync Orders (Global History)
-    db.collection('orders').orderBy('timestamp', 'desc').limit(50).onSnapshot((snapshot) => {
-      orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      renderOrder();
-      renderHistoryPreview();
-    });
-
-    isAdmin = localStorage.getItem('wh_is_admin') === 'true';
-    applyAdminState();
-  }
-
-  // Helper to upload base64/dataURL to Firebase Storage
-  async function uploadToCloud(dataUrl, path) {
-    if (!dataUrl || !dataUrl.startsWith('data:')) return dataUrl; // Already a URL or null
-    try {
-      const ref = storage.ref().child(path);
-      const response = await fetch(dataUrl);
-      const blob = await response.blob();
-      const snapshot = await ref.put(blob);
-      return await snapshot.ref.getDownloadURL();
-    } catch (e) {
-      console.error("Upload failed:", e);
-      return dataUrl;
+    // Reset menu if version changed (new menu data)
+    if (storedVersion !== MENU_VERSION) {
+      menuItems = [...DEFAULT_MENU];
+      saveMenu();
+      localStorage.setItem('wh_menu_version', MENU_VERSION);
+    } else {
+      menuItems = storedMenu ? JSON.parse(storedMenu) : [...DEFAULT_MENU];
+      if (!storedMenu) saveMenu();
     }
+
+    const storedOrders = localStorage.getItem('wh_orders');
+    orders = storedOrders ? JSON.parse(storedOrders) : [];
+
+    const storedNextId = localStorage.getItem('wh_nextId');
+    nextMenuId = storedNextId ? parseInt(storedNextId) : 100;
   }
 
-  function saveMenu() {
-    localStorage.setItem('wh_menu', JSON.stringify(menuItems));
-    db.collection('settings').doc('menuData').set({ items: menuItems });
-  }
-
-  function saveOrders() {
-    // For cloud orders, we usually add new docs rather than overwriting a list
-    // But for a simple sync, we'll keep it consistent with your current logic
-    localStorage.setItem('wh_orders', JSON.stringify(orders));
-    db.collection('settings').doc('orderHistory').set({ items: orders });
-  }
-
-  function saveTablePresets() {
-    localStorage.setItem('waiter_table_presets', JSON.stringify(tablePresets));
-    db.collection('settings').doc('tableData').set({ items: tablePresets });
-  }
-
+  function saveMenu() { localStorage.setItem('wh_menu', JSON.stringify(menuItems)); }
+  function saveOrders() { localStorage.setItem('wh_orders', JSON.stringify(orders)); }
   function saveNextId() { localStorage.setItem('wh_nextId', nextMenuId.toString()); }
 
   // --- Admin Logic ---
@@ -629,9 +570,6 @@ const db = firebase.firestore();
 
     orders.unshift(order);
     saveOrders();
-    
-    // Sync to Cloud
-    db.collection('orders').add(order).catch(e => console.error("Cloud order failed:", e));
 
     currentOrder = [];
     renderOrder();
@@ -855,7 +793,7 @@ const db = firebase.firestore();
     setTimeout(() => els.newItemName.focus(), 300);
   }
 
-  async function confirmAddItem() {
+  function confirmAddItem() {
     const name = els.newItemName.value.trim();
     const price = parseFloat(els.newItemPrice.value);
     const category = els.newItemCategory.value;
@@ -864,40 +802,22 @@ const db = firebase.firestore();
     if (!name) { showToast('⚠️ Please enter item name'); return; }
     if (isNaN(price) || price <= 0) { showToast('⚠️ Please enter a valid price'); return; }
 
-    showToast('⏳ Uploading to cloud...');
-
-    // Process gallery (Upload each to cloud)
-    const cloudGallery = [];
-    for (let p of pendingGallery) {
-      const cloudUrl = await uploadToCloud(p.data, `menu/${Date.now()}-${Math.random()}.jpg`);
-      cloudGallery.push({ ...p, data: cloudUrl });
-    }
-
-    const thumbImg = cloudGallery.find(g => g.isThumbnail) || cloudGallery[0];
-
+    const thumbImg = pendingGallery.find(g => g.isThumbnail);
     const newItem = {
       id: nextMenuId++,
-      name,
-      price,
-      category,
-      description,
+      name, price, category, description,
       image: thumbImg ? thumbImg.data : null,
-      gallery: cloudGallery.map(g => g.data)
+      gallery: pendingGallery.map(g => g.data)
     };
 
     menuItems.push(newItem);
     saveMenu();
     saveNextId();
+
     renderMenu();
     renderMenuManage();
-    
     els.addItemModal.classList.add('hidden');
-    // resetAddItemForm(); // Ensure this exists or just reset variables
-    pendingGallery = [];
-    els.newItemName.value = '';
-    els.newItemPrice.value = '';
-    els.newItemDesc.value = '';
-    showToast('✅ Item added to cloud!');
+    showToast('✅ Item added!');
   }
 
   // --- Edit Menu Item ---
@@ -958,7 +878,7 @@ const db = firebase.firestore();
     setTimeout(() => els.editItemName.focus(), 300);
   }
 
-  async function confirmEditItem() {
+  function confirmEditItem() {
     const id = parseInt(els.editItemId.value);
     const name = els.editItemName.value.trim();
     const price = parseFloat(els.editItemPrice.value);
@@ -971,23 +891,14 @@ const db = firebase.firestore();
     const item = menuItems.find((m) => m.id === id);
     if (!item) return;
 
-    showToast('⏳ Updating cloud...');
-
-    // Process gallery (Upload new images)
-    const cloudGallery = [];
-    for (let p of editPendingGallery) {
-      const cloudUrl = await uploadToCloud(p.data, `menu/${Date.now()}-${Math.random()}.jpg`);
-      cloudGallery.push({ ...p, data: cloudUrl });
-    }
-
     item.name = name;
     item.price = price;
     item.category = category;
     item.description = description;
     
-    const thumbImg = cloudGallery.find(g => g.isThumbnail) || cloudGallery[0];
+    const thumbImg = editPendingGallery.find(g => g.isThumbnail);
     item.image = thumbImg ? thumbImg.data : null;
-    item.gallery = cloudGallery.map(g => g.data);
+    item.gallery = editPendingGallery.map(g => g.data);
 
     // Also update price in current order if present
     const orderItemsToUpdate = currentOrder.filter((o) => o.id === id);
@@ -1001,7 +912,7 @@ const db = firebase.firestore();
     renderOrder();
     renderMenuManage();
     els.editItemModal.classList.add('hidden');
-    showToast('✅ Cloud updated!');
+    showToast('✅ Item updated!');
   }
 
   function deleteMenuItem(id) {
@@ -1017,7 +928,6 @@ const db = firebase.firestore();
   // --- Table Management ---
   function saveTablePresets() {
     localStorage.setItem('waiter_table_presets', JSON.stringify(tablePresets));
-    db.collection('settings').doc('tableData').set({ items: tablePresets });
   }
 
   function renderTablePresets() {
