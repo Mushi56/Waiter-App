@@ -143,6 +143,7 @@
     searchCloseBtn: $('#searchCloseBtn'),
     menuSearchInput: $('#menuSearchInput'),
     // Table select modal
+    openTableModalBtn: $('#openTableModalBtn'),
     tableSelectModal: $('#tableSelectModal'),
     closeTableModal: $('#closeTableModal'),
     tableGridPresets: $('#tableGridPresets'),
@@ -1245,8 +1246,8 @@
     }
 
     // Table Selection Modal
-    if (els.headerTableBtn) {
-      els.headerTableBtn.onclick = () => {
+    if (els.openTableModalBtn) {
+      els.openTableModalBtn.onclick = () => {
         els.tableSelectModal.classList.remove('hidden');
         renderTablePresets();
       };
