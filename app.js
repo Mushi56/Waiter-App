@@ -68,11 +68,61 @@
     { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: null },
   ];
 
-  const EMOJI_MAP = {
-    Wraps: '🌯', Burgers: '🍔', 'Main Course': '🥩', Pasta: '🍝',
-    'Salted Egg': '🥚', Snacks: '🍟', Coffee: '☕', 'Non Coffee': '🧋',
-    Mocktails: '🍹', Desserts: '🍰'
+  let appCategories = JSON.parse(localStorage.getItem('waiter_categories')) || [
+    { name: 'Wraps', emoji: '🌯' }, { name: 'Burgers', emoji: '🍔' },
+    { name: 'Main Course', emoji: '🥩' }, { name: 'Pasta', emoji: '🍝' },
+    { name: 'Salted Egg', emoji: '🥚' }, { name: 'Snacks', emoji: '🍟' },
+    { name: 'Coffee', emoji: '☕' }, { name: 'Non Coffee', emoji: '🧋' },
+    { name: 'Mocktails', emoji: '🍹' }, { name: 'Desserts', emoji: '🍰' }
+  ];
+  let EMOJI_MAP = {};
+  function updateEmojiMap() {
+    EMOJI_MAP = {};
+    appCategories.forEach(c => EMOJI_MAP[c.name] = c.emoji);
+  }
+  updateEmojiMap();
+
+  function saveCategories() {
+    localStorage.setItem('waiter_categories', JSON.stringify(appCategories));
+    updateEmojiMap();
+    renderManageCategories();
+    populateCategorySelects();
+    renderMenu();
+  }
+
+  function renderManageCategories() {
+    if (!els.categoriesList) return;
+    els.categoriesList.innerHTML = appCategories.map((c, idx) => `
+      <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-card); padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--border);">
+        <span><span style="font-size:1.2rem; margin-right:8px;">${c.emoji}</span> <strong>${c.name}</strong></span>
+        <div style="display:flex; gap: 6px; align-items:center;">
+          <button type="button" onclick="moveCategory(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} style="background:var(--bg-secondary); color:var(--text-primary); border:none; border-radius:4px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; cursor:${idx === 0 ? 'not-allowed' : 'pointer'}; opacity:${idx === 0 ? 0.5 : 1};">&#9650;</button>
+          <button type="button" onclick="moveCategory(${idx}, 1)" ${idx === appCategories.length - 1 ? 'disabled' : ''} style="background:var(--bg-secondary); color:var(--text-primary); border:none; border-radius:4px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; cursor:${idx === appCategories.length - 1 ? 'not-allowed' : 'pointer'}; opacity:${idx === appCategories.length - 1 ? 0.5 : 1};">&#9660;</button>
+          <button type="button" onclick="removeCategory(${idx})" style="background:rgba(239,68,68,0.1); color:var(--danger); border:none; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; cursor:pointer;" ${appCategories.length === 1 ? 'disabled' : ''}>&times;</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.moveCategory = (idx, dir) => {
+    if (idx + dir < 0 || idx + dir >= appCategories.length) return;
+    const temp = appCategories[idx];
+    appCategories[idx] = appCategories[idx + dir];
+    appCategories[idx + dir] = temp;
+    saveCategories();
   };
+
+  window.removeCategory = (idx) => {
+    if (appCategories.length <= 1) return showToast('Must have at least one category');
+    appCategories.splice(idx, 1);
+    saveCategories();
+  };
+
+  function populateCategorySelects() {
+    const opts = appCategories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+    if (els.newItemCategory) els.newItemCategory.innerHTML = opts;
+    if (els.editItemCategory) els.editItemCategory.innerHTML = opts;
+  }
 
   // --- State ---
   let menuItems = [];
@@ -130,6 +180,21 @@
     editItemDesc: $('#editItemDesc'),
     editItemImages: $('#editItemImages'),
     editGalleryPreviews: $('#editGalleryPreviews'),
+    // Dynamic Categories & Addons UI
+    manageCategoriesBtn: $('#manageCategoriesBtn'),
+    manageCategoriesModal: $('#manageCategoriesModal'),
+    categoriesList: $('#categoriesList'),
+    newCategoryEmoji: $('#newCategoryEmoji'),
+    newCategoryName: $('#newCategoryName'),
+    addNewCategoryBtn: $('#addNewCategoryBtn'),
+    newAddonList: $('#newAddonList'),
+    newAddonName: $('#newAddonName'),
+    newAddonPrice: $('#newAddonPrice'),
+    addNewAddonBtn: $('#addNewAddonBtn'),
+    editAddonList: $('#editAddonList'),
+    editAddonName: $('#editAddonName'),
+    editAddonPrice: $('#editAddonPrice'),
+    editNewAddonBtn: $('#editNewAddonBtn'),
     // Addon modal
     addonModal: $('#addonModal'),
     addonTitle: $('#addonTitle'),
@@ -182,38 +247,51 @@
   }
 
   const ADDONS_DATA = {
-    'Main Course': [
-      { name: 'Mac and Cheese', price: 4 },
-      { name: 'Extra Grilled/Fried Chicken', price: 12 },
-      { name: '2 pcs Beef Bacon', price: 4 },
-      { name: 'Mashed Potato', price: 3 },
-      { name: 'Extra Brown Sauce', price: 3 },
-      { name: 'Plain Rice', price: 2 }
-    ],
-    'Pasta': [
-      { name: 'Grilled Chicken', price: 3 },
-      { name: 'Seafood', price: 5 },
-      { name: 'Prawn Only', price: 5 },
-      { name: 'Squid Only', price: 5 },
-      { name: 'Zinger', price: 3 },
-      { name: 'Grilled Lamb', price: 13 },
-      { name: 'Beef Patty', price: 5 },
-      { name: 'Australian Wagyu', price: 20 }
-    ],
-    'Burgers': [
-      { name: 'Mac and Cheese', price: 4 },
-      { name: '2 pcs Beef Bacon', price: 3 },
-      { name: '3 pcs Onion Ring', price: 2 },
-      { name: 'Cheddar Cheese', price: 1 },
-      { name: 'Mozarella Cheese', price: 4 },
-      { name: 'Truffle Sauce', price: 5 }
-    ]
+    'Main Course': [{
+      name: 'Add-ons',
+      type: 'checkbox',
+      options: [
+        { name: 'Mac and Cheese', price: 4 },
+        { name: 'Extra Grilled/Fried Chicken', price: 12 },
+        { name: '2 pcs Beef Bacon', price: 4 },
+        { name: 'Mashed Potato', price: 3 },
+        { name: 'Extra Brown Sauce', price: 3 },
+        { name: 'Plain Rice', price: 2 }
+      ]
+    }],
+    'Pasta': [{
+      name: 'Add-ons',
+      type: 'checkbox',
+      options: [
+        { name: 'Grilled Chicken', price: 3 },
+        { name: 'Seafood', price: 5 },
+        { name: 'Prawn Only', price: 5 },
+        { name: 'Squid Only', price: 5 },
+        { name: 'Zinger', price: 3 },
+        { name: 'Grilled Lamb', price: 13 },
+        { name: 'Beef Patty', price: 5 },
+        { name: 'Australian Wagyu', price: 20 }
+      ]
+    }],
+    'Burgers': [{
+      name: 'Add-ons',
+      type: 'checkbox',
+      options: [
+        { name: 'Mac and Cheese', price: 4 },
+        { name: '2 pcs Beef Bacon', price: 3 },
+        { name: '3 pcs Onion Ring', price: 2 },
+        { name: 'Cheddar Cheese', price: 1 },
+        { name: 'Mozarella Cheese', price: 4 },
+        { name: 'Truffle Sauce', price: 5 }
+      ]
+    }]
   };
 
   // --- Init ---
   function init() {
     loadData();
     applyAdminState();
+    populateCategorySelects();
     renderMenu();
     renderOrder();
     renderHistoryPreview();
@@ -324,6 +402,15 @@
 
   // --- Render Menu Grid ---
   function renderMenu() {
+    const categoryTabs = document.getElementById('categoryTabs');
+    if (categoryTabs) {
+      let tabsHtml = `<button class="cat-tab ${activeCategory === 'All' ? 'active' : ''}" data-category="All">All</button>`;
+      appCategories.forEach(c => {
+        tabsHtml += `<button class="cat-tab ${activeCategory === c.name ? 'active' : ''}" data-category="${c.name}">${c.name}</button>`;
+      });
+      categoryTabs.innerHTML = tabsHtml;
+    }
+
     const query = els.menuSearchInput ? els.menuSearchInput.value.toLowerCase().trim() : '';
 
     let filtered = activeCategory === 'All'
@@ -332,17 +419,14 @@
 
     // Apply search filter
     if (query) {
-      filtered = filtered.filter(i => 
-        i.name.toLowerCase().includes(query) || 
+      filtered = filtered.filter(i =>
+        i.name.toLowerCase().includes(query) ||
         (i.desc && i.desc.toLowerCase().includes(query))
       );
     }
 
     if (activeCategory === 'All' && !query) {
-      const categoryOrder = [
-        'Main Course', 'Burgers', 'Pasta', 'Salted Egg', 'Wraps',
-        'Snacks', 'Mocktails', 'Coffee', 'Non Coffee', 'Desserts'
-      ];
+      const categoryOrder = appCategories.map(c => c.name);
       filtered.sort((a, b) => {
         let indexA = categoryOrder.indexOf(a.category);
         let indexB = categoryOrder.indexOf(b.category);
@@ -408,7 +492,7 @@
 
       const menuItem = menuItems.find(m => m.id === item.id);
       const category = item.category || (menuItem ? menuItem.category : '');
-      const canEditAddons = ADDONS_DATA[category];
+      const canEditAddons = (menuItem && menuItem.addons && menuItem.addons.length > 0) || ADDONS_DATA[category];
 
       const modText = item.modifiers && item.modifiers.length > 0 ? `<br><span style="color:var(--text-secondary);font-size:0.75rem;">+ ${item.modifiers.map(m => m.name).join(', ')}</span>` : '';
 
@@ -452,7 +536,7 @@
     const menuItem = menuItems.find((m) => m.id === id);
     if (!menuItem) return;
 
-    if (ADDONS_DATA[menuItem.category]) {
+    if ((menuItem.modifierGroups && menuItem.modifierGroups.length > 0) || ADDONS_DATA[menuItem.category]) {
       openAddonModal(menuItem);
     } else {
       addCartItem(menuItem, []);
@@ -461,19 +545,36 @@
 
   function openAddonModal(menuItem, existingModifiers = []) {
     pendingAddonItem = menuItem;
-    els.addonTitle.textContent = editingCartItemId ? `Edit ${menuItem.name} Add-ons` : `${menuItem.name} Add-ons`;
-    const addons = ADDONS_DATA[menuItem.category];
-    els.addonList.innerHTML = addons.map((addon, index) => {
-      const isChecked = existingModifiers.some(m => m.name === addon.name) ? 'checked' : '';
+    els.addonTitle.textContent = editingCartItemId ? `Edit ${menuItem.name} Options` : `${menuItem.name} Options`;
+
+    const modifierGroups = (menuItem.modifierGroups && menuItem.modifierGroups.length > 0) ? menuItem.modifierGroups : (ADDONS_DATA[menuItem.category] || []);
+
+    els.addonList.innerHTML = modifierGroups.map((group, gIdx) => {
+      const optionsHtml = group.options.map((opt, oIdx) => {
+        const isChecked = existingModifiers.some(m => m.name === opt.name) ? 'checked' : '';
+        const inputType = group.type === 'radio' ? 'radio' : 'checkbox';
+        const inputName = group.type === 'radio' ? `name="modGroup_${gIdx}"` : '';
+        return `
+          <div class="addon-item" style="padding:6px 0;">
+            <label style="display:flex; align-items:center; cursor:pointer; flex:1;">
+              <input type="${inputType}" ${inputName} value="${gIdx}_${oIdx}" data-gidx="${gIdx}" data-oidx="${oIdx}" ${isChecked}>
+              <span class="addon-name" style="margin-left:12px;">${opt.name}</span>
+            </label>
+            <span class="addon-price">+RM ${opt.price.toFixed(2)}</span>
+          </div>`;
+      }).join('');
+
       return `
-        <div class="addon-item">
-          <label>
-            <input type="checkbox" value="${index}" ${isChecked}>
-            <span class="addon-name">${addon.name}</span>
-          </label>
-          <span class="addon-price">+RM ${addon.price.toFixed(2)}</span>
-        </div>`;
+        <div style="margin-bottom:16px;">
+          <h4 style="margin:0 0 8px 0; font-size:1rem; border-bottom:1px solid var(--border); padding-bottom:6px; display:flex; justify-content:space-between;">
+            <span>${group.name}</span> 
+            <span style="font-size:0.75rem; color:var(--text-secondary); font-weight:normal;">${group.type === 'radio' ? '(Select 1)' : '(Optional)'}</span>
+          </h4>
+          ${optionsHtml}
+        </div>
+      `;
     }).join('');
+
     els.addonModal.classList.remove('hidden');
   }
 
@@ -490,9 +591,14 @@
 
   function confirmAddons() {
     if (!pendingAddonItem) return;
-    const addons = ADDONS_DATA[pendingAddonItem.category];
-    const checkboxes = els.addonList.querySelectorAll('input[type="checkbox"]:checked');
-    const selectedAddons = Array.from(checkboxes).map(cb => addons[parseInt(cb.value)]);
+    const modifierGroups = (pendingAddonItem.modifierGroups && pendingAddonItem.modifierGroups.length > 0) ? pendingAddonItem.modifierGroups : (ADDONS_DATA[pendingAddonItem.category] || []);
+
+    const inputs = els.addonList.querySelectorAll('input:checked');
+    const selectedAddons = Array.from(inputs).map(input => {
+      const gIdx = parseInt(input.dataset.gidx);
+      const oIdx = parseInt(input.dataset.oidx);
+      return modifierGroups[gIdx].options[oIdx];
+    });
 
     if (editingCartItemId) {
       updateCartItemModifiers(editingCartItemId, selectedAddons);
@@ -827,13 +933,68 @@
     renderNewGallery();
   };
 
+  let pendingModifierGroups = [];
+  function renderNewModifierGroups() {
+    const listEl = document.getElementById('newModifierGroupsList');
+    if (!listEl) return;
+    listEl.innerHTML = pendingModifierGroups.map((group, gIdx) => `
+      <div style="background:var(--bg-card); padding:12px; border:1px solid var(--border); border-radius:var(--radius-md);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <strong>${group.name}</strong> 
+            <span style="font-size:0.75rem; color:var(--text-secondary); background:var(--bg-secondary); padding:2px 6px; border-radius:12px; margin-left:6px;">${group.type === 'radio' ? 'Single Choice' : 'Multiple Choice'}</span>
+          </div>
+          <button type="button" onclick="removeNewGroup(${gIdx})" style="color:var(--danger); background:none; border:none; cursor:pointer; font-size:1.2rem;">&times;</button>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
+          ${group.options.map((opt, oIdx) => `
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.9rem; padding:6px 10px; background:var(--bg-secondary); border-radius:var(--radius-sm);">
+              <span>${opt.name} <span class="text-muted" style="margin-left:4px;">(+RM ${opt.price.toFixed(2)})</span></span>
+              <button type="button" onclick="removeNewGroupOption(${gIdx}, ${oIdx})" style="color:var(--danger); background:rgba(239,68,68,0.1); border:none; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; cursor:pointer;">&times;</button>
+            </div>
+          `).join('')}
+        </div>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="newOptName_${gIdx}" placeholder="Option name" style="flex:1; padding:6px; font-size:0.9rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary);">
+          <input type="number" id="newOptPrice_${gIdx}" placeholder="+RM 0" style="width:70px; padding:6px; font-size:0.9rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary);" step="0.01">
+          <button type="button" onclick="addNewGroupOption(${gIdx})" class="btn-accent" style="padding:0 12px; font-size:0.85rem; border-radius:var(--radius-sm);">Add Option</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.removeNewGroup = (gIdx) => {
+    pendingModifierGroups.splice(gIdx, 1);
+    renderNewModifierGroups();
+  };
+
+  window.removeNewGroupOption = (gIdx, oIdx) => {
+    pendingModifierGroups[gIdx].options.splice(oIdx, 1);
+    renderNewModifierGroups();
+  };
+
+  window.addNewGroupOption = (gIdx) => {
+    const nameInput = document.getElementById(`newOptName_${gIdx}`);
+    const priceInput = document.getElementById(`newOptPrice_${gIdx}`);
+    const name = nameInput.value.trim();
+    const price = parseFloat(priceInput.value) || 0;
+    if (!name) return showToast('Please enter an option name');
+
+    pendingModifierGroups[gIdx].options.push({ name, price });
+    renderNewModifierGroups();
+  };
+
   function openAddItemModal() {
     els.newItemName.value = '';
     els.newItemPrice.value = '';
     els.newItemCategory.value = 'Wraps';
     els.newItemDesc.value = '';
+    const newGroupName = document.getElementById('newGroupName');
+    if (newGroupName) newGroupName.value = '';
     pendingGallery = [];
+    pendingModifierGroups = [];
     renderNewGallery();
+    renderNewModifierGroups();
     els.addItemModal.classList.remove('hidden');
     setTimeout(() => els.newItemName.focus(), 300);
   }
@@ -851,6 +1012,7 @@
     const newItem = {
       id: nextMenuId++,
       name, price, category, description,
+      modifierGroups: JSON.parse(JSON.stringify(pendingModifierGroups)),
       image: thumbImg ? thumbImg.data : null,
       gallery: pendingGallery.map(g => g.data)
     };
@@ -901,6 +1063,57 @@
     renderEditGallery();
   };
 
+  let editPendingModifierGroups = [];
+  function renderEditModifierGroups() {
+    const listEl = document.getElementById('editModifierGroupsList');
+    if (!listEl) return;
+    listEl.innerHTML = editPendingModifierGroups.map((group, gIdx) => `
+      <div style="background:var(--bg-card); padding:12px; border:1px solid var(--border); border-radius:var(--radius-md);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <strong>${group.name}</strong> 
+            <span style="font-size:0.75rem; color:var(--text-secondary); background:var(--bg-secondary); padding:2px 6px; border-radius:12px; margin-left:6px;">${group.type === 'radio' ? 'Single Choice' : 'Multiple Choice'}</span>
+          </div>
+          <button type="button" onclick="removeEditGroup(${gIdx})" style="color:var(--danger); background:none; border:none; cursor:pointer; font-size:1.2rem;">&times;</button>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
+          ${group.options.map((opt, oIdx) => `
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.9rem; padding:6px 10px; background:var(--bg-secondary); border-radius:var(--radius-sm);">
+              <span>${opt.name} <span class="text-muted" style="margin-left:4px;">(+RM ${opt.price.toFixed(2)})</span></span>
+              <button type="button" onclick="removeEditGroupOption(${gIdx}, ${oIdx})" style="color:var(--danger); background:rgba(239,68,68,0.1); border:none; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; cursor:pointer;">&times;</button>
+            </div>
+          `).join('')}
+        </div>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="editOptName_${gIdx}" placeholder="Option name" style="flex:1; padding:6px; font-size:0.9rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary);">
+          <input type="number" id="editOptPrice_${gIdx}" placeholder="+RM 0" style="width:70px; padding:6px; font-size:0.9rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary);" step="0.01">
+          <button type="button" onclick="addEditGroupOption(${gIdx})" class="btn-accent" style="padding:0 12px; font-size:0.85rem; border-radius:var(--radius-sm);">Add Option</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.removeEditGroup = (gIdx) => {
+    editPendingModifierGroups.splice(gIdx, 1);
+    renderEditModifierGroups();
+  };
+
+  window.removeEditGroupOption = (gIdx, oIdx) => {
+    editPendingModifierGroups[gIdx].options.splice(oIdx, 1);
+    renderEditModifierGroups();
+  };
+
+  window.addEditGroupOption = (gIdx) => {
+    const nameInput = document.getElementById(`editOptName_${gIdx}`);
+    const priceInput = document.getElementById(`editOptPrice_${gIdx}`);
+    const name = nameInput.value.trim();
+    const price = parseFloat(priceInput.value) || 0;
+    if (!name) return showToast('Please enter an option name');
+
+    editPendingModifierGroups[gIdx].options.push({ name, price });
+    renderEditModifierGroups();
+  };
+
   function openEditItemModal(id) {
     const item = menuItems.find((m) => m.id === id);
     if (!item) return;
@@ -918,6 +1131,11 @@
       editPendingGallery.push({ id: 0, data: item.image, isThumbnail: true });
     }
     renderEditGallery();
+
+    editPendingModifierGroups = item.modifierGroups ? JSON.parse(JSON.stringify(item.modifierGroups)) : [];
+    const editGroupName = document.getElementById('editGroupName');
+    if (editGroupName) editGroupName.value = '';
+    renderEditModifierGroups();
 
     els.editItemModal.classList.remove('hidden');
     setTimeout(() => els.editItemName.focus(), 300);
@@ -940,6 +1158,7 @@
     item.price = price;
     item.category = category;
     item.description = description;
+    item.modifierGroups = JSON.parse(JSON.stringify(editPendingModifierGroups));
 
     const thumbImg = editPendingGallery.find(g => g.isThumbnail);
     item.image = thumbImg ? thumbImg.data : null;
@@ -1293,14 +1512,16 @@
     });
 
     // Category tabs
-    $$('.cat-tab').forEach((tab) => {
-      tab.addEventListener('click', () => {
-        $$('.cat-tab').forEach((t) => t.classList.remove('active'));
-        tab.classList.add('active');
-        activeCategory = tab.dataset.category;
-        renderMenu();
+    const categoryTabsContainer = document.getElementById('categoryTabs');
+    if (categoryTabsContainer) {
+      categoryTabsContainer.addEventListener('click', (e) => {
+        const tab = e.target.closest('.cat-tab');
+        if (tab) {
+          activeCategory = tab.dataset.category;
+          renderMenu();
+        }
       });
-    });
+    }
 
     // Floating Cart & Bottom Sheet
     if (els.floatingCartBtn) {
@@ -1374,6 +1595,63 @@
     $('#closeAddItemModal').addEventListener('click', () => els.addItemModal.classList.add('hidden'));
     $('#cancelAddItem').addEventListener('click', () => els.addItemModal.classList.add('hidden'));
     $('#confirmAddItem').addEventListener('click', confirmAddItem);
+
+    const addNewGroupBtn = document.getElementById('addNewGroupBtn');
+    if (addNewGroupBtn) {
+      addNewGroupBtn.addEventListener('click', () => {
+        const nameInput = document.getElementById('newGroupName');
+        const typeSelect = document.getElementById('newGroupType');
+        const name = nameInput.value.trim();
+        const type = typeSelect.value;
+        if (!name) return showToast('Please enter a group name');
+
+        pendingModifierGroups.push({ name, type, options: [] });
+        nameInput.value = '';
+        renderNewModifierGroups();
+      });
+    }
+
+    const editNewGroupBtn = document.getElementById('editNewGroupBtn');
+    if (editNewGroupBtn) {
+      editNewGroupBtn.addEventListener('click', () => {
+        const nameInput = document.getElementById('editGroupName');
+        const typeSelect = document.getElementById('editGroupType');
+        const name = nameInput.value.trim();
+        const type = typeSelect.value;
+        if (!name) return showToast('Please enter a group name');
+
+        editPendingModifierGroups.push({ name, type, options: [] });
+        nameInput.value = '';
+        renderEditModifierGroups();
+      });
+    }
+
+    if (els.manageCategoriesBtn) {
+      els.manageCategoriesBtn.addEventListener('click', () => {
+        renderManageCategories();
+        els.manageCategoriesModal.classList.remove('hidden');
+      });
+      $('#closeManageCategoriesModal').addEventListener('click', () => {
+        els.manageCategoriesModal.classList.add('hidden');
+      });
+      els.manageCategoriesModal.addEventListener('click', (e) => {
+        if (e.target === els.manageCategoriesModal) els.manageCategoriesModal.classList.add('hidden');
+      });
+      if (els.addNewCategoryBtn) {
+        els.addNewCategoryBtn.addEventListener('click', () => {
+          const emoji = els.newCategoryEmoji.value.trim() || '🍽️';
+          const name = els.newCategoryName.value.trim();
+          if (!name) return showToast('Please enter category name');
+          if (appCategories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+            return showToast('Category already exists');
+          }
+          appCategories.push({ name, emoji });
+          saveCategories();
+          els.newCategoryEmoji.value = '';
+          els.newCategoryName.value = '';
+        });
+      }
+    }
 
     // (Image upload logic moved to top-level event listeners)
 
