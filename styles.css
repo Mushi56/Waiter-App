@@ -318,6 +318,16 @@ button {
   text-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
 
+.header-brand .header-subtitle {
+  font-size: 0.6rem;
+  color: #fff;
+  opacity: 0.9;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 2px;
+  font-weight: 700;
+}
+
 .header-right {
   display: flex;
   align-items: center;
@@ -353,7 +363,7 @@ button {
   transform-origin: right;
   width: 0;
   height: 44px;
-  background: #FFD300; /* Vibrant Yellow shade */
+  background: #B4780A; /* Dark Yellow / Deep Gold shade */
   display: flex;
   align-items: center;
   padding: 0 14px;
@@ -365,7 +375,7 @@ button {
 }
 
 .header-search-wrap.search-active .search-expand-container {
-  width: calc(100vw - 40px); /* Fill most of header on mobile */
+  width: calc(100vw - 40px);
   max-width: 400px;
   transform: translateY(-50%) scaleX(1);
   opacity: 1;
@@ -376,25 +386,25 @@ button {
   flex: 1;
   background: transparent;
   border: none;
-  color: #000; /* High contrast black */
+  color: #fff; /* White text on dark yellow for better contrast */
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 700;
   outline: none;
   padding-right: 30px;
 }
 
 .search-expand-container input::placeholder {
-  color: rgba(0,0,0,0.4);
+  color: rgba(255,255,255,0.7);
 }
 
 .search-close-btn {
-  background: rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.15);
   border: none;
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  font-size: 1.2rem;
-  color: #000;
+  font-size: 1.1rem;
+  color: #fff;
   cursor: pointer;
   display: flex;
   align-items: center;
