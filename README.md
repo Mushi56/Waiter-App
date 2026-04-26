@@ -1,4 +1,4 @@
-# Waiter Helper PWA
+# Smart Menu PWA
 
 A premium, responsive Progressive Web App (PWA) designed for modern restaurant order management.
 
