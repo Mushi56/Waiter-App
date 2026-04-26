@@ -293,9 +293,29 @@ button {
 }
 
 .header-left .header-logo {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   filter: drop-shadow(0 0 8px rgba(0,0,0,0.2));
+}
+
+.header-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-brand h1 {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--bg-primary);
+  margin: 0;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.header-brand .accent-white {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
 
 .header-right {
@@ -332,21 +352,21 @@ button {
   transform: translateY(-50%) scaleX(0);
   transform-origin: right;
   width: 0;
-  height: 40px;
-  background: var(--bg-primary);
+  height: 44px;
+  background: #FFD300; /* Vibrant Yellow shade */
   display: flex;
   align-items: center;
-  padding: 0 12px;
-  border-radius: var(--radius-sm);
+  padding: 0 14px;
+  border-radius: var(--radius-md);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   pointer-events: none;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .header-search-wrap.search-active .search-expand-container {
-  width: calc(100vw - 100px);
-  max-width: 350px;
+  width: calc(100vw - 40px); /* Fill most of header on mobile */
+  max-width: 400px;
   transform: translateY(-50%) scaleX(1);
   opacity: 1;
   pointer-events: auto;
@@ -356,23 +376,30 @@ button {
   flex: 1;
   background: transparent;
   border: none;
-  color: #000;
-  font-size: 0.95rem;
-  font-weight: 700;
+  color: #000; /* High contrast black */
+  font-size: 1rem;
+  font-weight: 800;
   outline: none;
   padding-right: 30px;
 }
 
+.search-expand-container input::placeholder {
+  color: rgba(0,0,0,0.4);
+}
+
 .search-close-btn {
-  background: transparent;
+  background: rgba(0,0,0,0.1);
   border: none;
-  font-size: 1.6rem;
-  color: #444;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  color: #000;
   cursor: pointer;
-  padding: 0 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 900;
 }
 
 /* Home Page Header Row */
