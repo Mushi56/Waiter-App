@@ -612,6 +612,7 @@
 
     currentOrder = [];
     if (els.orderNote) els.orderNote.value = '';
+    changeTable();
     renderOrder();
     renderMenu();
     renderHistoryPreview();
