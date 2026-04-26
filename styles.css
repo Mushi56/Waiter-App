@@ -2380,40 +2380,53 @@ button {
    RESPONSIVE DESIGN (Tablets & Laptops)
    ========================================================================== */
 
-/* Tablet & Desktop Container */
+/* Small Tablets & Large Phones */
+@media (min-width: 600px) {
+  .menu-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+}
+
+/* Tablets & Desktop */
 @media (min-width: 768px) {
   body {
-    background: #0a0c0d; /* Darker background for the surrounding area */
+    background: #0a0c0d; 
+    padding: 20px 0; /* Add some space around the container on desktop */
   }
 
   .app-container {
     max-width: 1200px;
     margin: 0 auto;
     position: relative;
-    min-height: 100vh;
+    min-height: calc(100vh - 40px);
     box-shadow: 0 0 100px rgba(0, 0, 0, 0.5);
     background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
   }
 
   .main-content {
-    padding-bottom: 100px; /* More space for bottom nav */
+    padding-bottom: 120px;
   }
 
-  /* Menu Grid Responsiveness */
   .menu-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    gap: 24px;
+    padding: 24px;
   }
 
   /* Bottom Nav Centering */
   .bottom-nav {
     left: 50%;
     transform: translateX(-50%);
-    max-width: 500px;
-    bottom: 24px;
-    border-radius: var(--radius-xl);
+    max-width: 460px;
+    bottom: 30px;
+    border-radius: 30px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    height: 70px;
   }
 
   /* Transform Bottom Sheet into a Centered Modal */
@@ -2421,16 +2434,17 @@ button {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -40%) scale(0.95);
+    transform: translate(-50%, -45%) scale(0.9);
     bottom: auto;
     width: 90%;
     max-width: 500px;
-    max-height: 85vh;
+    max-height: 80vh;
     border-radius: var(--radius-xl);
-    padding-bottom: 24px;
+    padding-bottom: 30px;
     opacity: 0;
     pointer-events: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
   }
 
   #orderModalOverlay:not(.hidden) .bottom-sheet {
@@ -2440,17 +2454,18 @@ button {
   }
 
   .sheet-handle {
-    display: none; /* No need for handle on desktop */
+    display: none;
   }
 
   /* Menu Cards - Hover Effects */
   .menu-card {
-    transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+    transition: transform 0.4s var(--transition), box-shadow 0.4s var(--transition);
   }
 
   .menu-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: var(--accent);
   }
 
   /* Side Drawer Positioning */
@@ -2461,43 +2476,44 @@ button {
 
   /* Page Titles */
   .page-title {
-    font-size: 2rem;
-    margin-top: 20px;
+    font-size: 2.2rem;
+    margin: 30px 0;
     text-align: center;
+    font-weight: 800;
   }
 
   /* History Cards */
   .history-preview-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
   }
 }
 
-/* Larger Laptops */
+/* Large Laptops & Desktops */
 @media (min-width: 1024px) {
   .menu-grid {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
   
   .app-header {
-    padding: 30px 40px;
+    padding: 30px 50px;
   }
 
   .header-title h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
-  /* Management Grids */
   .menu-manage-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 30px;
   }
 }
 
-/* Fix for ultra-wide screens */
-@media (min-width: 1440px) {
-  .app-container {
-    max-width: 1400px;
+/* Horizontal Layout for wider tablets */
+@media (min-width: 900px) {
+  .table-picker-card {
+    max-width: 600px;
+    margin: 0 auto;
   }
 }
