@@ -6,15 +6,15 @@
   const DEFAULT_MENU = [
     // Wraps
     { id: 1, name: 'Beef Tortilla', price: 18.90, category: 'Wraps', image: 'images/beef_tortilla.png' },
-    { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: null },
-    { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: null },
+    { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&auto=format&fit=crop&q=60' },
+    { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&auto=format&fit=crop&q=60' },
     // Burgers
     { id: 4, name: 'Burger Wagyu Truffle', price: 49.90, category: 'Burgers', image: 'images/burger_wagyu_truffle.png' },
-    { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: null },
-    { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: null },
-    { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: null },
-    { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: null },
-    { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: null },
+    { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: 'https://images.unsplash.com/photo-1610440042657-6dd2c09893a4?w=500&auto=format&fit=crop&q=60' },
+    { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: 'https://images.unsplash.com/photo-1582196016295-f8c499b33d0a?w=500&auto=format&fit=crop&q=60' },
+    { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=60' },
+    { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500&auto=format&fit=crop&q=60' },
+    { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&auto=format&fit=crop&q=60' },
     // Main Course
     { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: 'images/angus_ribeye_steak.png' },
     { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/fried_chicken_chop.png' },
@@ -24,38 +24,38 @@
     { id: 15, name: 'Lamb Grilled 500g', price: 59.90, category: 'Main Course', image: 'images/lamb_grilled.png' },
     { id: 16, name: 'Mix Platter', price: 38.90, category: 'Main Course', image: 'images/mix_platter.png' },
     // Pasta
-    { id: 17, name: 'Aglio Bolognaise', price: 18.90, category: 'Pasta', image: null },
-    { id: 18, name: 'Aglio Olio', price: 15.90, category: 'Pasta', image: null },
-    { id: 19, name: 'Amatricana', price: 19.90, category: 'Pasta', image: null },
-    { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: null },
-    { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: null },
-    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: null },
-    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: null },
-    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: null },
-    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: null },
-    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: null },
+    { id: 17, name: 'Aglio Bolognaise', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1546549032-9571cd6b27df?w=500&auto=format&fit=crop&q=60' },
+    { id: 18, name: 'Aglio Olio', price: 15.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=500&auto=format&fit=crop&q=60' },
+    { id: 19, name: 'Amatricana', price: 19.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1551892374-ecf57bb23e4b?w=500&auto=format&fit=crop&q=60' },
+    { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1598866594230-a7c02762a7b0?w=500&auto=format&fit=crop&q=60' },
+    { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1612450866873-41cc0b070498?w=500&auto=format&fit=crop&q=60' },
+    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=500&auto=format&fit=crop&q=60' },
+    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1473093226795-af9932fe5856?w=500&auto=format&fit=crop&q=60' },
+    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=500&auto=format&fit=crop&q=60' },
+    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=500&auto=format&fit=crop&q=60' },
+    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1626078436897-10903337996c?w=500&auto=format&fit=crop&q=60' },
     // Salted Egg
     { id: 27, name: 'Salted Egg Calamari', price: 17.90, category: 'Salted Egg', image: null },
     { id: 28, name: 'Salted Egg Chicken', price: 14.90, category: 'Salted Egg', image: null },
     { id: 29, name: 'Salted Egg Prawn', price: 21.90, category: 'Salted Egg', image: null },
     { id: 30, name: 'Salted Egg Zinger', price: 19.90, category: 'Salted Egg', image: null },
     // Snacks
-    { id: 31, name: 'Cheesy Bacon Fries', price: 12.90, category: 'Snacks', image: null },
-    { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: null },
-    { id: 33, name: 'Chicken n Fries', price: 12.90, category: 'Snacks', image: null },
-    { id: 34, name: 'Onion Rings', price: 9.90, category: 'Snacks', image: null },
-    { id: 35, name: 'Plain Fries', price: 7.00, category: 'Snacks', image: null },
-    { id: 36, name: 'Sober Cheese Snack', price: 5.00, category: 'Snacks', image: null },
+    { id: 31, name: 'Cheesy Bacon Fries', price: 12.90, category: 'Snacks', image: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?w=500&auto=format&fit=crop&q=60' },
+    { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=500&auto=format&fit=crop&q=60' },
+    { id: 33, name: 'Chicken n Fries', price: 12.90, category: 'Snacks', image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&auto=format&fit=crop&q=60' },
+    { id: 34, name: 'Onion Rings', price: 9.90, category: 'Snacks', image: 'https://images.unsplash.com/photo-1639024471283-03518883511d?w=500&auto=format&fit=crop&q=60' },
+    { id: 35, name: 'Plain Fries', price: 7.00, category: 'Snacks', image: 'https://images.unsplash.com/photo-1630384066202-187c662c118e?w=500&auto=format&fit=crop&q=60' },
+    { id: 36, name: 'Sober Cheese Snack', price: 5.00, category: 'Snacks', image: 'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=500&auto=format&fit=crop&q=60' },
     // Coffee
-    { id: 37, name: 'Mocha', price: 12.00, category: 'Coffee', image: null },
-    { id: 38, name: 'Latte', price: 10.90, category: 'Coffee', image: null },
-    { id: 39, name: 'Americano', price: 7.00, category: 'Coffee', image: null },
+    { id: 37, name: 'Mocha', price: 12.00, category: 'Coffee', image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&auto=format&fit=crop&q=60' },
+    { id: 38, name: 'Latte', price: 10.90, category: 'Coffee', image: 'https://images.unsplash.com/photo-1541167760496-162955ed8a9f?w=500&auto=format&fit=crop&q=60' },
+    { id: 39, name: 'Americano', price: 7.00, category: 'Coffee', image: 'https://images.unsplash.com/photo-1551033406-611cf9a28f67?w=500&auto=format&fit=crop&q=60' },
     // Non Coffee
-    { id: 40, name: 'Chocolate', price: 12.00, category: 'Non Coffee', image: null },
-    { id: 41, name: 'Matcha', price: 11.00, category: 'Non Coffee', image: null },
-    { id: 42, name: 'Ice Peach Tea', price: 4.00, category: 'Non Coffee', image: null },
-    { id: 43, name: 'Ice Passionfruit Tea', price: 4.00, category: 'Non Coffee', image: null },
-    { id: 44, name: 'Ice Lemon Tea', price: 4.00, category: 'Non Coffee', image: null },
+    { id: 40, name: 'Chocolate', price: 12.00, category: 'Non Coffee', image: 'https://images.unsplash.com/photo-1544787210-2211d7c9ad82?w=500&auto=format&fit=crop&q=60' },
+    { id: 41, name: 'Matcha', price: 11.00, category: 'Non Coffee', image: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=500&auto=format&fit=crop&q=60' },
+    { id: 42, name: 'Ice Peach Tea', price: 4.00, category: 'Non Coffee', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&auto=format&fit=crop&q=60' },
+    { id: 43, name: 'Ice Passionfruit Tea', price: 4.00, category: 'Non Coffee', image: 'https://images.unsplash.com/photo-1595981267035-7b04ca84a810?w=500&auto=format&fit=crop&q=60' },
+    { id: 44, name: 'Ice Lemon Tea', price: 4.00, category: 'Non Coffee', image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop&q=60' },
     // Mocktails
     { id: 45, name: 'Watermelon Blackcurrant', price: 6.90, category: 'Mocktails', image: null },
     { id: 46, name: 'Virgin Mojitos', price: 6.90, category: 'Mocktails', image: null },
@@ -63,9 +63,9 @@
     { id: 48, name: 'TripleBerries', price: 6.90, category: 'Mocktails', image: null },
     { id: 49, name: 'Solero', price: 6.00, category: 'Mocktails', image: null },
     // Desserts
-    { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: null },
-    { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: null },
-    { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: null },
+    { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=500&auto=format&fit=crop&q=60' },
+    { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&auto=format&fit=crop&q=60' },
+    { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&auto=format&fit=crop&q=60' },
   ];
 
   const EMOJI_MAP = {
@@ -213,7 +213,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '4'; // Bump this to force menu reset
+  const MENU_VERSION = '5'; // Bump this to force menu reset
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
