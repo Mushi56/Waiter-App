@@ -690,7 +690,7 @@ textarea:focus {
 
 .hero-card {
   min-width: 100%;
-  aspect-ratio: 2.1 / 1;
+  aspect-ratio: 3 / 2;
   background: var(--bg-card);
   border-radius: var(--radius-xl);
   position: relative;
