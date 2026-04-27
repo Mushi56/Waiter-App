@@ -764,28 +764,28 @@ textarea:focus {
 .hero-dots {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(10px);
-  padding: 6px 12px;
+  padding: 4px 10px;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .hero-dot {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-dot.active {
-  width: 24px;
-  height: 6px;
+  width: 16px;
+  height: 4px;
   background: var(--accent);
-  border-radius: 4px;
-  box-shadow: 0 0 10px var(--accent-glow);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--accent-glow);
 }
 
 /* Light Mode Adjustments */
