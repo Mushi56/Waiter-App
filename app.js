@@ -661,14 +661,18 @@
       return `
         <div class="menu-card" data-id="${item.id}">
           <div class="menu-card-qty ${qty > 0 ? 'show' : ''}">${qty}</div>
-          <img class="menu-card-img" src="${item.image || 'icons/icon-192.svg'}" alt="${item.name}" loading="lazy" onerror="this.src='icons/icon-192.svg'">
+          ${item.image
+          ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy">`
+          : `<div class="menu-card-placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`
+        }
           <div class="menu-card-info">
-            <h3 class="menu-card-name">${item.name}</h3>
-            <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
-            <button class="menu-card-add" data-id="${item.id}">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              ADD
-            </button>
+            <div class="menu-card-name">${item.name}</div>
+            <div class="menu-card-bottom">
+              <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
+              <button class="menu-card-add" data-id="${item.id}">
+                ADD <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              </button>
+            </div>
           </div>
         </div>`;
     }).join('');
