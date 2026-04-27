@@ -102,8 +102,8 @@
           <span><span style="font-size:1.2rem; margin-right:8px;">${c.emoji}</span> <strong>${c.name}</strong></span>
         </div>
         <div style="display:flex; gap: 8px; align-items:center;">
-          <button type="button" class="btn-cat-addons" onclick="openCategoryAddons('${c.name}')" style="background:rgba(231,160,30,0.1); color:var(--accent); border:none; border-radius:var(--radius-sm); padding:4px 10px; font-size:0.75rem; font-weight:700; cursor:pointer;">Add-ons</button>
-          <button type="button" onclick="removeCategory(${idx})" style="background:rgba(239,68,68,0.1); color:var(--danger); border:none; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; cursor:pointer;" ${appCategories.length === 1 ? 'disabled' : ''}>&times;</button>
+          <button type="button" class="btn-cat-addons" onclick="openCategoryAddons('${c.name}')">Add-ons</button>
+          <button type="button" class="btn-cat-remove" onclick="removeCategory(${idx})" ${appCategories.length === 1 ? 'disabled' : ''}>&times;</button>
         </div>
       </div>
     `).join('');
@@ -954,6 +954,28 @@
     showToast('Order deleted');
   }
 
+  function clearAllOrders() {
+    if (orders.length === 0) return showToast('No orders to clear');
+    if (!confirm('Are you sure you want to clear all active orders?')) return;
+    orders = [];
+    saveOrders();
+    renderHistoryPreview();
+    renderOrdersPage();
+    renderHistoryPage();
+    showToast('All orders cleared');
+  }
+
+  function clearHistory() {
+    if (orders.length === 0) return showToast('No history to clear');
+    if (!confirm('Are you sure you want to clear the entire history?')) return;
+    orders = [];
+    saveOrders();
+    renderHistoryPreview();
+    renderOrdersPage();
+    renderHistoryPage();
+    showToast('Order history cleared');
+  }
+
   // --- Menu Management ---
   function renderMenuManage() {
     els.menuManageGrid.innerHTML = menuItems.map((item) => {
@@ -1057,9 +1079,9 @@
         </div>
         <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
           ${group.options.map((opt, oIdx) => `
-            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.9rem; padding:6px 10px; background:var(--bg-secondary); border-radius:var(--radius-sm);">
+            <div class="modifier-list-item">
               <span>${opt.name} <span class="text-muted" style="margin-left:4px;">(+RM ${opt.price.toFixed(2)})</span></span>
-              <button type="button" onclick="removeNewGroupOption(${gIdx}, ${oIdx})" style="color:var(--danger); background:rgba(239,68,68,0.1); border:none; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; cursor:pointer;">&times;</button>
+              <button type="button" class="btn-remove-sm" onclick="removeNewGroupOption(${gIdx}, ${oIdx})">&times;</button>
             </div>
           `).join('')}
         </div>
@@ -1188,9 +1210,9 @@
         </div>
         <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
           ${group.options.map((opt, oIdx) => `
-            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.9rem; padding:6px 10px; background:var(--bg-secondary); border-radius:var(--radius-sm);">
+            <div class="modifier-list-item">
               <span>${opt.name} <span class="text-muted" style="margin-left:4px;">(+RM ${opt.price.toFixed(2)})</span></span>
-              <button type="button" onclick="removeEditGroupOption(${gIdx}, ${oIdx})" style="color:var(--danger); background:rgba(239,68,68,0.1); border:none; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; cursor:pointer;">&times;</button>
+              <button type="button" class="btn-remove-sm" onclick="removeEditGroupOption(${gIdx}, ${oIdx})">&times;</button>
             </div>
           `).join('')}
         </div>
@@ -1783,6 +1805,7 @@
     document.addEventListener('click', (e) => {
       const actionBtn = e.target.closest('[data-action="edit-saved-order"], [data-action="delete-saved-order"]');
       if (actionBtn) {
+        e.preventDefault();
         e.stopPropagation();
         const orderId = parseInt(actionBtn.dataset.orderId);
         if (actionBtn.dataset.action === 'edit-saved-order') {
@@ -1794,8 +1817,17 @@
       }
 
       const card = e.target.closest('.history-card');
-      if (card) showOrderDetail(parseInt(card.dataset.orderId));
+      if (card) {
+        showOrderDetail(parseInt(card.dataset.orderId));
+      }
     });
+
+    // Clear All / History Buttons
+    const clearAllBtn = $('#clearAllOrdersBtn');
+    if (clearAllBtn) clearAllBtn.addEventListener('click', clearAllOrders);
+
+    const clearHistBtn = $('#clearHistoryBtn');
+    if (clearHistBtn) clearHistBtn.addEventListener('click', clearHistory);
 
     // View all history
     const viewAllBtn = $('#viewAllHistoryBtn');

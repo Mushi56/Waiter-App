@@ -270,7 +270,14 @@
 
       <!-- PAGE: ORDERS (full list) -->
       <section class="page" id="pageOrders">
-        <h2 class="page-title">All Orders</h2>
+        <div class="page-nav-header" style="display: flex; justify-content: space-between; align-items: center;">
+          <h2 class="page-title" style="margin: 0;">All Orders</h2>
+          <button class="btn-danger-outline" id="clearAllOrdersBtn" style="font-size: 0.8rem; padding: 6px 12px; border-radius: var(--radius-md);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+            </svg> Clear All
+          </button>
+        </div>
         <div class="orders-full-list" id="ordersFullList">
           <!-- Filled dynamically -->
         </div>
@@ -357,7 +364,14 @@
 
       <!-- PAGE: HISTORY -->
       <section class="page" id="pageHistory">
-        <h2 class="page-title">Order History</h2>
+        <div class="page-nav-header" style="display: flex; justify-content: space-between; align-items: center;">
+          <h2 class="page-title" style="margin: 0;">Order History</h2>
+          <button class="btn-danger-outline" id="clearHistoryBtn" style="font-size: 0.8rem; padding: 6px 12px; border-radius: var(--radius-md);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+            </svg> Clear History
+          </button>
+        </div>
         <div class="history-full-list" id="historyFullList">
           <!-- Filled dynamically -->
         </div>
