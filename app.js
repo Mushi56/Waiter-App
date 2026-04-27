@@ -696,14 +696,7 @@
     els.heroSection.classList.remove('hidden');
     els.heroSlider.innerHTML = heroItems.map((item, idx) => `
       <div class="hero-card" onclick="openItemDetail(${item.id})">
-        <div class="hero-badge">${item.heroText || 'BEST SELLER'}</div>
         <img src="${item.image || 'icons/icon-192.svg'}" alt="${item.name}" class="hero-card-img">
-        <div class="hero-card-overlay">
-          <div class="hero-card-info">
-            <h3>${item.name}</h3>
-            <p>RM ${item.price.toFixed(2)}</p>
-          </div>
-        </div>
       </div>
     `).join('');
 
@@ -714,7 +707,9 @@
     // Handle scroll update dots
     els.heroSlider.onscroll = () => {
       const scrollPos = els.heroSlider.scrollLeft;
-      const cardWidth = els.heroSlider.querySelector('.hero-card').offsetWidth + 16;
+      const card = els.heroSlider.querySelector('.hero-card');
+      if (!card) return;
+      const cardWidth = card.offsetWidth + 16;
       const activeIdx = Math.round(scrollPos / cardWidth);
       
       const dots = els.heroDots.querySelectorAll('.hero-dot');
@@ -722,6 +717,23 @@
         dot.classList.toggle('active', idx === activeIdx);
       });
     };
+
+    // Auto slide logic
+    if (window.heroInterval) clearInterval(window.heroInterval);
+    window.heroInterval = setInterval(() => {
+      if (document.hidden) return;
+      const card = els.heroSlider.querySelector('.hero-card');
+      if (!card) return;
+      const width = card.offsetWidth + 16;
+      let nextScroll = els.heroSlider.scrollLeft + width;
+      
+      // If at end, loop back
+      if (nextScroll >= els.heroSlider.scrollWidth - els.heroSlider.offsetWidth) {
+        nextScroll = 0;
+      }
+      
+      els.heroSlider.scrollTo({ left: nextScroll, behavior: 'smooth' });
+    }, 4000);
   }
 
   function getOrderQty(id) {
