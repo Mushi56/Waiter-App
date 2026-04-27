@@ -714,8 +714,9 @@
     // Handle scroll update dots
     els.heroSlider.onscroll = () => {
       const scrollPos = els.heroSlider.scrollLeft;
-      const width = els.heroSlider.offsetWidth;
-      const activeIdx = Math.round(scrollPos / width);
+      const cardWidth = els.heroSlider.querySelector('.hero-card').offsetWidth + 16;
+      const activeIdx = Math.round(scrollPos / cardWidth);
+      
       const dots = els.heroDots.querySelectorAll('.hero-dot');
       dots.forEach((dot, idx) => {
         dot.classList.toggle('active', idx === activeIdx);
