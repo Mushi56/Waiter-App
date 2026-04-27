@@ -46,6 +46,28 @@
   --fw-extrabold: 800;
 }
 
+.btn-danger-outline {
+  background: transparent;
+  border: 1px solid rgba(255, 77, 77, 0.4);
+  color: var(--danger);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  font-family: inherit;
+}
+
+.btn-danger-outline:hover {
+  background: rgba(255, 77, 77, 0.1);
+  border-color: var(--danger);
+  box-shadow: 0 4px 12px rgba(255, 77, 77, 0.2);
+}
+
+.btn-danger-outline:active {
+  transform: scale(0.95);
+}
+
 /* SIDE DRAWER */
 .drawer-overlay {
   position: fixed;
