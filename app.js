@@ -709,7 +709,7 @@
       const scrollPos = els.heroSlider.scrollLeft;
       const card = els.heroSlider.querySelector('.hero-card');
       if (!card) return;
-      const cardWidth = card.offsetWidth + 16;
+      const cardWidth = card.offsetWidth;
       const activeIdx = Math.round(scrollPos / cardWidth);
       
       const dots = els.heroDots.querySelectorAll('.hero-dot');
@@ -724,7 +724,7 @@
       if (document.hidden) return;
       const card = els.heroSlider.querySelector('.hero-card');
       if (!card) return;
-      const width = card.offsetWidth + 16;
+      const width = card.offsetWidth;
       let nextScroll = els.heroSlider.scrollLeft + width;
       
       // If at end, loop back
