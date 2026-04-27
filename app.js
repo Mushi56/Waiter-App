@@ -88,7 +88,6 @@
     updateEmojiMap();
     renderManageCategories();
     populateCategorySelects();
-    renderCategoryTabs();
     renderMenu();
   }
 
@@ -837,6 +836,7 @@
 
   // --- Render History ---
   function renderHistoryPreview() {
+    if (!els.historyPreviewList) return;
     const recent = orders.slice(0, 3);
     if (recent.length === 0) {
       els.historyPreviewList.innerHTML = '<div class="history-empty">No orders yet</div>';
@@ -1173,7 +1173,7 @@
   };
 
   let editPendingModifierGroups = [];
-  let pendingModifierGroups = []; // For NEW items
+
   function renderEditModifierGroups() {
     const listEl = document.getElementById('editModifierGroupsList');
     if (!listEl) return;
@@ -1718,58 +1718,6 @@
         renderEditModifierGroups();
       };
     }
-  }
-
-  function resetAddItemForm() {
-    els.newItemName.value = '';
-    els.newItemPrice.value = '';
-    els.newItemCategory.selectedIndex = 0;
-    els.newItemDesc.value = '';
-    els.newItemImages.value = '';
-    els.newGalleryPreviews.innerHTML = '';
-    pendingGallery = [];
-    pendingModifierGroups = [];
-    renderNewModifierGroups();
-  }
-
-  function renderNewModifierGroups() {
-    const listEl = document.getElementById('newModifierGroupsList');
-    if (!listEl) return;
-    // For simplicity, we just use a default "Add-ons" group for new items if they want to add quickly
-    // Or we can implement a full group system like edit. Let's do full group for consistency.
-    listEl.innerHTML = pendingModifierGroups.map((group, gIdx) => `
-      <div style="background:var(--bg-card); padding:10px; border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px;">
-        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-            <strong style="font-size:0.85rem;">${group.name}</strong>
-            <button type="button" onclick="removeNewGroup(${gIdx})" style="color:var(--danger); border:none; background:none;">&times;</button>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
-            ${group.options.map((opt, oIdx) => `<div style="font-size:0.8rem; display:flex; justify-content:space-between;"><span>${opt.name}</span> <span>+RM ${opt.price.toFixed(2)}</span></div>`).join('')}
-        </div>
-      </div>
-    `).join('');
-  }
-
-    // Add Item Full Button
-    if (els.addMenuItemFull) {
-      els.addMenuItemFull.onclick = () => {
-        resetAddItemForm();
-        els.addItemModal.classList.remove('hidden');
-      };
-    }
-
-    // Clear all
-    const clearBtn = $('#clearAllBtn');
-    if (clearBtn) {
-      clearBtn.onclick = () => {
-        if (currentOrder.length === 0) return;
-        currentOrder = [];
-        if (els.orderNote) els.orderNote.value = '';
-        renderOrder();
-        renderMenu();
-        showToast('Order cleared');
-      };
-    }
 
     // Save order
     $('#saveOrderBtn').addEventListener('click', saveOrder);
@@ -1789,8 +1737,10 @@
     }
 
     // Add item modal
-    $('#addItemBtn').addEventListener('click', openAddItemModal);
-    $('#addMenuItemFull').addEventListener('click', openAddItemModal);
+    const addItemBtn = $('#addItemBtn');
+    if (addItemBtn) addItemBtn.addEventListener('click', openAddItemModal);
+    const addMenuItemFullBtn = $('#addMenuItemFull');
+    if (addMenuItemFullBtn) addMenuItemFullBtn.addEventListener('click', openAddItemModal);
     $('#closeAddItemModal').addEventListener('click', () => els.addItemModal.classList.add('hidden'));
     $('#cancelAddItem').addEventListener('click', () => els.addItemModal.classList.add('hidden'));
     $('#confirmAddItem').addEventListener('click', confirmAddItem);
@@ -1825,32 +1775,7 @@
       });
     }
 
-    if (els.manageCategoriesBtn) {
-      els.manageCategoriesBtn.addEventListener('click', () => {
-        renderManageCategories();
-        els.manageCategoriesModal.classList.remove('hidden');
-      });
-      $('#closeManageCategoriesModal').addEventListener('click', () => {
-        els.manageCategoriesModal.classList.add('hidden');
-      });
-      els.manageCategoriesModal.addEventListener('click', (e) => {
-        if (e.target === els.manageCategoriesModal) els.manageCategoriesModal.classList.add('hidden');
-      });
-      if (els.addNewCategoryBtn) {
-        els.addNewCategoryBtn.addEventListener('click', () => {
-          const emoji = els.newCategoryEmoji.value.trim() || '🍽️';
-          const name = els.newCategoryName.value.trim();
-          if (!name) return showToast('Please enter category name');
-          if (appCategories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
-            return showToast('Category already exists');
-          }
-          appCategories.push({ name, emoji });
-          saveCategories();
-          els.newCategoryEmoji.value = '';
-          els.newCategoryName.value = '';
-        });
-      }
-    }
+
 
     // (Image upload logic moved to top-level event listeners)
 
@@ -1873,7 +1798,8 @@
     });
 
     // View all history
-    $('#viewAllHistoryBtn').addEventListener('click', () => navigateTo('pageHistory'));
+    const viewAllBtn = $('#viewAllHistoryBtn');
+    if (viewAllBtn) viewAllBtn.addEventListener('click', () => navigateTo('pageHistory'));
 
     // Order detail modal close
     $('#closeOrderDetail').addEventListener('click', () => els.orderDetailModal.classList.add('hidden'));
