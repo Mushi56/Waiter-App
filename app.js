@@ -428,6 +428,85 @@
         navigateTo(hash, false);
       }
     }
+    
+    initIosInstallPrompt();
+    initTheme();
+  }
+
+  function initTheme() {
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themes = ['dark', 'light', 'auto'];
+    let currentTheme = localStorage.getItem('wh_theme') || 'dark';
+    
+    applyTheme(currentTheme);
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        const currentIndex = themes.indexOf(currentTheme);
+        currentTheme = themes[(currentIndex + 1) % themes.length];
+        localStorage.setItem('wh_theme', currentTheme);
+        applyTheme(currentTheme);
+      });
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (localStorage.getItem('wh_theme') === 'auto') {
+        applyTheme('auto');
+      }
+    });
+  }
+
+  function applyTheme(theme) {
+    const html = document.documentElement;
+    const themeStatusText = document.getElementById('themeStatusText');
+    const themeIcon = document.getElementById('themeIcon');
+    
+    const icons = {
+      dark: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`,
+      light: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+      auto: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20a10 10 0 1 0 0-20z"/></svg>`
+    };
+
+    if (themeStatusText) themeStatusText.textContent = theme;
+    if (themeIcon) themeIcon.innerHTML = icons[theme] || icons.dark;
+
+    if (theme === 'auto') {
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      html.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    } else {
+      html.setAttribute('data-theme', theme);
+    }
+  }
+
+  function initIosInstallPrompt() {
+    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+    if (isIos && !isStandalone) {
+      if (!sessionStorage.getItem('ios_prompt_dismissed')) {
+        setTimeout(() => {
+          const prompt = document.getElementById('iosPrompt');
+          if (prompt) prompt.classList.remove('hidden');
+        }, 3000);
+      }
+    }
+
+    const closeBtn = document.getElementById('closeIosPrompt');
+    const gotItBtn = document.getElementById('iosPromptGotIt');
+    const prompt = document.getElementById('iosPrompt');
+
+    if (closeBtn && prompt) {
+      closeBtn.onclick = () => {
+        prompt.classList.add('hidden');
+        sessionStorage.setItem('ios_prompt_dismissed', 'true');
+      };
+    }
+    if (gotItBtn && prompt) {
+      gotItBtn.onclick = () => {
+        prompt.classList.add('hidden');
+        sessionStorage.setItem('ios_prompt_dismissed', 'true');
+      };
+    }
   }
 
   // --- LocalStorage ---
@@ -678,12 +757,14 @@
       }).join('');
 
       return `
-        <div style="margin-bottom:16px;">
-          <h4 style="margin:0 0 8px 0; font-size:1rem; border-bottom:1px solid var(--border); padding-bottom:6px; display:flex; justify-content:space-between;">
+        <div class="addon-group">
+          <h4 class="addon-group-title">
             <span>${group.name}</span> 
-            <span style="font-size:0.75rem; color:var(--text-secondary); font-weight:normal;">${group.type === 'radio' ? '(Select 1)' : '(Optional)'}</span>
+            <span class="addon-group-subtitle">${group.type === 'radio' ? '(Select 1)' : '(Optional)'}</span>
           </h4>
-          ${optionsHtml}
+          <div class="addon-group-options">
+            ${optionsHtml}
+          </div>
         </div>
       `;
     }).join('');
