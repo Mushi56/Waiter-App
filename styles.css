@@ -1227,11 +1227,6 @@ textarea:focus {
 }
 
 .cat-tab {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
   padding: 8px 20px;
   background: var(--bg-card);
   color: var(--text-muted);
