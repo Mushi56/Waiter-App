@@ -680,7 +680,7 @@ textarea:focus {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  padding-bottom: 20px;
+  padding-bottom: 0;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -755,8 +755,9 @@ textarea:focus {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: -30px;
-  position: relative;
+  position: absolute;
+  bottom: 16px;
+  left: 0;
   z-index: 10;
   pointer-events: none;
 }
