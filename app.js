@@ -118,9 +118,14 @@
         e.dataTransfer.setData('text/plain', item.dataset.index);
       });
       item.addEventListener('dragend', () => item.classList.remove('dragging'));
-      item.addEventListener('dragover', (e) => e.preventDefault());
+      item.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        item.classList.add('drag-over');
+      });
+      item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
       item.addEventListener('drop', (e) => {
         e.preventDefault();
+        item.classList.remove('drag-over');
         const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
         const toIndex = parseInt(item.dataset.index);
         if (fromIndex !== toIndex) {
@@ -663,10 +668,10 @@
         const inputType = group.type === 'radio' ? 'radio' : 'checkbox';
         const inputName = group.type === 'radio' ? `name="modGroup_${gIdx}"` : '';
         return `
-          <div class="addon-item" style="padding:6px 0;">
-            <label style="display:flex; align-items:center; cursor:pointer; flex:1;">
+          <div class="addon-item">
+            <label>
               <input type="${inputType}" ${inputName} value="${gIdx}_${oIdx}" data-gidx="${gIdx}" data-oidx="${oIdx}" ${isChecked}>
-              <span class="addon-name" style="margin-left:12px;">${opt.name}</span>
+              <span class="addon-name">${opt.name}</span>
             </label>
             <span class="addon-price">+RM ${opt.price.toFixed(2)}</span>
           </div>`;
