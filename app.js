@@ -5,18 +5,18 @@
   // --- Default Menu ---
   const DEFAULT_MENU = [
     // Wraps
-    { id: 1, name: 'Beef Tortilla', price: 18.90, category: 'Wraps', image: 'images/beef_tortilla.png' },
+    { id: 1, name: 'Beef Tortilla', price: 18.90, category: 'Wraps', image: 'images/beef_tortilla.png', isHero: true, heroText: 'HOT DEAL' },
     { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: null },
     { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: null },
     // Burgers
-    { id: 4, name: 'Burger Wagyu Truffle', price: 49.90, category: 'Burgers', image: 'images/burger_wagyu_truffle.png' },
+    { id: 4, name: 'Burger Wagyu Truffle', price: 49.90, category: 'Burgers', image: 'images/burger_wagyu_truffle.png', isHero: true, heroText: 'BEST SELLER' },
     { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: null },
     { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: null },
     { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: null },
     { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: null },
     { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: null },
     // Main Course
-    { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: 'images/angus_ribeye_steak.png' },
+    { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: 'images/angus_ribeye_steak.png', isHero: true, heroText: 'PREMIUM' },
     { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/fried_chicken_chop.png' },
     { id: 12, name: 'Grill Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/grill_chicken_chop.png' },
     { id: 13, name: 'Lamb Grilled', price: 36.90, category: 'Main Course', image: 'images/lamb_grilled.png' },
@@ -298,6 +298,33 @@
     catAddonPrice: $('#catAddonPrice'),
     addCatAddonBtn: $('#addCatAddonBtn'),
     closeCatAddonsModal: $('#closeCatAddonsModal'),
+    // Table selection modal
+    tableSelectModal: $('#tableSelectModal'),
+    tableGridPresets: $('#tableGridPresets'),
+    customTableInput: $('#customTableInput'),
+    confirmTableBtn: $('#confirmTableBtn'),
+    closeTableModal: $('#closeTableModal'),
+    // Addon Modal (Customer)
+    addonModal: $('#addonModal'),
+    // Item Detail (Customer)
+    itemDetailOverlay: $('#itemDetailOverlay'),
+    itemDetailGallery: $('#itemDetailGallery'),
+    itemDetailDots: $('#itemDetailDots'),
+    itemDetailCategory: $('#itemDetailCategory'),
+    itemDetailName: $('#itemDetailName'),
+    itemDetailDesc: $('#itemDetailDesc'),
+    itemDetailPrice: $('#itemDetailPrice'),
+    itemDetailAddBtn: $('#itemDetailAddBtn'),
+    // Hero Slider
+    heroSection: $('#heroSection'),
+    heroSlider: $('#heroSlider'),
+    heroDots: $('#heroDots'),
+    newItemIsHero: $('#newItemIsHero'),
+    newItemHeroText: $('#newItemHeroText'),
+    newItemHeroTextGroup: $('#newItemHeroTextGroup'),
+    editItemIsHero: $('#editItemIsHero'),
+    editItemHeroText: $('#editItemHeroText'),
+    editItemHeroTextGroup: $('#editItemHeroTextGroup'),
     closeCatAddonsBtn: $('#closeCatAddonsBtn'),
     newAddonList: $('#newAddonList'),
     newAddonName: $('#newAddonName'),
@@ -406,6 +433,7 @@
     applyAdminState();
     populateCategorySelects();
     renderMenu();
+    renderHeroSlider();
     renderOrder();
     renderHistoryPreview();
     renderTablePresets();
@@ -510,7 +538,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '4'; // Bump this to force menu reset
+  const MENU_VERSION = '5'; // Bumped for Hero Slider data
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
@@ -655,6 +683,44 @@
         setTimeout(() => card.classList.add('visible'), i * 40);
       });
     });
+  }
+
+  function renderHeroSlider() {
+    if (!els.heroSection || !els.heroSlider) return;
+    const heroItems = menuItems.filter(m => m.isHero);
+    if (!heroItems.length) {
+      els.heroSection.classList.add('hidden');
+      return;
+    }
+
+    els.heroSection.classList.remove('hidden');
+    els.heroSlider.innerHTML = heroItems.map((item, idx) => `
+      <div class="hero-card" onclick="openItemDetail(${item.id})">
+        <div class="hero-badge">${item.heroText || 'BEST SELLER'}</div>
+        <img src="${item.image || 'icons/icon-192.svg'}" alt="${item.name}" class="hero-card-img">
+        <div class="hero-card-overlay">
+          <div class="hero-card-info">
+            <h3>${item.name}</h3>
+            <p>RM ${item.price.toFixed(2)}</p>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    els.heroDots.innerHTML = heroItems.map((_, idx) => `
+      <div class="hero-dot ${idx === 0 ? 'active' : ''}"></div>
+    `).join('');
+
+    // Handle scroll update dots
+    els.heroSlider.onscroll = () => {
+      const scrollPos = els.heroSlider.scrollLeft;
+      const width = els.heroSlider.offsetWidth;
+      const activeIdx = Math.round(scrollPos / width);
+      const dots = els.heroDots.querySelectorAll('.hero-dot');
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === activeIdx);
+      });
+    };
   }
 
   function getOrderQty(id) {
@@ -1212,6 +1278,9 @@
     pendingModifierGroups = [];
     renderNewGallery();
     renderNewModifierGroups();
+    if (els.newItemIsHero) els.newItemIsHero.checked = false;
+    if (els.newItemHeroText) els.newItemHeroText.value = '';
+    if (els.newItemHeroTextGroup) els.newItemHeroTextGroup.style.display = 'none';
     els.addItemModal.classList.remove('hidden');
     setTimeout(() => els.newItemName.focus(), 300);
   }
@@ -1231,7 +1300,9 @@
       name, price, category, description,
       modifierGroups: JSON.parse(JSON.stringify(pendingModifierGroups)),
       image: thumbImg ? thumbImg.data : null,
-      gallery: pendingGallery.map(g => g.data)
+      gallery: pendingGallery.map(g => g.data),
+      isHero: els.newItemIsHero ? els.newItemIsHero.checked : false,
+      heroText: els.newItemHeroText ? els.newItemHeroText.value.trim() : ''
     };
 
     menuItems.push(newItem);
@@ -1239,6 +1310,7 @@
     saveNextId();
 
     renderMenu();
+    renderHeroSlider();
     renderMenuManage();
     els.addItemModal.classList.add('hidden');
     showToast('✅ Item added!');
@@ -1355,6 +1427,12 @@
     if (editGroupName) editGroupName.value = '';
     renderEditModifierGroups();
 
+    if (els.editItemIsHero) {
+      els.editItemIsHero.checked = !!item.isHero;
+      if (els.editItemHeroTextGroup) els.editItemHeroTextGroup.style.display = item.isHero ? 'flex' : 'none';
+    }
+    if (els.editItemHeroText) els.editItemHeroText.value = item.heroText || '';
+
     els.editItemModal.classList.remove('hidden');
     setTimeout(() => els.editItemName.focus(), 300);
   }
@@ -1381,6 +1459,8 @@
     const thumbImg = editPendingGallery.find(g => g.isThumbnail);
     item.image = thumbImg ? thumbImg.data : null;
     item.gallery = editPendingGallery.map(g => g.data);
+    item.isHero = els.editItemIsHero ? els.editItemIsHero.checked : false;
+    item.heroText = els.editItemHeroText ? els.editItemHeroText.value.trim() : '';
 
     // Also update price in current order if present
     const orderItemsToUpdate = currentOrder.filter((o) => o.id === id);
@@ -1391,6 +1471,7 @@
 
     saveMenu();
     renderMenu();
+    renderHeroSlider();
     renderOrder();
     renderMenuManage();
     els.editItemModal.classList.add('hidden');
@@ -1402,6 +1483,7 @@
     currentOrder = currentOrder.filter((o) => o.id !== id);
     saveMenu();
     renderMenu();
+    renderHeroSlider();
     renderOrder();
     renderMenuManage();
     showToast('Item removed');
@@ -1943,6 +2025,19 @@
     $('#closeEditItemModal').addEventListener('click', () => els.editItemModal.classList.add('hidden'));
     $('#cancelEditItem').addEventListener('click', () => els.editItemModal.classList.add('hidden'));
     $('#confirmEditItem').addEventListener('click', confirmEditItem);
+    
+    // Hero Toggles
+    if (els.newItemIsHero) {
+      els.newItemIsHero.onchange = (e) => {
+        if (els.newItemHeroTextGroup) els.newItemHeroTextGroup.style.display = e.target.checked ? 'flex' : 'none';
+      };
+    }
+    if (els.editItemIsHero) {
+      els.editItemIsHero.onchange = (e) => {
+        if (els.editItemHeroTextGroup) els.editItemHeroTextGroup.style.display = e.target.checked ? 'flex' : 'none';
+      };
+    }
+
     els.editItemModal.addEventListener('click', (e) => {
       if (e.target === els.editItemModal) els.editItemModal.classList.add('hidden');
     });

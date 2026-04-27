@@ -17,7 +17,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('wh_theme') || 'dark';
+      let themeToApply = savedTheme;
+      if (savedTheme === 'auto') {
+        themeToApply = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', themeToApply);
+    })();
+  </script>
 </head>
+
 
 <body>
   <div class="app-container">
@@ -159,6 +170,14 @@
           </div>
           <button class="btn-change-table" id="changeTableBtn">Change</button>
         </div>
+
+        <!-- ===== HERO SLIDER ===== -->
+        <section class="hero-section hidden" id="heroSection">
+          <div class="hero-slider" id="heroSlider">
+            <!-- Populated via JS -->
+          </div>
+          <div class="hero-dots" id="heroDots"></div>
+        </section>
 
         <!-- Menu Section -->
         <div class="section-header">
@@ -585,6 +604,14 @@
             <label for="newItemDesc">Description (optional)</label>
             <textarea id="newItemDesc" placeholder="Brief description of the item"></textarea>
           </div>
+          <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px;">
+            <input type="checkbox" id="newItemIsHero" style="width: 20px; height: 20px; margin: 0;">
+            <label for="newItemIsHero" style="margin: 0; font-weight: 700;">Featured in Hero Slider (Best Seller / Hot Deal)</label>
+          </div>
+          <div class="form-group" id="newItemHeroTextGroup" style="display: none;">
+            <label for="newItemHeroText">Hero Badge Text (e.g. HOT DEAL, 50% OFF)</label>
+            <input type="text" id="newItemHeroText" placeholder="BEST SELLER">
+          </div>
           <div class="form-group">
             <label>Add-ons (Item Specific)</label>
             <div id="newModifierGroupsList" class="addon-management-list" style="margin-bottom: 12px; max-height: 150px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px;">
@@ -699,6 +726,14 @@
           <div class="form-group">
             <label for="editItemDesc">Description (optional)</label>
             <textarea id="editItemDesc" placeholder="Brief description"></textarea>
+          </div>
+          <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px;">
+            <input type="checkbox" id="editItemIsHero" style="width: 20px; height: 20px; margin: 0;">
+            <label for="editItemIsHero" style="margin: 0; font-weight: 700;">Featured in Hero Slider (Best Seller / Hot Deal)</label>
+          </div>
+          <div class="form-group" id="editItemHeroTextGroup" style="display: none;">
+            <label for="editItemHeroText">Hero Badge Text (e.g. HOT DEAL, 50% OFF)</label>
+            <input type="text" id="editItemHeroText" placeholder="BEST SELLER">
           </div>
           <div class="form-group">
             <label>Add-ons (Item Specific)</label>
