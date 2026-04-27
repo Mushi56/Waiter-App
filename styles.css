@@ -2949,4 +2949,51 @@ button {
   line-height: 1.6;
   color: var(--text-secondary);
   font-size: 0.9rem;
+}
+
+/* ===== DRAG AND DROP & CATEGORY MGMT ===== */
+.drag-item {
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.drag-item.dragging {
+  opacity: 0.5;
+  transform: scale(0.98);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  background: var(--bg-tertiary) !important;
+}
+
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.drag-handle:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.addon-management-list {
+  scrollbar-width: thin;
+}
+
+.addon-management-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.addon-management-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+.btn-cat-addons:hover {
+  background: rgba(231, 160, 30, 0.2) !important;
+  transform: translateY(-1px);
+}
+
+.btn-cat-addons:active {
+  transform: translateY(0);
 }

@@ -84,25 +84,89 @@
 
   function saveCategories() {
     localStorage.setItem('waiter_categories', JSON.stringify(appCategories));
+    localStorage.setItem('waiter_addons_data', JSON.stringify(ADDONS_DATA));
     updateEmojiMap();
     renderManageCategories();
     populateCategorySelects();
+    renderCategoryTabs();
     renderMenu();
   }
 
   function renderManageCategories() {
     if (!els.categoriesList) return;
     els.categoriesList.innerHTML = appCategories.map((c, idx) => `
-      <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-card); padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--border);">
-        <span><span style="font-size:1.2rem; margin-right:8px;">${c.emoji}</span> <strong>${c.name}</strong></span>
-        <div style="display:flex; gap: 6px; align-items:center;">
-          <button type="button" onclick="moveCategory(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} style="background:var(--bg-secondary); color:var(--text-primary); border:none; border-radius:4px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; cursor:${idx === 0 ? 'not-allowed' : 'pointer'}; opacity:${idx === 0 ? 0.5 : 1};">&#9650;</button>
-          <button type="button" onclick="moveCategory(${idx}, 1)" ${idx === appCategories.length - 1 ? 'disabled' : ''} style="background:var(--bg-secondary); color:var(--text-primary); border:none; border-radius:4px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; cursor:${idx === appCategories.length - 1 ? 'not-allowed' : 'pointer'}; opacity:${idx === appCategories.length - 1 ? 0.5 : 1};">&#9660;</button>
+      <div class="drag-item" draggable="true" data-index="${idx}" style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-card); padding:10px 14px; border-radius:var(--radius-md); border:1px solid var(--border); margin-bottom:8px; cursor:grab;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="drag-handle" style="color:var(--text-muted); cursor:grab;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
+          </div>
+          <span><span style="font-size:1.2rem; margin-right:8px;">${c.emoji}</span> <strong>${c.name}</strong></span>
+        </div>
+        <div style="display:flex; gap: 8px; align-items:center;">
+          <button type="button" class="btn-cat-addons" onclick="openCategoryAddons('${c.name}')" style="background:rgba(231,160,30,0.1); color:var(--accent); border:none; border-radius:var(--radius-sm); padding:4px 10px; font-size:0.75rem; font-weight:700; cursor:pointer;">Add-ons</button>
           <button type="button" onclick="removeCategory(${idx})" style="background:rgba(239,68,68,0.1); color:var(--danger); border:none; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; cursor:pointer;" ${appCategories.length === 1 ? 'disabled' : ''}>&times;</button>
         </div>
       </div>
     `).join('');
+    setupCategoryDragAndDrop();
   }
+
+  function setupCategoryDragAndDrop() {
+    const items = els.categoriesList.querySelectorAll('.drag-item');
+    items.forEach(item => {
+      item.addEventListener('dragstart', (e) => {
+        item.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', item.dataset.index);
+      });
+      item.addEventListener('dragend', () => item.classList.remove('dragging'));
+      item.addEventListener('dragover', (e) => e.preventDefault());
+      item.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
+        const toIndex = parseInt(item.dataset.index);
+        if (fromIndex !== toIndex) {
+          const moved = appCategories.splice(fromIndex, 1)[0];
+          appCategories.splice(toIndex, 0, moved);
+          saveCategories();
+        }
+      });
+    });
+  }
+
+  let currentAddonCategory = null;
+  window.openCategoryAddons = (catName) => {
+    currentAddonCategory = catName;
+    els.categoryAddonsTitle.textContent = `${catName} Add-ons`;
+    els.categoryAddonsSubtitle.textContent = `These add-ons will appear for all items in the ${catName} category.`;
+    renderCategoryAddons();
+    els.categoryAddonsModal.classList.remove('hidden');
+  };
+
+  function renderCategoryAddons() {
+    const categoryData = ADDONS_DATA[currentAddonCategory] || [];
+    const addons = categoryData.length > 0 ? categoryData[0].options : [];
+    
+    if (addons.length === 0) {
+      els.catAddonList.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.85rem;">No category add-ons yet</div>';
+    } else {
+      els.catAddonList.innerHTML = addons.map((addon, idx) => `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid var(--border);">
+          <span style="font-weight:600; font-size:0.9rem;">${addon.name}</span>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="accent" style="font-weight:700; font-size:0.85rem;">RM ${addon.price.toFixed(2)}</span>
+            <button onclick="removeCategoryAddon(${idx})" style="background:rgba(239,68,68,0.1); color:var(--danger); border:none; border-radius:50%; width:24px; height:24px; cursor:pointer;">&times;</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  window.removeCategoryAddon = (idx) => {
+    if (!ADDONS_DATA[currentAddonCategory]) return;
+    ADDONS_DATA[currentAddonCategory][0].options.splice(idx, 1);
+    saveCategories();
+    renderCategoryAddons();
+  };
 
   window.moveCategory = (idx, dir) => {
     if (idx + dir < 0 || idx + dir >= appCategories.length) return;
@@ -114,9 +178,42 @@
 
   window.removeCategory = (idx) => {
     if (appCategories.length <= 1) return showToast('Must have at least one category');
-    appCategories.splice(idx, 1);
-    saveCategories();
+    if (confirm(`Remove category "${appCategories[idx].name}"? Items in this category will remain but without a category.`)) {
+      appCategories.splice(idx, 1);
+      saveCategories();
+    }
   };
+
+  function addNewCategory() {
+    const name = els.newCategoryName.value.trim();
+    const emoji = els.newCategoryEmoji.value.trim() || '🍴';
+    if (!name) return showToast('Please enter category name');
+    if (appCategories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+      return showToast('Category already exists');
+    }
+    appCategories.push({ name, emoji });
+    els.newCategoryName.value = '';
+    els.newCategoryEmoji.value = '';
+    saveCategories();
+    showToast('Category added');
+  }
+
+  function addCategoryAddon() {
+    if (!currentAddonCategory) return;
+    const name = els.catAddonName.value.trim();
+    const price = parseFloat(els.catAddonPrice.value);
+    if (!name || isNaN(price)) return showToast('Enter name and price');
+
+    if (!ADDONS_DATA[currentAddonCategory]) {
+      ADDONS_DATA[currentAddonCategory] = [{ name: 'Add-ons', type: 'checkbox', options: [] }];
+    }
+    ADDONS_DATA[currentAddonCategory][0].options.push({ name, price });
+    els.catAddonName.value = '';
+    els.catAddonPrice.value = '';
+    saveCategories();
+    renderCategoryAddons();
+    showToast('Add-on added to category');
+  }
 
   function populateCategorySelects() {
     const opts = appCategories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
@@ -187,6 +284,17 @@
     newCategoryEmoji: $('#newCategoryEmoji'),
     newCategoryName: $('#newCategoryName'),
     addNewCategoryBtn: $('#addNewCategoryBtn'),
+    closeCategoriesModal: $('#closeCategoriesModal'),
+    // Category Addons Modal
+    categoryAddonsModal: $('#categoryAddonsModal'),
+    categoryAddonsTitle: $('#categoryAddonsTitle'),
+    categoryAddonsSubtitle: $('#categoryAddonsSubtitle'),
+    catAddonList: $('#catAddonList'),
+    catAddonName: $('#catAddonName'),
+    catAddonPrice: $('#catAddonPrice'),
+    addCatAddonBtn: $('#addCatAddonBtn'),
+    closeCatAddonsModal: $('#closeCatAddonsModal'),
+    closeCatAddonsBtn: $('#closeCatAddonsBtn'),
     newAddonList: $('#newAddonList'),
     newAddonName: $('#newAddonName'),
     newAddonPrice: $('#newAddonPrice'),
@@ -214,6 +322,7 @@
     tableGridPresets: $('#tableGridPresets'),
     customTableInput: $('#customTableInput'),
     confirmTableBtn: $('#confirmTableBtn'),
+    addMenuItemFull: $('#addMenuItemFull'),
     activeTableBanner: $('#activeTableBanner'),
     tableManageList: $('#tableManageList'),
     manageTableGroup: $('#manageTableGroup'),
@@ -246,7 +355,7 @@
     tablePresets = DEFAULT_TABLE_PRESETS;
   }
 
-  const ADDONS_DATA = {
+  let ADDONS_DATA = JSON.parse(localStorage.getItem('waiter_addons_data')) || {
     'Main Course': [{
       name: 'Add-ons',
       type: 'checkbox',
@@ -1064,6 +1173,7 @@
   };
 
   let editPendingModifierGroups = [];
+  let pendingModifierGroups = []; // For NEW items
   function renderEditModifierGroups() {
     const listEl = document.getElementById('editModifierGroupsList');
     if (!listEl) return;
@@ -1562,15 +1672,104 @@
       }
     });
 
+    // Category Management
+    if (els.manageCategoriesBtn) {
+      els.manageCategoriesBtn.onclick = () => {
+        renderManageCategories();
+        els.manageCategoriesModal.classList.remove('hidden');
+      };
+    }
+    if (els.closeCategoriesModal) {
+      els.closeCategoriesModal.onclick = () => els.manageCategoriesModal.classList.add('hidden');
+    }
+    if (els.addNewCategoryBtn) {
+      els.addNewCategoryBtn.onclick = addNewCategory;
+    }
+    if (els.addCatAddonBtn) {
+      els.addCatAddonBtn.onclick = addCategoryAddon;
+    }
+    if (els.closeCatAddonsModal) {
+      els.closeCatAddonsModal.onclick = () => els.categoryAddonsModal.classList.add('hidden');
+    }
+    if (els.closeCatAddonsBtn) {
+      els.closeCatAddonsBtn.onclick = () => els.categoryAddonsModal.classList.add('hidden');
+    }
+
+    // New Item Addons (Simple List)
+    if (els.addNewAddonBtn) {
+      els.addNewAddonBtn.onclick = () => {
+        const name = els.newAddonName.value.trim();
+        const price = parseFloat(els.newAddonPrice.value) || 0;
+        if(!name) return showToast('Enter addon name');
+        // Logic to add to pending modifiers for new item
+        // This would need a separate list for NEW item pending modifiers
+      };
+    }
+
+    // Edit Item Addons
+    const addEditGroupBtn = document.getElementById('addEditGroupBtn');
+    if (addEditGroupBtn) {
+      addEditGroupBtn.onclick = () => {
+        const name = document.getElementById('editGroupName').value.trim();
+        const type = document.getElementById('editGroupType').value;
+        if (!name) return showToast('Enter group name');
+        editPendingModifierGroups.push({ name, type, options: [] });
+        document.getElementById('editGroupName').value = '';
+        renderEditModifierGroups();
+      };
+    }
+  }
+
+  function resetAddItemForm() {
+    els.newItemName.value = '';
+    els.newItemPrice.value = '';
+    els.newItemCategory.selectedIndex = 0;
+    els.newItemDesc.value = '';
+    els.newItemImages.value = '';
+    els.newGalleryPreviews.innerHTML = '';
+    pendingGallery = [];
+    pendingModifierGroups = [];
+    renderNewModifierGroups();
+  }
+
+  function renderNewModifierGroups() {
+    const listEl = document.getElementById('newModifierGroupsList');
+    if (!listEl) return;
+    // For simplicity, we just use a default "Add-ons" group for new items if they want to add quickly
+    // Or we can implement a full group system like edit. Let's do full group for consistency.
+    listEl.innerHTML = pendingModifierGroups.map((group, gIdx) => `
+      <div style="background:var(--bg-card); padding:10px; border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+            <strong style="font-size:0.85rem;">${group.name}</strong>
+            <button type="button" onclick="removeNewGroup(${gIdx})" style="color:var(--danger); border:none; background:none;">&times;</button>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
+            ${group.options.map((opt, oIdx) => `<div style="font-size:0.8rem; display:flex; justify-content:space-between;"><span>${opt.name}</span> <span>+RM ${opt.price.toFixed(2)}</span></div>`).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+    // Add Item Full Button
+    if (els.addMenuItemFull) {
+      els.addMenuItemFull.onclick = () => {
+        resetAddItemForm();
+        els.addItemModal.classList.remove('hidden');
+      };
+    }
+
     // Clear all
-    $('#clearAllBtn').addEventListener('click', () => {
-      if (currentOrder.length === 0) return;
-      currentOrder = [];
-      if (els.orderNote) els.orderNote.value = '';
-      renderOrder();
-      renderMenu();
-      showToast('Order cleared');
-    });
+    const clearBtn = $('#clearAllBtn');
+    if (clearBtn) {
+      clearBtn.onclick = () => {
+        if (currentOrder.length === 0) return;
+        currentOrder = [];
+        if (els.orderNote) els.orderNote.value = '';
+        renderOrder();
+        renderMenu();
+        showToast('Order cleared');
+      };
+    }
 
     // Save order
     $('#saveOrderBtn').addEventListener('click', saveOrder);

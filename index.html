@@ -241,19 +241,7 @@
           </div>
         </div>
 
-        <!-- Order History Preview -->
-        <div class="history-preview" id="historyPreview">
-          <div class="section-header">
-            <h2>ORDER HISTORY</h2>
-            <button class="btn-view-all" id="viewAllHistoryBtn">View All <svg width="14" height="14" viewBox="0 0 24 24"
-                fill="none" stroke="#E7A01E" stroke-width="2.5">
-                <polyline points="9 18 15 12 9 6" />
-              </svg></button>
-          </div>
-          <div class="history-preview-list" id="historyPreviewList">
-            <!-- Filled dynamically -->
-          </div>
-        </div>
+
 
         <!-- ===== TABLE SELECTION MODAL ===== -->
         <div class="modal-overlay hidden" id="tableSelectModal">
@@ -291,11 +279,51 @@
       <!-- PAGE: MENU MANAGEMENT -->
       <section class="page" id="pageMenu">
         <h2 class="page-title">Menu Management</h2>
-        <button class="btn-accent btn-add-menu-full" id="addMenuItemFull">+ Add New Item</button>
+        <div class="manage-menu-actions" style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <button class="btn-accent btn-add-menu-full" id="addMenuItemFull" style="flex: 1; margin-bottom: 0;">+ Add New Item</button>
+          <button class="btn-secondary" id="manageCategoriesBtn" style="padding: 0 16px; border-radius: var(--radius-md); font-weight: 600; border: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            Categories
+          </button>
+        </div>
         <div class="menu-manage-grid" id="menuManageGrid">
           <!-- Filled dynamically -->
         </div>
       </section>
+
+      <!-- ===== MANAGE CATEGORIES MODAL ===== -->
+      <div class="modal-overlay hidden" id="manageCategoriesModal">
+        <div class="modal">
+          <div class="modal-header">
+            <h3>Manage Categories</h3>
+            <button class="modal-close" id="closeCategoriesModal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="add-category-form" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
+              <label style="display:block; font-size:0.75rem; color:var(--text-secondary); margin-bottom:8px; font-weight:700;">ADD NEW CATEGORY</label>
+              <div style="display:flex; gap:8px;">
+                <input type="text" id="newCategoryEmoji" placeholder="Emoji" style="width:60px; text-align:center;">
+                <input type="text" id="newCategoryName" placeholder="Category Name" style="flex:1;">
+                <button class="btn-accent" id="addNewCategoryBtn" style="padding:0 16px; border-radius:var(--radius-sm);">Add</button>
+              </div>
+            </div>
+            
+            <div id="categoriesList" class="drag-list">
+              <!-- Filled dynamically with drag-and-drop items -->
+            </div>
+            
+            <p style="font-size:0.7rem; color:var(--text-muted); margin-top:16px; text-align:center;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle; margin-right:4px;">
+                <polyline points="7 10 12 15 17 10"/>
+                <polyline points="7 4 12 9 17 4"/>
+              </svg>
+              Drag items to reorder
+            </p>
+          </div>
+        </div>
+      </div>
 
       <!-- PAGE: TABLE MANAGEMENT -->
       <section class="page" id="pageTables">
@@ -533,6 +561,17 @@
             <textarea id="newItemDesc" placeholder="Brief description of the item"></textarea>
           </div>
           <div class="form-group">
+            <label>Add-ons (Item Specific)</label>
+            <div id="newModifierGroupsList" class="addon-management-list" style="margin-bottom: 12px; max-height: 150px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px;">
+              <!-- Filled dynamically -->
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="newAddonName" placeholder="Add-on Name" style="flex: 1; font-size: 0.8rem; padding: 8px;">
+              <input type="number" id="newAddonPrice" placeholder="Price" step="0.01" style="width: 80px; font-size: 0.8rem; padding: 8px;">
+              <button class="btn-accent" id="addNewAddonBtn" style="padding: 0 12px; font-size: 0.8rem; border-radius: var(--radius-sm);">Add</button>
+            </div>
+          </div>
+          <div class="form-group">
             <label>Images (Multiple photos & Auto-Crop)</label>
             <div class="gallery-upload-container">
               <div id="newGalleryPreviews" style="display:contents"></div>
@@ -637,6 +676,23 @@
             <textarea id="editItemDesc" placeholder="Brief description"></textarea>
           </div>
           <div class="form-group">
+            <label>Add-ons (Item Specific)</label>
+            <div id="editModifierGroupsList" class="addon-management-list" style="margin-bottom: 12px; max-height: 200px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px; display: flex; flex-direction: column; gap: 8px;">
+              <!-- Filled dynamically via renderEditModifierGroups -->
+            </div>
+            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border);">
+              <label style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-bottom: 4px;">ADD NEW ADD-ON GROUP</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" id="editGroupName" placeholder="e.g. Add-ons or Choice of Topping" style="flex: 1; font-size: 0.8rem; padding: 8px;">
+                <select id="editGroupType" style="width: 100px; font-size: 0.8rem; padding: 8px;">
+                  <option value="checkbox">Multiple</option>
+                  <option value="radio">Single</option>
+                </select>
+                <button class="btn-accent" id="addEditGroupBtn" style="padding: 0 12px; font-size: 0.8rem; border-radius: var(--radius-sm);">Create Group</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
             <label>Images (Multiple photos & Auto-Crop)</label>
             <div class="gallery-upload-container">
               <div id="editGalleryPreviews" style="display:contents"></div>
@@ -708,6 +764,30 @@
         <div class="modal-footer">
           <button class="btn-cancel" id="cancelAddonBtn">Cancel</button>
           <button class="btn-accent" id="confirmAddonBtn">Add to Order</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CATEGORY ADDONS MODAL ===== -->
+    <div class="modal-overlay hidden" id="categoryAddonsModal">
+      <div class="modal" style="max-width: 400px;">
+        <div class="modal-header">
+          <h3 id="categoryAddonsTitle">Category Add-ons</h3>
+          <button class="modal-close" id="closeCatAddonsModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p id="categoryAddonsSubtitle" style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;"></p>
+          <div id="catAddonList" class="addon-management-list" style="margin-bottom: 16px; max-height: 250px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px;">
+            <!-- Filled dynamically -->
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="catAddonName" placeholder="e.g. Extra Cheese" style="flex: 1;">
+            <input type="number" id="catAddonPrice" placeholder="Price" step="0.01" style="width: 100px;">
+            <button class="btn-accent" id="addCatAddonBtn" style="padding: 0 16px;">Add</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-accent" id="closeCatAddonsBtn" style="width: 100%;">Done</button>
         </div>
       </div>
     </div>
