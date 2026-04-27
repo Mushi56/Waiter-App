@@ -875,7 +875,7 @@ textarea:focus {
   border: 1px solid var(--border);
   color: var(--text-primary);
   padding: 14px 8px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   font-weight: 700;
   font-size: 0.9rem;
   transition: all 0.2s;
@@ -1595,7 +1595,7 @@ textarea:focus {
 .history-btn-delete {
   width: 36px;
   height: 36px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   border: none;
   display: flex;
   align-items: center;
