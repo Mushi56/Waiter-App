@@ -373,15 +373,7 @@
     itemDetailName: $('#itemDetailName'),
     itemDetailDesc: $('#itemDetailDesc'),
     itemDetailPrice: $('#itemDetailPrice'),
-    itemDetailAddBtn: $('#itemDetailAddBtn'),
-    // Dashboard elements
-    dashTotalRevenue: $('#dashTotalRevenue'),
-    dashTotalOrders: $('#dashTotalOrders'),
-    dashActiveTables: $('#dashActiveTables'),
-    dashLiveOrders: $('#dashLiveOrders'),
-    dashPopularItems: $('#dashPopularItems'),
-    dashStockAlerts: $('#dashStockAlerts'),
-    refreshDashboardBtn: $('#refreshDashboardBtn')
+    itemDetailAddBtn: $('#itemDetailAddBtn')
   };
 
   const DEFAULT_TABLE_PRESETS = {
@@ -610,63 +602,6 @@
       if (els.adminPinInput) els.adminPinInput.value = '';
       if (els.adminLoginModal) els.adminLoginModal.classList.remove('hidden');
       setTimeout(() => { if (els.adminPinInput) els.adminPinInput.focus(); }, 300);
-    }
-  }
-
-  function renderDashboard() {
-    if (!isAdmin) return;
-    
-    // Revenue & Stats
-    const today = new Date().toLocaleDateString();
-    const todayOrders = orders.filter(o => new Date(o.timestamp).toLocaleDateString() === today);
-    const revenue = todayOrders.reduce((sum, o) => sum + o.total, 0);
-    
-    if (els.dashTotalRevenue) els.dashTotalRevenue.textContent = `RM ${revenue.toFixed(2)}`;
-    if (els.dashTotalOrders) els.dashTotalOrders.textContent = todayOrders.length;
-    
-    // Active Tables Count (approx based on orders in last 2 hours)
-    const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
-    const activeTables = new Set(orders.filter(o => o.timestamp > twoHoursAgo).map(o => o.table)).size;
-    if (els.dashActiveTables) els.dashActiveTables.textContent = activeTables;
-
-    // Live Orders (Recent 5)
-    if (els.dashLiveOrders) {
-      const liveOrders = orders.slice(-5).reverse();
-      if (liveOrders.length === 0) {
-        els.dashLiveOrders.innerHTML = '<div class="empty-state">No active orders</div>';
-      } else {
-        els.dashLiveOrders.innerHTML = liveOrders.map(o => `
-          <div class="live-order-card">
-            <div class="live-order-top">
-              <span class="live-order-id">TABLE ${o.table}</span>
-              <span class="live-order-status">PREPARING</span>
-            </div>
-            <div style="font-size: 0.8rem; color: var(--text-secondary);">
-              ${o.items.length} items • RM ${o.total.toFixed(2)}
-            </div>
-          </div>
-        `).join('');
-      }
-    }
-
-    // Popular Items (Mock logic)
-    if (els.dashPopularItems) {
-      const itemCounts = {};
-      orders.forEach(o => o.items.forEach(i => {
-        itemCounts[i.name] = (itemCounts[i.name] || 0) + i.qty;
-      }));
-      const sorted = Object.entries(itemCounts).sort((a, b) => b[1] - a[1]).slice(0, 4);
-      
-      if (sorted.length === 0) {
-        els.dashPopularItems.innerHTML = '<div class="empty-state">No data yet</div>';
-      } else {
-        els.dashPopularItems.innerHTML = sorted.map(([name, qty]) => `
-          <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border);">
-            <span style="font-weight:700; font-size:0.9rem;">${name}</span>
-            <span style="color:var(--accent); font-weight:800; font-size:0.85rem;">${qty} sold</span>
-          </div>
-        `).join('');
-      }
     }
   }
 
@@ -1088,7 +1023,7 @@
     els.historyPreviewList.innerHTML = recent.map((o) => buildHistoryCard(o)).join('');
   }
 
-  function renderOrdersFullList() {
+  function renderOrdersPage() {
     if (orders.length === 0) {
       els.ordersFullList.innerHTML = '<div class="history-empty">No orders yet</div>';
       return;
@@ -1096,7 +1031,7 @@
     els.ordersFullList.innerHTML = orders.map((o) => buildHistoryCard(o)).join('');
   }
 
-  function renderHistoryFullList() {
+  function renderHistoryPage() {
     if (orders.length === 0) {
       els.historyFullList.innerHTML = '<div class="history-empty">No history yet</div>';
       return;
@@ -1179,8 +1114,8 @@
     renderOrder();
     renderMenu();
     renderHistoryPreview();
-    renderOrdersFullList();
-    renderHistoryFullList();
+    renderOrdersPage();
+    renderHistoryPage();
 
     navigateTo('pageHome');
     els.orderModalOverlay.classList.remove('hidden');
@@ -1192,8 +1127,8 @@
     orders = orders.filter(o => o.id !== orderId);
     saveOrders();
     renderHistoryPreview();
-    renderOrdersFullList();
-    renderHistoryFullList();
+    renderOrdersPage();
+    renderHistoryPage();
     showToast('Order deleted');
   }
 
@@ -1203,8 +1138,8 @@
     orders = [];
     saveOrders();
     renderHistoryPreview();
-    renderOrdersFullList();
-    renderHistoryFullList();
+    renderOrdersPage();
+    renderHistoryPage();
     showToast('All orders cleared');
   }
 
@@ -1214,8 +1149,8 @@
     orders = [];
     saveOrders();
     renderHistoryPreview();
-    renderOrdersFullList();
-    renderHistoryFullList();
+    renderOrdersPage();
+    renderHistoryPage();
     showToast('Order history cleared');
   }
 
@@ -1669,49 +1604,38 @@
     }
   }
 
+
+
   // --- Navigation ---
   function navigateTo(pageId, updateHash = true) {
-    const pages = $$('.page');
-    const navBtns = $$('.nav-btn');
-    const drawerItems = $$('.drawer-item');
+    $$('.page').forEach((p) => p.classList.remove('active'));
+    const target = $(`#${pageId}`);
+    if (target) target.classList.add('active');
 
-    pages.forEach((p) => p.classList.toggle('active', p.id === pageId));
-    navBtns.forEach((b) => b.classList.toggle('active', b.dataset.page === pageId));
-    drawerItems.forEach((d) => d.classList.toggle('active', d.dataset.page === pageId));
+    $$('.nav-btn, .drawer-item').forEach((b) => b.classList.remove('active'));
+    $$(`[data-page="${pageId}"]`).forEach(el => el.classList.add('active'));
 
-    if (pageId === 'pageAdminDashboard') {
-      renderDashboard();
-    }
+    if (pageId === 'pageOrders') renderOrdersPage();
+    if (pageId === 'pageTables') renderTableManageList();
+    if (pageId === 'pageMenu') renderMenuManage();
+    if (pageId === 'pageHistory') renderHistoryPage();
 
-    if (pageId === 'pageMenu' && isAdmin) {
-      renderMenuManage();
-    }
-    
-    if (pageId === 'pageTables' && isAdmin) {
-      renderTableManageList();
-    }
-
-    if (pageId === 'pageOrders') {
-      renderOrdersFullList();
-    }
-
-    if (pageId === 'pageHistory') {
-      renderHistoryFullList();
+    if (pageId === 'pageAbout' || pageId === 'pagePrivacy' || pageId === 'pageTerms') {
+      if (els.bottomNav) els.bottomNav.classList.add('hidden');
+    } else {
+      if (els.bottomNav) els.bottomNav.classList.remove('hidden');
     }
 
     if (updateHash) {
       window.location.hash = pageId;
     }
 
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
     closeDrawer();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Expose to window for inline onclicks
   window.navigateTo = navigateTo;
-  window.openItemDetail = openItemDetail;
 
   function toggleDrawer() {
     els.drawerOverlay.classList.toggle('hidden');
