@@ -402,7 +402,7 @@
   align-items: center;
   gap: 14px;
   padding: 8px 12px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-pill);
   background: transparent;
   border: none;
   color: var(--text-secondary);
@@ -500,6 +500,7 @@ button {
   box-sizing: border-box;
   min-width: 0;
   font-family: inherit;
+  border-radius: var(--radius-pill);
 }
 
 input:not([type="file"]):not([type="checkbox"]):not([type="radio"]),
@@ -600,6 +601,7 @@ textarea:focus {
   justify-content: center;
   transition: all var(--transition);
   pointer-events: auto;
+  border-radius: var(--radius-pill);
 }
 
 .header-btn:active {
@@ -634,10 +636,12 @@ textarea:focus {
 
 .nav-search-inner input {
   flex: 1;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(33, 37, 41, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: none;
-  border-radius: 9999px;
-  color: var(--text-primary);
+  border-radius: var(--radius-pill);
+  color: var(--accent);
   font-size: 0.9rem;
   outline: none;
   padding: 8px 16px;
@@ -645,25 +649,29 @@ textarea:focus {
   transition: all 0.3s ease;
 }
 
+.nav-search-inner input::placeholder {
+  color: rgba(255, 184, 0, 0.5);
+}
+
 .nav-search-inner input:focus {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--accent);
-  box-shadow: 0 0 10px rgba(255, 184, 0, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 15px rgba(255, 184, 0, 0.15);
 }
 
 .search-icon-fixed {
-  color: var(--text-muted);
+  color: var(--accent);
 }
 
 .nav-search-close {
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: #ffffff;
   cursor: pointer;
   display: flex;
   align-items: center;
   padding: 4px;
   transition: color 0.2s;
+  border-radius: var(--radius-pill);
 }
 
 .nav-search-close:hover {
@@ -1228,7 +1236,7 @@ textarea:focus {
 .btn-accent,
 .btn-secondary {
   padding: 0 16px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   font-size: 0.9rem;
   font-weight: 600;
   white-space: normal;
@@ -1254,7 +1262,7 @@ textarea:focus {
   background: transparent;
   border: 1px solid var(--danger);
   color: var(--danger);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   cursor: pointer;
   transition: all var(--transition);
 }
@@ -1286,7 +1294,7 @@ textarea:focus {
   border: 1px solid var(--accent);
   color: var(--accent);
   padding: 5px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
@@ -1322,15 +1330,7 @@ textarea:focus {
 }
 
 .btn-clear-all {
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-family: inherit;
+  display: none !important;
 }
 
 .btn-view-all {
@@ -1407,7 +1407,7 @@ textarea:focus {
 
 .menu-card {
   background: var(--bg-card);
-  border-radius: var(--radius-lg);
+  border-radius: 24px;
   overflow: hidden;
   cursor: pointer;
   position: relative;
@@ -1664,17 +1664,7 @@ textarea:focus {
 }
 
 .order-item-delete {
-  background: rgba(231, 76, 60, 0.1);
-  border: none;
-  color: var(--danger);
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all var(--transition);
+  display: none !important;
 }
 
 .order-item-delete:active {
@@ -1714,7 +1704,7 @@ textarea:focus {
   background: var(--accent);
   color: var(--bg-primary);
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   font-size: 1.05rem;
   font-weight: 800;
   cursor: pointer;
@@ -1737,17 +1727,20 @@ textarea:focus {
   left: 50%;
   transform: translateX(-50%);
   z-index: 150;
-  width: calc(100% - 32px);
-  max-width: 448px;
-  background: var(--bg-secondary);
+  width: calc(100% - 40px);
+  max-width: 420px;
+  height: 48px;
+  background: rgba(255, 184, 0, 0.15);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
   color: var(--accent);
-  border: 1px solid var(--accent);
-  border-radius: var(--radius-lg);
-  padding: 14px 20px;
+  border: none;
+  border-radius: 9999px;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 184, 0, 0.1);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: inherit;
@@ -1808,12 +1801,12 @@ textarea:focus {
 }
 
 .cart-total {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 800;
-  background: rgba(231, 160, 30, 0.15);
+  background: rgba(0, 0, 0, 0.2);
   color: var(--accent);
-  padding: 4px 10px;
-  border-radius: 8px;
+  padding: 4px 12px;
+  border-radius: 9999px;
 }
 
 /* ===== HISTORY PREVIEW ===== */
@@ -2153,7 +2146,7 @@ textarea:focus {
   z-index: 100;
   width: calc(100% - 40px);
   max-width: 420px;
-  background: rgba(22, 25, 30, 0.75);
+  background: rgba(255, 184, 0, 0.15);
   backdrop-filter: blur(24px) saturate(1.6);
   -webkit-backdrop-filter: blur(24px) saturate(1.6);
   border: none;
@@ -2191,7 +2184,7 @@ textarea:focus {
   justify-content: center;
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: rgba(255, 184, 0, 0.55);
   cursor: pointer;
   transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
@@ -2548,7 +2541,7 @@ textarea:focus {
   padding: 14px 16px;
   background: rgba(0, 0, 0, 0.2);
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   color: var(--text-primary);
   font-size: 0.9rem;
   font-family: inherit;
@@ -2559,7 +2552,7 @@ textarea:focus {
 .form-group textarea {
   resize: vertical;
   min-height: 80px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
 }
 
 .form-group input:focus,
@@ -2573,11 +2566,6 @@ textarea:focus {
 .form-group select {
   appearance: none;
   cursor: pointer;
-}
-
-.form-group textarea {
-  width: 100%;
-  padding: 12px;
   background: var(--bg-primary);
   border: none;
   border-radius: var(--radius-sm);
