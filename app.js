@@ -342,6 +342,7 @@
     adminLoginModal: $('#adminLoginModal'),
     adminPinInput: $('#adminPinInput'),
     // Header & Search
+    bottomNav: $('#bottomNav'),
     searchWrap: $('#searchWrap'),
     searchToggleBtn: $('#searchToggleBtn'),
     searchCloseBtn: $('#searchCloseBtn'),
@@ -697,6 +698,18 @@
     els.heroSlider.innerHTML = heroItems.map((item, idx) => `
       <div class="hero-card" onclick="openItemDetail(${item.id})">
         <img src="${item.image || 'icons/icon-192.svg'}" alt="${item.name}" class="hero-card-img">
+        <div class="hero-card-gradient"></div>
+        ${item.heroText ? `<div class="hero-badge">${item.heroText}</div>` : '<div class="hero-badge">FEATURED</div>'}
+        <div class="hero-card-info">
+          <h3>${item.name}</h3>
+          <div class="hero-card-meta">
+            <p>RM ${item.price.toFixed(2)}</p>
+            <span class="hero-cta">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              Order
+            </span>
+          </div>
+        </div>
       </div>
     `).join('');
 
@@ -1750,7 +1763,11 @@
 
     // Nav
     $$('.nav-btn, .drawer-item').forEach((btn) => {
-      btn.addEventListener('click', () => navigateTo(btn.dataset.page));
+      btn.addEventListener('click', () => {
+        if (btn.dataset.page) {
+          navigateTo(btn.dataset.page);
+        }
+      });
     });
 
     els.menuToggleBtn.addEventListener('click', toggleDrawer);
@@ -1758,17 +1775,17 @@
       if (e.target === els.drawerOverlay) closeDrawer();
     });
 
-    // Search Interaction
+    // Search Interaction (In-Nav Transformation)
     if (els.searchToggleBtn) {
       els.searchToggleBtn.onclick = () => {
-        els.searchWrap.classList.add('search-active');
+        els.bottomNav.classList.add('search-mode');
         setTimeout(() => els.menuSearchInput.focus(), 100);
       };
     }
 
     if (els.searchCloseBtn) {
       els.searchCloseBtn.onclick = () => {
-        els.searchWrap.classList.remove('search-active');
+        els.bottomNav.classList.remove('search-mode');
         els.menuSearchInput.value = '';
         renderMenu();
       };
