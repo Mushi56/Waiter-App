@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Menu - Admin Panel</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <h2>Smart<span class="accent">Menu</span> Admin</h2>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" data-target="dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Dashboard</a>
+      <a class="nav-item" data-target="menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="1" fill="currentColor"/><circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="18" r="1" fill="currentColor"/></svg> Menu Management</a>
+      <a class="nav-item" data-target="orders"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Order Management</a>
+      <a class="nav-item" data-target="tables"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="12" rx="2"/><line x1="7" y1="19" x2="7" y2="15"/><line x1="17" y1="19" x2="17" y2="15"/></svg> Table Management</a>
+      <a class="nav-item" data-target="customers"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Customers</a>
+      <a class="nav-item" data-target="staff"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Staff</a>
+      <a class="nav-item" data-target="inventory"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg> Inventory</a>
+      <a class="nav-item" data-target="payments"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> Payments</a>
+      <a class="nav-item" data-target="reports"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> Reports</a>
+      <a class="nav-item" data-target="promotions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> Promotions</a>
+      <a class="nav-item" data-target="settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="window.location.href='index.html'">Return to App</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-header">
+      <div style="color:var(--text-secondary)">Tuesday, 28 April 2026</div>
+      <div style="display:flex; gap: 16px; align-items:center;">
+        <button style="background:transparent; border:none; color:var(--text-primary); cursor:pointer;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></button>
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#000; font-weight:bold;">A</div>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <!-- 1. Dashboard -->
+      <section id="dashboard" class="page-section active">
+        <h1 class="section-title">Dashboard Overview</h1>
+        <div class="grid-cards">
+          <div class="stat-card">
+            <div class="stat-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+            <div class="stat-info"><h4>Today's Revenue</h4><div class="val">RM 4,250.00</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+            <div class="stat-info"><h4>Total Orders</h4><div class="val">142</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+            <div class="stat-info"><h4>Active Customers</h4><div class="val">56</div></div>
+          </div>
+        </div>
+        <div class="dashboard-grid">
+          <div class="chart-container">
+            <h3 style="margin-bottom: 16px;">Revenue Trend</h3>
+            <canvas id="revenueChart"></canvas>
+          </div>
+          <div class="list-container">
+            <h3 style="margin-bottom: 16px;">Low Stock Alerts</h3>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div style="display:flex; justify-content:space-between; padding-bottom:8px; border-bottom:1px solid var(--border);"><span>Wagyu Beef</span> <span style="color:var(--danger)">5 kg left</span></div>
+              <div style="display:flex; justify-content:space-between; padding-bottom:8px; border-bottom:1px solid var(--border);"><span>Truffle Oil</span> <span style="color:var(--warning)">2 btls left</span></div>
+              <div style="display:flex; justify-content:space-between; padding-bottom:8px; border-bottom:1px solid var(--border);"><span>Coffee Beans</span> <span style="color:var(--danger)">1.5 kg left</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Menu Management -->
+      <section id="menu" class="page-section">
+        <div class="header-actions">
+          <h1 class="section-title" style="margin:0;">Menu Management</h1>
+          <button class="btn-primary">+ Add New Item</button>
+        </div>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead><tr><th>Item</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td>Burger Wagyu Truffle</td><td>Burgers</td><td>RM 49.90</td><td><span class="badge badge-ready">Available</span></td><td>Edit | Delete</td></tr>
+              <tr><td>Angus Ribeye Steak</td><td>Main Course</td><td>RM 79.00</td><td><span class="badge badge-ready">Available</span></td><td>Edit | Delete</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3. Order Management -->
+      <section id="orders" class="page-section">
+        <div class="header-actions">
+          <h1 class="section-title" style="margin:0;">Live Orders</h1>
+          <div class="flex-gap">
+            <select class="input-control" style="width:150px;"><option>All Status</option><option>Pending</option><option>Preparing</option></select>
+          </div>
+        </div>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead><tr><th>Order ID</th><th>Table</th><th>Items</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>#1024</td><td>Table B4</td><td>3 items</td><td>RM 86.80</td><td><span class="badge badge-preparing">Preparing</span></td><td>View</td></tr>
+              <tr><td>#1025</td><td>Table S1</td><td>1 item</td><td>RM 12.00</td><td><span class="badge badge-pending">Pending</span></td><td>View</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 4. Table Management -->
+      <section id="tables" class="page-section">
+        <div class="header-actions">
+          <h1 class="section-title" style="margin:0;">Table Layout</h1>
+          <button class="btn-primary">+ Add Table</button>
+        </div>
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <div style="width:120px; height:120px; border-radius:var(--radius-lg); border:2px solid var(--accent); display:flex; align-items:center; justify-content:center; flex-direction:column; background:var(--accent-glow);">
+            <h3 style="color:var(--accent)">B4</h3>
+            <span style="font-size:0.8rem; color:var(--text-secondary)">Occupied</span>
+          </div>
+          <div style="width:120px; height:120px; border-radius:var(--radius-lg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-direction:column; background:var(--bg-card);">
+            <h3>B5</h3>
+            <span style="font-size:0.8rem; color:var(--text-secondary)">Available</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Customers -->
+      <section id="customers" class="page-section">
+        <h1 class="section-title">Customers & Loyalty</h1>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead><tr><th>Name</th><th>Total Visits</th><th>Total Spent</th><th>Points</th></tr></thead>
+            <tbody>
+              <tr><td>John Doe</td><td>12</td><td>RM 850.00</td><td>150 pts</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 6. Staff -->
+      <section id="staff" class="page-section">
+        <div class="header-actions">
+          <h1 class="section-title" style="margin:0;">Staff Management</h1>
+          <button class="btn-primary">+ Add Staff</button>
+        </div>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead><tr><th>Name</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td>Mushtaq Ahmad</td><td>Admin</td><td><span class="badge badge-ready">Active</span></td><td>Edit</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 7. Inventory -->
+      <section id="inventory" class="page-section">
+        <div class="header-actions">
+          <h1 class="section-title" style="margin:0;">Inventory Tracking</h1>
+          <button class="btn-primary">Update Stock</button>
+        </div>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead><tr><th>Ingredient</th><th>Category</th><th>Current Stock</th><th>Alert Level</th></tr></thead>
+            <tbody>
+              <tr><td>Wagyu Beef</td><td>Meat</td><td style="color:var(--danger)">5 kg</td><td>10 kg</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 8. Payments -->
+      <section id="payments" class="page-section">
+        <h1 class="section-title">Payments & Invoices</h1>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead><tr><th>Invoice ID</th><th>Date</th><th>Amount</th><th>Method</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>INV-260428-01</td><td>28 Apr 2026</td><td>RM 145.00</td><td>Credit Card</td><td><span class="badge badge-ready">Paid</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 9. Reports -->
+      <section id="reports" class="page-section">
+        <h1 class="section-title">Analytics & Reports</h1>
+        <div class="dashboard-grid">
+           <div class="chart-container">
+            <h3 style="margin-bottom: 16px;">Orders by Category</h3>
+            <canvas id="categoryChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. Promotions -->
+      <section id="promotions" class="page-section">
+        <div class="header-actions">
+          <h1 class="section-title" style="margin:0;">Promotions & Coupons</h1>
+          <button class="btn-primary">+ Create Coupon</button>
+        </div>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead><tr><th>Code</th><th>Discount</th><th>Valid Until</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>WELCOME20</td><td>20% OFF</td><td>31 Dec 2026</td><td><span class="badge badge-ready">Active</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 11. Settings -->
+      <section id="settings" class="page-section">
+        <h1 class="section-title">System Settings</h1>
+        <div class="list-container" style="max-width: 600px;">
+          <div style="margin-bottom:20px;">
+            <label style="display:block; margin-bottom:8px; color:var(--text-secondary)">Restaurant Name</label>
+            <input type="text" class="input-control" value="Smart Menu Official">
+          </div>
+          <div style="margin-bottom:20px;">
+            <label style="display:block; margin-bottom:8px; color:var(--text-secondary)">Currency</label>
+            <select class="input-control"><option>RM (MYR)</option><option>USD</option></select>
+          </div>
+          <button class="btn-primary">Save Settings</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+  
+  <script src="admin.js"></script>
+</body>
+</html>

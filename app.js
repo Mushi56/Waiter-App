@@ -5,75 +5,76 @@
   // --- Default Menu ---
   const DEFAULT_MENU = [
     // Wraps
-    { id: 1, name: 'Beef Tortilla', price: 18.90, category: 'Wraps', image: 'images/beef_tortilla.png', isHero: true, heroText: 'HOT DEAL' },
-    { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: null },
-    { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: null },
+    { id: 1, name: 'Beef Tortilla', price: 18.90, category: 'Wraps', image: 'images/beef_tortilla.png', isHero: true, heroText: 'HOT DEAL', description: 'Juicy grilled beef strips wrapped in a soft flour tortilla with fresh greens and savory sauce.' },
+    { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: null, description: 'Tender seasoned chicken breast wrap with crisp vegetables and a signature dressing.' },
+    { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: null, description: 'Extra crunchy spicy chicken zinger fillet wrapped with fresh lettuce and mayo.' },
     // Burgers
-    { id: 4, name: 'Burger Wagyu Truffle', price: 49.90, category: 'Burgers', image: 'images/burger_wagyu_truffle.png', isHero: true, heroText: 'BEST SELLER' },
-    { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: null },
-    { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: null },
-    { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: null },
-    { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: null },
-    { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: null },
+    { id: 4, name: 'Burger Wagyu Truffle', price: 49.90, category: 'Burgers', image: 'images/burger_wagyu_truffle.png', isHero: true, heroText: 'BEST SELLER', description: 'Premium Wagyu beef patty infused with aromatic truffle oil and melted cheese.' },
+    { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: null, description: 'Perfectly grilled chicken thigh fillet served with fresh toppings on a toasted bun.' },
+    { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: null, description: 'A towering burger featuring a juicy beef patty topped with creamy mac and cheese.' },
+    { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: null, description: 'Beef, Bacon, and Barbecue sauce—the ultimate savory burger experience.' },
+    { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: null, description: 'Three layers of juicy patties and melted cheese for the biggest appetite.' },
+    { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: null, description: 'Our signature spicy fried chicken fillet with fresh lettuce on a toasted sesame bun.' },
     // Main Course
-    { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: 'images/angus_ribeye_steak.png', isHero: true, heroText: 'PREMIUM' },
-    { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/fried_chicken_chop.png' },
-    { id: 12, name: 'Grill Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/grill_chicken_chop.png' },
-    { id: 13, name: 'Lamb Grilled', price: 36.90, category: 'Main Course', image: 'images/lamb_grilled.png' },
-    { id: 14, name: 'Lamb Grilled 1KG', price: 109.90, category: 'Main Course', image: 'images/lamb_grilled.png' },
-    { id: 15, name: 'Lamb Grilled 500g', price: 59.90, category: 'Main Course', image: 'images/lamb_grilled.png' },
-    { id: 16, name: 'Mix Platter', price: 38.90, category: 'Main Course', image: 'images/mix_platter.png' },
+    { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: 'images/angus_ribeye_steak.png', isHero: true, heroText: 'PREMIUM', description: 'High-quality Angus ribeye grilled to perfection, served with black pepper sauce.' },
+    { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/fried_chicken_chop.png', description: 'Crispy deep-fried breaded chicken chop served with coleslaw and fries.' },
+    { id: 12, name: 'Grill Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/grill_chicken_chop.png', description: 'Succulent grilled chicken thigh served with our special homemade gravy.' },
+    { id: 13, name: 'Lamb Grilled', price: 36.90, category: 'Main Course', image: 'images/lamb_grilled.png', description: 'Tender grilled lamb chops seasoned with aromatic herbs and spices.' },
+    { id: 14, name: 'Lamb Grilled 1KG', price: 109.90, category: 'Main Course', image: 'images/lamb_grilled.png', description: 'Massive platter of grilled lamb chops, perfect for sharing with family.' },
+    { id: 15, name: 'Lamb Grilled 500g', price: 59.90, category: 'Main Course', image: 'images/lamb_grilled.png', description: 'A generous portion of our signature grilled lamb chops with sides.' },
+    { id: 16, name: 'Mix Platter', price: 38.90, category: 'Main Course', image: 'images/mix_platter.png', description: 'The best of both worlds—a combination of grilled chicken and lamb chops.' },
     // Pasta
-    { id: 17, name: 'Aglio Bolognaise', price: 18.90, category: 'Pasta', image: null },
-    { id: 18, name: 'Aglio Olio', price: 15.90, category: 'Pasta', image: null },
-    { id: 19, name: 'Amatricana', price: 19.90, category: 'Pasta', image: null },
-    { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: null },
-    { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: null },
-    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: null },
-    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: null },
-    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: null },
-    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: null },
-    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: null },
+    { id: 17, name: 'Aglio Bolognaise', price: 18.90, category: 'Pasta', image: null, description: 'Classic Aglio Olio pasta topped with a rich, slow-cooked beef bolognaise.' },
+    { id: 18, name: 'Aglio Olio', price: 15.90, category: 'Pasta', image: null, description: 'Simple and delicious pasta tossed in olive oil, garlic, and chili flakes.' },
+    { id: 19, name: 'Amatricana', price: 19.90, category: 'Pasta', image: null, description: 'Pasta in a spicy tomato-based sauce with savory beef bits and onions.' },
+    { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: null, description: 'Hearty pasta served with a traditional rich minced beef and tomato sauce.' },
+    { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: null, description: 'Creamy pasta sauce with beef bacon bits, parmesan, and a hint of black pepper.' },
+    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: null, description: 'Silky pasta tossed in fragrant garlic butter and topped with melted cheese.' },
+    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: null, description: 'Rich and creamy garlic butter pasta that melts in your mouth.' },
+    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: null, description: 'The ultimate comfort food—baked pasta in a thick, gooey cheese sauce.' },
+    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: null, description: 'Fresh pasta tossed in a zesty tomato sauce with aromatic herbs.' },
+    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: null, description: 'A perfect blend of tangy tomato and smooth cream sauce.' },
     // Salted Egg
-    { id: 27, name: 'Salted Egg Calamari', price: 17.90, category: 'Salted Egg', image: null },
-    { id: 28, name: 'Salted Egg Chicken', price: 14.90, category: 'Salted Egg', image: null },
-    { id: 29, name: 'Salted Egg Prawn', price: 21.90, category: 'Salted Egg', image: null },
-    { id: 30, name: 'Salted Egg Zinger', price: 19.90, category: 'Salted Egg', image: null },
+    { id: 27, name: 'Salted Egg Calamari', price: 17.90, category: 'Salted Egg', image: null, description: 'Crispy fried calamari rings coated in a rich and savory salted egg sauce.' },
+    { id: 28, name: 'Salted Egg Chicken', price: 14.90, category: 'Salted Egg', image: null, description: 'Fried chicken pieces tossed in a creamy, buttery salted egg yolk sauce.' },
+    { id: 29, name: 'Salted Egg Prawn', price: 21.90, category: 'Salted Egg', image: null, description: 'Succulent prawns glazed in a signature golden salted egg sauce.' },
+    { id: 30, name: 'Salted Egg Zinger', price: 19.90, category: 'Salted Egg', image: null, description: 'Spicy zinger fillet elevated with a generous drizzle of salted egg sauce.' },
     // Snacks
-    { id: 31, name: 'Cheesy Bacon Fries', price: 12.90, category: 'Snacks', image: null },
-    { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: null },
-    { id: 33, name: 'Chicken n Fries', price: 12.90, category: 'Snacks', image: null },
-    { id: 34, name: 'Onion Rings', price: 9.90, category: 'Snacks', image: null },
-    { id: 35, name: 'Plain Fries', price: 7.00, category: 'Snacks', image: null },
-    { id: 36, name: 'Sober Cheese Snack', price: 5.00, category: 'Snacks', image: null },
+    { id: 31, name: 'Cheesy Bacon Fries', price: 12.90, category: 'Snacks', image: null, description: 'Golden fries topped with melted cheese sauce and crispy beef bacon bits.' },
+    { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: null, description: 'Crispy fries drizzled with a generous amount of creamy cheese sauce.' },
+    { id: 33, name: 'Chicken n Fries', price: 12.90, category: 'Snacks', image: null, description: 'A classic combination of crispy chicken pieces served with golden fries.' },
+    { id: 34, name: 'Onion Rings', price: 9.90, category: 'Snacks', image: null, description: 'Sweet onions battered and fried until golden and extra crunchy.' },
+    { id: 35, name: 'Plain Fries', price: 7.00, category: 'Snacks', image: null, description: 'Perfectly salted, crispy golden french fries.' },
+    { id: 36, name: 'Sober Cheese Snack', price: 5.00, category: 'Snacks', image: null, description: 'A light and cheesy snack perfect for sharing.' },
     // Coffee
-    { id: 37, name: 'Mocha', price: 12.00, category: 'Coffee', image: null },
-    { id: 38, name: 'Latte', price: 10.90, category: 'Coffee', image: null },
-    { id: 39, name: 'Americano', price: 7.00, category: 'Coffee', image: null },
+    { id: 37, name: 'Mocha', price: 12.00, category: 'Coffee', image: null, description: 'A rich blend of espresso, steamed milk, and decadent chocolate.' },
+    { id: 38, name: 'Latte', price: 10.90, category: 'Coffee', image: null, description: 'Smooth espresso combined with perfectly steamed silky milk.' },
+    { id: 39, name: 'Americano', price: 7.00, category: 'Coffee', image: null, description: 'A classic bold espresso shot diluted with hot water.' },
     // Non Coffee
-    { id: 40, name: 'Chocolate', price: 12.00, category: 'Non Coffee', image: null },
-    { id: 41, name: 'Matcha', price: 11.00, category: 'Non Coffee', image: null },
-    { id: 42, name: 'Ice Peach Tea', price: 4.00, category: 'Non Coffee', image: null },
-    { id: 43, name: 'Ice Passionfruit Tea', price: 4.00, category: 'Non Coffee', image: null },
-    { id: 44, name: 'Ice Lemon Tea', price: 4.00, category: 'Non Coffee', image: null },
+    { id: 40, name: 'Chocolate', price: 12.00, category: 'Non Coffee', image: null, description: 'Creamy and rich cocoa drink served hot or iced.' },
+    { id: 41, name: 'Matcha', price: 11.00, category: 'Non Coffee', image: null, description: 'Authentic Japanese green tea latte with a smooth, earthy flavor.' },
+    { id: 42, name: 'Ice Peach Tea', price: 4.00, category: 'Non Coffee', image: null, description: 'Refreshing iced tea infused with sweet and fragrant peach flavor.' },
+    { id: 43, name: 'Ice Passionfruit Tea', price: 4.00, category: 'Non Coffee', image: null, description: 'Zesty and tropical iced tea with real passionfruit notes.' },
+    { id: 44, name: 'Ice Lemon Tea', price: 4.00, category: 'Non Coffee', image: null, description: 'The classic thirst-quencher—iced tea with a fresh citrus kick.' },
     // Mocktails
-    { id: 45, name: 'Watermelon Blackcurrant', price: 6.90, category: 'Mocktails', image: null },
-    { id: 46, name: 'Virgin Mojitos', price: 6.90, category: 'Mocktails', image: null },
-    { id: 47, name: 'Tropical Sunrise', price: 6.90, category: 'Mocktails', image: null },
-    { id: 48, name: 'TripleBerries', price: 6.90, category: 'Mocktails', image: null },
-    { id: 49, name: 'Solero', price: 6.00, category: 'Mocktails', image: null },
+    { id: 45, name: 'Watermelon Blackcurrant', price: 6.90, category: 'Mocktails', image: null, description: 'A unique and refreshing mocktail blend of fruity watermelon and tart blackcurrant.' },
+    { id: 46, name: 'Virgin Mojitos', price: 6.90, category: 'Mocktails', image: null, description: 'Refreshing lime and mint mocktail served chilled with soda.' },
+    { id: 47, name: 'Tropical Sunrise', price: 6.90, category: 'Mocktails', image: null, description: 'A vibrant layered mocktail with citrus and exotic fruit flavors.' },
+    { id: 48, name: 'TripleBerries', price: 6.90, category: 'Mocktails', image: null, description: 'A sweet and tangy berry explosion featuring three types of berries.' },
+    { id: 49, name: 'Solero', price: 6.00, category: 'Mocktails', image: null, description: 'A nostalgic creamy lime mocktail inspired by the classic ice cream.' },
     // Desserts
-    { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: null },
-    { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: null },
-    { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: null },
+    { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: null, description: 'Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone.' },
+    { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: null, description: 'Delicious dessert with layers of banana, cream, and buttery toffee.' },
+    { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: null, description: 'Creamy cheesecake topped with a generous layer of crushed Biscoff cookies.' },
   ];
 
   let appCategories = JSON.parse(localStorage.getItem('waiter_categories')) || [
-    { name: 'Wraps', emoji: '🌯' }, { name: 'Burgers', emoji: '🍔' },
     { name: 'Main Course', emoji: '🥩' }, { name: 'Pasta', emoji: '🍝' },
+    { name: 'Burgers', emoji: '🍔' }, { name: 'Wraps', emoji: '🌯' },
     { name: 'Salted Egg', emoji: '🥚' }, { name: 'Snacks', emoji: '🍟' },
+    { name: 'Add ons', emoji: '➕' }, { name: 'Mocktails', emoji: '🍹' },
     { name: 'Coffee', emoji: '☕' }, { name: 'Non Coffee', emoji: '🧋' },
-    { name: 'Mocktails', emoji: '🍹' }, { name: 'Desserts', emoji: '🍰' }
+    { name: 'Desserts', emoji: '🍰' }
   ];
   let EMOJI_MAP = {};
   function updateEmojiMap() {
@@ -539,7 +540,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '5'; // Bumped for Hero Slider data
+  const MENU_VERSION = '6'; // Bumped for new descriptions and category order
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
@@ -668,6 +669,7 @@
         }
           <div class="menu-card-info">
             <div class="menu-card-name">${item.name}</div>
+            <div class="menu-card-desc">${item.description || ''}</div>
             <div class="menu-card-bottom">
               <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
               <button class="menu-card-add" data-id="${item.id}">
@@ -702,6 +704,7 @@
         ${item.heroText ? `<div class="hero-badge">${item.heroText}</div>` : '<div class="hero-badge">FEATURED</div>'}
         <div class="hero-card-info">
           <h3>${item.name}</h3>
+          <p class="hero-card-desc">${item.description || ''}</p>
           <div class="hero-card-meta">
             <p>RM ${item.price.toFixed(2)}</p>
             <span class="hero-cta">
@@ -1263,10 +1266,10 @@
             </div>
           `).join('')}
         </div>
-        <div style="display:flex; gap:8px;">
-          <input type="text" id="newOptName_${gIdx}" placeholder="Option name" style="flex:1; padding:6px; font-size:0.9rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary);">
-          <input type="number" id="newOptPrice_${gIdx}" placeholder="+RM 0" style="width:70px; padding:6px; font-size:0.9rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary);" step="0.01">
-          <button type="button" onclick="addNewGroupOption(${gIdx})" class="btn-accent" style="padding:0 12px; font-size:0.85rem; border-radius:var(--radius-sm);">Add Option</button>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="text" id="newOptName_${gIdx}" placeholder="Option name" style="flex:1; padding:0 10px; font-size:0.85rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary); height:36px; box-sizing:border-box;">
+          <input type="number" id="newOptPrice_${gIdx}" placeholder="+RM 0" style="width:70px; padding:0 10px; font-size:0.85rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary); height:36px; box-sizing:border-box;" step="0.01">
+          <button type="button" onclick="addNewGroupOption(${gIdx})" class="btn-accent" style="padding:0 12px; font-size:0.8rem; border-radius:var(--radius-sm); height:36px; box-sizing:border-box; display:flex; align-items:center; justify-content:center;">Add Option</button>
         </div>
       </div>
     `).join('');
@@ -1400,10 +1403,10 @@
             </div>
           `).join('')}
         </div>
-        <div style="display:flex; gap:8px;">
-          <input type="text" id="editOptName_${gIdx}" placeholder="Option name" style="flex:1; padding:6px; font-size:0.9rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary);">
-          <input type="number" id="editOptPrice_${gIdx}" placeholder="+RM 0" style="width:70px; padding:6px; font-size:0.9rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary);" step="0.01">
-          <button type="button" onclick="addEditGroupOption(${gIdx})" class="btn-accent" style="padding:0 12px; font-size:0.85rem; border-radius:var(--radius-sm);">Add Option</button>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="text" id="editOptName_${gIdx}" placeholder="Option name" style="flex:1; padding:0 10px; font-size:0.85rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary); height:36px; box-sizing:border-box;">
+          <input type="number" id="editOptPrice_${gIdx}" placeholder="+RM 0" style="width:70px; padding:0 10px; font-size:0.85rem; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary); height:36px; box-sizing:border-box;" step="0.01">
+          <button type="button" onclick="addEditGroupOption(${gIdx})" class="btn-accent" style="padding:0 12px; font-size:0.8rem; border-radius:var(--radius-sm); height:36px; box-sizing:border-box; display:flex; align-items:center; justify-content:center;">Add Option</button>
         </div>
       </div>
     `).join('');
