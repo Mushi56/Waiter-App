@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="description" content="Smart Menu - Take Order, Save Time. Restaurant order management PWA.">
-  <meta name="theme-color" content="#C8880A">
+  <meta name="theme-color" content="#0A0C10">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="SmartMenu">
@@ -843,20 +843,30 @@
 
     <!-- ===== CATEGORY ADDONS MODAL ===== -->
     <div class="modal-overlay hidden" id="categoryAddonsModal">
-      <div class="modal" style="max-width: 400px;">
+      <div class="modal" style="max-width: 480px;">
         <div class="modal-header">
           <h3 id="categoryAddonsTitle">Category Add-ons</h3>
           <button class="modal-close" id="closeCatAddonsModal">&times;</button>
         </div>
         <div class="modal-body">
           <p id="categoryAddonsSubtitle" style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;"></p>
-          <div id="catAddonList" class="addon-management-list" style="margin-bottom: 16px; max-height: 250px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px;">
-            <!-- Filled dynamically -->
+          
+          <!-- Modifier Groups List (Category-wide) -->
+          <div id="catModifierGroupsList" class="addon-management-list" style="margin-bottom: 16px; max-height: 350px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; display: flex; flex-direction: column; gap: 12px;">
+            <!-- Filled dynamically via renderCategoryAddons -->
           </div>
-          <div style="display: flex; gap: 8px;">
-            <input type="text" id="catAddonName" placeholder="e.g. Extra Cheese" style="flex: 1;">
-            <input type="number" id="catAddonPrice" placeholder="Price" step="0.01" style="width: 100px;">
-            <button class="btn-accent" id="addCatAddonBtn" style="padding: 0 16px;">Add</button>
+
+          <!-- Add New Group (Category-wide) -->
+          <div style="padding-top: 12px; border-top: 1px dashed var(--border);">
+            <label style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-bottom: 6px; font-weight: 700; text-transform: uppercase;">Add New Choice Group</label>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="text" id="catGroupName" placeholder="e.g. Choice of Sauce" style="flex: 1; font-size: 0.85rem; height: 36px;">
+              <select id="catGroupType" style="width: 110px; font-size: 0.85rem; height: 36px; padding: 0 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-primary); color: var(--text-primary);">
+                <option value="checkbox">Multiple</option>
+                <option value="radio">Single</option>
+              </select>
+              <button class="btn-accent" id="addCatGroupBtn" style="padding: 0 12px; font-size: 0.85rem; height: 36px;">Create</button>
+            </div>
           </div>
         </div>
         <div class="modal-footer">

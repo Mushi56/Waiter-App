@@ -141,83 +141,96 @@
   let currentAddonCategory = null;
   window.openCategoryAddons = (catName) => {
     currentAddonCategory = catName;
-    els.categoryAddonsTitle.textContent = `${catName} Add-ons`;
-    els.categoryAddonsSubtitle.textContent = `These add-ons will appear for all items in the ${catName} category.`;
+    els.categoryAddonsTitle.textContent = `${catName} Choices/Add-ons`;
+    els.categoryAddonsSubtitle.textContent = `These choices will appear for ALL items in the ${catName} category.`;
     renderCategoryAddons();
     els.categoryAddonsModal.classList.remove('hidden');
   };
 
   function renderCategoryAddons() {
-    const categoryData = ADDONS_DATA[currentAddonCategory] || [];
-    const addons = categoryData.length > 0 ? categoryData[0].options : [];
-    
-    if (addons.length === 0) {
-      els.catAddonList.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.85rem;">No category add-ons yet</div>';
+    const groups = ADDONS_DATA[currentAddonCategory] || [];
+    if (groups.length === 0) {
+      els.catModifierGroupsList.innerHTML = '<div style="text-align:center; padding:30px; color:var(--text-muted); font-size:0.85rem;">No category-wide choices yet. Create your first group below!</div>';
     } else {
-      els.catAddonList.innerHTML = addons.map((addon, idx) => `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid var(--border);">
-          <span style="font-weight:600; font-size:0.9rem;">${addon.name}</span>
-          <div style="display:flex; align-items:center; gap:12px;">
-            <span class="accent" style="font-weight:700; font-size:0.85rem;">RM ${addon.price.toFixed(2)}</span>
-            <button onclick="removeCategoryAddon(${idx})" style="background:rgba(239,68,68,0.1); color:var(--danger); border:none; border-radius:50%; width:24px; height:24px; cursor:pointer;">&times;</button>
+      els.catModifierGroupsList.innerHTML = groups.map((group, gIdx) => {
+        const optionsHtml = group.options.map((opt, oIdx) => `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 10px; background:var(--bg-primary); border-radius:var(--radius-sm); border:1px solid var(--border);">
+            <div style="display:flex; flex-direction:column;">
+              <span style="font-weight:600; font-size:0.85rem;">${opt.name}</span>
+              <span class="accent" style="font-size:0.75rem; font-weight:700;">+ RM ${opt.price.toFixed(2)}</span>
+            </div>
+            <button onclick="removeCategoryOption(${gIdx}, ${oIdx})" style="background:rgba(239,68,68,0.1); color:var(--danger); border:none; border-radius:50%; width:24px; height:24px; cursor:pointer;">&times;</button>
           </div>
-        </div>
-      `).join('');
+        `).join('');
+
+        return `
+          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:var(--radius-md); padding:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <div>
+                <strong style="font-size:0.9rem; color:var(--text-primary);">${group.name}</strong>
+                <span style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-left:8px; border:1px solid var(--border); padding:2px 6px; border-radius:4px;">${group.type === 'radio' ? 'Single' : 'Multiple'}</span>
+              </div>
+              <button onclick="removeCategoryGroup(${gIdx})" style="color:var(--danger); background:none; border:none; font-size:0.75rem; font-weight:600; cursor:pointer;">Remove Group</button>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
+              ${optionsHtml}
+            </div>
+            <div style="display:flex; gap:6px;">
+              <input type="text" id="newOptName_${gIdx}" placeholder="Option name" style="flex:1; height:32px; font-size:0.8rem; padding:0 10px;">
+              <input type="number" id="newOptPrice_${gIdx}" placeholder="0.00" step="0.01" style="width:70px; height:32px; font-size:0.8rem; padding:0 8px;">
+              <button onclick="addCategoryOption(${gIdx})" class="btn-accent" style="height:32px; padding:0 12px; font-size:0.8rem;">Add</button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
   }
 
-  window.removeCategoryAddon = (idx) => {
-    if (!ADDONS_DATA[currentAddonCategory]) return;
-    ADDONS_DATA[currentAddonCategory][0].options.splice(idx, 1);
+  window.removeCategoryGroup = (gIdx) => {
+    if (confirm('Delete this choice group and all its options?')) {
+      ADDONS_DATA[currentAddonCategory].splice(gIdx, 1);
+      saveCategories();
+      renderCategoryAddons();
+    }
+  };
+
+  window.addCategoryOption = (gIdx) => {
+    const nameInput = document.getElementById(`newOptName_${gIdx}`);
+    const priceInput = document.getElementById(`newOptPrice_${gIdx}`);
+    const name = nameInput.value.trim();
+    const price = parseFloat(priceInput.value) || 0;
+    
+    if (!name) return showToast('Enter option name');
+    
+    ADDONS_DATA[currentAddonCategory][gIdx].options.push({ name, price });
     saveCategories();
     renderCategoryAddons();
   };
 
-  window.moveCategory = (idx, dir) => {
-    if (idx + dir < 0 || idx + dir >= appCategories.length) return;
-    const temp = appCategories[idx];
-    appCategories[idx] = appCategories[idx + dir];
-    appCategories[idx + dir] = temp;
+  window.removeCategoryOption = (gIdx, oIdx) => {
+    ADDONS_DATA[currentAddonCategory][gIdx].options.splice(oIdx, 1);
     saveCategories();
+    renderCategoryAddons();
   };
 
-  window.removeCategory = (idx) => {
-    if (appCategories.length <= 1) return showToast('Must have at least one category');
-    if (confirm(`Remove category "${appCategories[idx].name}"? Items in this category will remain but without a category.`)) {
-      appCategories.splice(idx, 1);
-      saveCategories();
-    }
-  };
+  function addCategoryGroup() {
+    if (!currentAddonCategory) return;
+    const name = els.catGroupName.value.trim();
+    const type = els.catGroupType.value;
+    if (!name) return showToast('Enter group name');
 
-  function addNewCategory() {
-    const name = els.newCategoryName.value.trim();
-    const emoji = els.newCategoryEmoji.value.trim() || '🍴';
-    if (!name) return showToast('Please enter category name');
-    if (appCategories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
-      return showToast('Category already exists');
-    }
-    appCategories.push({ name, emoji });
-    els.newCategoryName.value = '';
-    els.newCategoryEmoji.value = '';
+    if (!ADDONS_DATA[currentAddonCategory]) ADDONS_DATA[currentAddonCategory] = [];
+    ADDONS_DATA[currentAddonCategory].push({ name, type, options: [] });
+    
+    els.catGroupName.value = '';
     saveCategories();
-    showToast('Category added');
+    renderCategoryAddons();
+    showToast('Group created');
   }
 
   function addCategoryAddon() {
-    if (!currentAddonCategory) return;
-    const name = els.catAddonName.value.trim();
-    const price = parseFloat(els.catAddonPrice.value);
-    if (!name || isNaN(price)) return showToast('Enter name and price');
-
-    if (!ADDONS_DATA[currentAddonCategory]) {
-      ADDONS_DATA[currentAddonCategory] = [{ name: 'Add-ons', type: 'checkbox', options: [] }];
-    }
-    ADDONS_DATA[currentAddonCategory][0].options.push({ name, price });
-    els.catAddonName.value = '';
-    els.catAddonPrice.value = '';
-    saveCategories();
-    renderCategoryAddons();
-    showToast('Add-on added to category');
+    // Legacy function - redirected or kept for compatibility
+    addCategoryGroup();
   }
 
   function populateCategorySelects() {
@@ -294,11 +307,12 @@
     categoryAddonsModal: $('#categoryAddonsModal'),
     categoryAddonsTitle: $('#categoryAddonsTitle'),
     categoryAddonsSubtitle: $('#categoryAddonsSubtitle'),
-    catAddonList: $('#catAddonList'),
-    catAddonName: $('#catAddonName'),
-    catAddonPrice: $('#catAddonPrice'),
-    addCatAddonBtn: $('#addCatAddonBtn'),
+    catModifierGroupsList: $('#catModifierGroupsList'),
+    catGroupName: $('#catGroupName'),
+    catGroupType: $('#catGroupType'),
+    addCatGroupBtn: $('#addCatGroupBtn'),
     closeCatAddonsModal: $('#closeCatAddonsModal'),
+    closeCatAddonsBtn: $('#closeCatAddonsBtn'),
     // Table selection modal
     tableSelectModal: $('#tableSelectModal'),
     tableGridPresets: $('#tableGridPresets'),
@@ -502,9 +516,23 @@
 
     if (theme === 'auto') {
       const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      html.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      const appliedTheme = isDark ? 'dark' : 'light';
+      html.setAttribute('data-theme', appliedTheme);
+      updateThemeColorMeta(appliedTheme);
     } else {
       html.setAttribute('data-theme', theme);
+      updateThemeColorMeta(theme);
+    }
+  }
+
+  function updateThemeColorMeta(theme) {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) return;
+    
+    if (theme === 'dark') {
+      meta.setAttribute('content', '#0A0C10');
+    } else {
+      meta.setAttribute('content', '#F9FAFB'); // Light theme background
     }
   }
 
@@ -540,7 +568,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '6'; // Bumped for new descriptions and category order
+  const MENU_VERSION = '7'; // Bumped for Grouped Category Addons
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
@@ -1908,8 +1936,8 @@
     if (els.addNewCategoryBtn) {
       els.addNewCategoryBtn.onclick = addNewCategory;
     }
-    if (els.addCatAddonBtn) {
-      els.addCatAddonBtn.onclick = addCategoryAddon;
+    if (els.addCatGroupBtn) {
+      els.addCatGroupBtn.onclick = addCategoryGroup;
     }
     if (els.closeCatAddonsModal) {
       els.closeCatAddonsModal.onclick = () => els.categoryAddonsModal.classList.add('hidden');
