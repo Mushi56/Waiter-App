@@ -147,6 +147,40 @@
     els.categoryAddonsModal.classList.remove('hidden');
   };
 
+  window.moveCategory = (idx, dir) => {
+    if (idx + dir < 0 || idx + dir >= appCategories.length) return;
+    const temp = appCategories[idx];
+    appCategories[idx] = appCategories[idx + dir];
+    appCategories[idx + dir] = temp;
+    saveCategories();
+  };
+
+  window.removeCategory = (idx) => {
+    if (appCategories.length <= 1) return showToast('Must have at least one category');
+    if (confirm(`Remove category "${appCategories[idx].name}"? Items in this category will remain but without a category.`)) {
+      appCategories.splice(idx, 1);
+      saveCategories();
+    }
+  };
+
+  function addNewCategory() {
+    const nameInput = els.newCategoryName;
+    const emojiInput = els.newCategoryEmoji;
+    if (!nameInput || !emojiInput) return;
+    
+    const name = nameInput.value.trim();
+    const emoji = emojiInput.value.trim() || '🍴';
+    if (!name) return showToast('Please enter category name');
+    if (appCategories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+      return showToast('Category already exists');
+    }
+    appCategories.push({ name, emoji });
+    nameInput.value = '';
+    emojiInput.value = '';
+    saveCategories();
+    showToast('Category added');
+  }
+
   function renderCategoryAddons() {
     const groups = ADDONS_DATA[currentAddonCategory] || [];
     if (groups.length === 0) {
@@ -358,7 +392,23 @@
 
     // Admin
     adminLoginModal: $('#adminLoginModal'),
-    adminPinInput: $('#adminPinInput')
+    adminPinInput: $('#adminPinInput'),
+
+    // Category Management
+    categoriesList: $('#categoriesList'),
+    newCategoryEmoji: $('#newCategoryEmoji'),
+    newCategoryName: $('#newCategoryName'),
+    addNewCategoryBtn: $('#addNewCategoryBtn'),
+
+    // Category Addons / Choice Groups
+    categoryAddonsTitle: $('#categoryAddonsTitle'),
+    categoryAddonsSubtitle: $('#categoryAddonsSubtitle'),
+    catModifierGroupsList: $('#catModifierGroupsList'),
+    catGroupName: $('#catGroupName'),
+    catGroupType: $('#catGroupType'),
+    addCatGroupBtn: $('#addCatGroupBtn'),
+    closeCatAddonsBtn: $('#closeCatAddonsBtn'),
+    closeCatAddonsModal: $('#closeCatAddonsModal')
   };
 
   const DEFAULT_TABLE_PRESETS = {
@@ -2090,7 +2140,24 @@
       });
     }
 
-    // Sidebar toggle is handled in the Floating immersive controls section
+    // sidebar toggle is handled in the Floating immersive controls section
+
+    // Category Management
+    if (els.addNewCategoryBtn) {
+      els.addNewCategoryBtn.onclick = addNewCategory;
+    }
+    if (els.addCatGroupBtn) {
+      els.addCatGroupBtn.onclick = addCategoryGroup;
+    }
+    if (els.closeCatAddonsModal) {
+      els.closeCatAddonsModal.onclick = () => els.categoryAddonsModal.classList.add('hidden');
+    }
+    if (els.closeCatAddonsBtn) {
+      els.closeCatAddonsBtn.onclick = () => els.categoryAddonsModal.classList.add('hidden');
+    }
+    if (els.closeCategoriesModal) {
+      els.closeCategoriesModal.onclick = () => els.manageCategoriesModal.classList.add('hidden');
+    }
   }
 
   // --- Service Worker ---
