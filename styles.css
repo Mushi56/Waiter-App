@@ -3604,6 +3604,33 @@ textarea:focus {
   border-radius: 10px;
 }
 
+/* Category Choice Groups Management */
+.cat-modifier-group-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.cat-modifier-group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cat-modifier-type-badge {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  font-weight: 700;
+}
+
 .btn-cat-addons {
   background: rgba(255, 184, 0, 0.1);
   color: var(--accent);
