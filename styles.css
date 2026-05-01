@@ -649,7 +649,7 @@ textarea:focus {
   min-width: 100%;
   aspect-ratio: 1 / 1;
   background: var(--bg-card);
-  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  border-radius: var(--radius-md); /* Square but with curved corners */
   position: relative;
   overflow: hidden;
   scroll-snap-align: center;
@@ -1316,7 +1316,7 @@ textarea:focus {
 /* ===== MENU GRID ===== */
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* 3 items per row on mobile */
   gap: 12px;
   margin-bottom: 28px;
 }
@@ -1689,7 +1689,18 @@ textarea:focus {
   transform: translate(-50%, 30px) scale(0.9);
 }
 
-/* Spring bounce-in when cart appears */
+.cart-badge-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border: 2px solid var(--bg-card);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+.cart-badge-dot.hidden { display: none; }
 .floating-cart-btn:not(.hidden) {
   animation: cartBounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }

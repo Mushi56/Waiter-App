@@ -301,6 +301,8 @@
     drawerOverlay: $('#drawerOverlay'),
     sideDrawer: $('#sideDrawer'),
     menuToggleBtn: $('#menuToggleBtn'),
+    headerCartBtn: $('#headerCartBtn'),
+    headerCartBadge: $('#headerCartBadge'),
     drawerItems: $$('.drawer-item'),
     searchWrap: $('#searchWrap'),
     searchToggleBtn: $('#searchToggleBtn'),
@@ -676,7 +678,9 @@
     if (categoryTabs) {
       let tabsHtml = `<button class="cat-tab ${activeCategory === 'All' ? 'active' : ''}" data-category="All">All</button>`;
       appCategories.forEach(c => {
-        tabsHtml += `<button class="cat-tab ${activeCategory === c.name ? 'active' : ''}" data-category="${c.name}">${c.name}</button>`;
+        tabsHtml += `<button class="cat-tab ${activeCategory === c.name ? 'active' : ''}" data-category="${c.name}">
+          <span style="margin-right:6px;">${c.emoji}</span>${c.name}
+        </button>`;
       });
       categoryTabs.innerHTML = tabsHtml;
     }
@@ -815,10 +819,12 @@
       if (els.cartTotalBtn) els.cartTotalBtn.textContent = 'RM 0.00';
       if (els.floatingCartBtn) els.floatingCartBtn.classList.add('hidden');
       if (els.orderModalOverlay) els.orderModalOverlay.classList.add('hidden');
+      if (els.headerCartBadge) els.headerCartBadge.classList.add('hidden');
       return;
     }
 
     if (els.floatingCartBtn) els.floatingCartBtn.classList.remove('hidden');
+    if (els.headerCartBadge) els.headerCartBadge.classList.remove('hidden');
 
     let totalQty = 0, totalPrice = 0;
     els.orderItems.innerHTML = currentOrder.map((item) => {
@@ -2138,6 +2144,17 @@
       els.addonModal.addEventListener('click', (e) => {
         if (e.target === els.addonModal) closeAddon();
       });
+    }
+
+    if (els.headerCartBtn) {
+      els.headerCartBtn.onclick = () => {
+        if (currentOrder.length > 0) {
+          renderOrder();
+          els.orderModalOverlay.classList.remove('hidden');
+        } else {
+          showToast('Cart is empty');
+        }
+      };
     }
 
     // sidebar toggle is handled in the Floating immersive controls section
