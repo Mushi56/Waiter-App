@@ -240,74 +240,27 @@
   const $$ = (sel) => document.querySelectorAll(sel);
 
   const els = {
+    // Core Layout
     menuGrid: $('#menuGrid'),
-    orderItems: $('#orderItems'),
-    totalItemsCount: $('#totalItemsCount'),
-    totalAmount: $('#totalAmount'),
-    tableNumberInput: $('#tableNumberInput'),
-    tableSection: $('#tableSection'),
-    activeTableBanner: $('#activeTableBanner'),
-    activeTableNum: $('#activeTableNum'),
-    historyPreviewList: $('#historyPreviewList'),
-    ordersFullList: $('#ordersFullList'),
-    historyFullList: $('#historyFullList'),
-    menuManageGrid: $('#menuManageGrid'),
-    toast: $('#toast'),
-    toastMsg: $('#toastMsg'),
-
-    // Order bottom sheet & cart
+    bottomNav: $('#bottomNav'),
     floatingCartBtn: $('#floatingCartBtn'),
     orderModalOverlay: $('#orderModalOverlay'),
     cartBadge: $('#cartBadge'),
     cartTotalBtn: $('#cartTotalBtn'),
-    closeOrderModal: $('#closeOrderModal'),
-    orderNote: $('#orderNote'),
+    toast: $('#toast'),
+    toastMsg: $('#toastMsg'),
 
-    addItemModal: $('#addItemModal'),
-    orderDetailModal: $('#orderDetailModal'),
-    orderDetailTitle: $('#orderDetailTitle'),
-    orderDetailBody: $('#orderDetailBody'),
-    newItemName: $('#newItemName'),
-    newItemPrice: $('#newItemPrice'),
-    newItemCategory: $('#newItemCategory'),
-    newItemDesc: $('#newItemDesc'),
-    newItemImages: $('#newItemImages'),
-    newGalleryPreviews: $('#newGalleryPreviews'),
-    // Edit modal
-    editItemModal: $('#editItemModal'),
-    editItemId: $('#editItemId'),
-    editItemName: $('#editItemName'),
-    editItemPrice: $('#editItemPrice'),
-    editItemCategory: $('#editItemCategory'),
-    editItemDesc: $('#editItemDesc'),
-    editItemImages: $('#editItemImages'),
-    editGalleryPreviews: $('#editGalleryPreviews'),
-    // Dynamic Categories & Addons UI
-    manageCategoriesBtn: $('#manageCategoriesBtn'),
-    manageCategoriesModal: $('#manageCategoriesModal'),
-    categoriesList: $('#categoriesList'),
-    newCategoryEmoji: $('#newCategoryEmoji'),
-    newCategoryName: $('#newCategoryName'),
-    addNewCategoryBtn: $('#addNewCategoryBtn'),
-    closeCategoriesModal: $('#closeCategoriesModal'),
-    // Category Addons Modal
-    categoryAddonsModal: $('#categoryAddonsModal'),
-    categoryAddonsTitle: $('#categoryAddonsTitle'),
-    categoryAddonsSubtitle: $('#categoryAddonsSubtitle'),
-    catAddonList: $('#catAddonList'),
-    catAddonName: $('#catAddonName'),
-    catAddonPrice: $('#catAddonPrice'),
-    addCatAddonBtn: $('#addCatAddonBtn'),
-    closeCatAddonsModal: $('#closeCatAddonsModal'),
-    // Table selection modal
-    tableSelectModal: $('#tableSelectModal'),
-    tableGridPresets: $('#tableGridPresets'),
-    customTableInput: $('#customTableInput'),
-    confirmTableBtn: $('#confirmTableBtn'),
-    closeTableModal: $('#closeTableModal'),
-    // Addon Modal (Customer)
-    addonModal: $('#addonModal'),
-    // Item Detail (Customer)
+    // Navigation & Drawer
+    drawerOverlay: $('#drawerOverlay'),
+    sideDrawer: $('#sideDrawer'),
+    menuToggleBtn: $('#menuToggleBtn'),
+    drawerItems: $$('.drawer-item'),
+    searchWrap: $('#searchWrap'),
+    searchToggleBtn: $('#searchToggleBtn'),
+    searchCloseBtn: $('#searchCloseBtn'),
+    menuSearchInput: $('#menuSearchInput'),
+
+    // Item Detail Sheet (Customer)
     itemDetailOverlay: $('#itemDetailOverlay'),
     itemDetailGallery: $('#itemDetailGallery'),
     itemDetailDots: $('#itemDetailDots'),
@@ -316,65 +269,83 @@
     itemDetailDesc: $('#itemDetailDesc'),
     itemDetailPrice: $('#itemDetailPrice'),
     itemDetailAddBtn: $('#itemDetailAddBtn'),
-    // Hero Slider
-    heroSection: $('#heroSection'),
-    heroSlider: $('#heroSlider'),
-    heroDots: $('#heroDots'),
+
+    // Addon Modal (Customer)
+    addonModal: $('#addonModal'),
+    addonTitle: $('#addonTitle'),
+    addonList: $('#addonList'),
+    closeAddonModal: $('#closeAddonModal'),
+    confirmAddonBtn: $('#confirmAddonBtn'),
+
+    // Order & History
+    orderItems: $('#orderItems'),
+    totalItemsCount: $('#totalItemsCount'),
+    totalAmount: $('#totalAmount'),
+    orderDetailModal: $('#orderDetailModal'),
+    closeOrderDetail: $('#closeOrderDetail'),
+    closeOrderDetailBtn: $('#closeOrderDetailBtn'),
+    historyPreviewList: $('#historyPreviewList'),
+    ordersFullList: $('#ordersFullList'),
+    historyFullList: $('#historyFullList'),
+    viewAllHistoryBtn: $('#viewAllHistoryBtn'),
+    clearAllOrdersBtn: $('#clearAllOrdersBtn'),
+    clearHistoryBtn: $('#clearHistoryBtn'),
+
+    // Table Management
+    tableSection: $('#tableSection'),
+    activeTableBanner: $('#activeTableBanner'),
+    activeTableNum: $('#activeTableNum'),
+    tableNumberInput: $('#tableNumberInput'),
+    tableSelectModal: $('#tableSelectModal'),
+    tableGridPresets: $('#tableGridPresets'),
+    customTableInput: $('#customTableInput'),
+    confirmTableBtn: $('#confirmTableBtn'),
+    closeTableModal: $('#closeTableModal'),
+    openTableModalBtn: $('#openTableModalBtn'),
+    tableManageList: $('#tableManageList'),
+    manageTableGroup: $('#manageTableGroup'),
+    manageTableInput: $('#manageTableInput'),
+    manageAddTableBtn: $('#manageAddTableBtn'),
+
+    // Menu Management (Admin)
+    menuManageGrid: $('#menuManageGrid'),
+    addItemModal: $('#addItemModal'),
+    editItemModal: $('#editItemModal'),
+    addMenuItemFull: $('#addMenuItemFull'),
+    manageCategoriesBtn: $('#manageCategoriesBtn'),
+    manageCategoriesModal: $('#manageCategoriesModal'),
+    categoryAddonsModal: $('#categoryAddonsModal'),
+    closeCategoriesModal: $('#closeCategoriesModal'),
+    
+    // Form Elements (Admin)
+    newItemName: $('#newItemName'),
+    newItemPrice: $('#newItemPrice'),
+    newItemCategory: $('#newItemCategory'),
+    newItemDesc: $('#newItemDesc'),
+    newItemImages: $('#newItemImages'),
+    newGalleryPreviews: $('#newGalleryPreviews'),
+    editItemId: $('#editItemId'),
+    editItemName: $('#editItemName'),
+    editItemPrice: $('#editItemPrice'),
+    editItemCategory: $('#editItemCategory'),
+    editItemDesc: $('#editItemDesc'),
+    editItemImages: $('#editItemImages'),
+    editGalleryPreviews: $('#editGalleryPreviews'),
     newItemIsHero: $('#newItemIsHero'),
     newItemHeroText: $('#newItemHeroText'),
     newItemHeroTextGroup: $('#newItemHeroTextGroup'),
     editItemIsHero: $('#editItemIsHero'),
     editItemHeroText: $('#editItemHeroText'),
     editItemHeroTextGroup: $('#editItemHeroTextGroup'),
-    closeCatAddonsBtn: $('#closeCatAddonsBtn'),
-    newAddonList: $('#newAddonList'),
-    newAddonName: $('#newAddonName'),
-    newAddonPrice: $('#newAddonPrice'),
-    addNewAddonBtn: $('#addNewAddonBtn'),
-    editAddonList: $('#editAddonList'),
-    editAddonName: $('#editAddonName'),
-    editAddonPrice: $('#editAddonPrice'),
-    editNewAddonBtn: $('#editNewAddonBtn'),
-    // Addon modal
-    addonModal: $('#addonModal'),
-    addonTitle: $('#addonTitle'),
-    addonList: $('#addonList'),
-    // Admin Modal
+
+    // Hero Slider
+    heroSection: $('#heroSection'),
+    heroSlider: $('#heroSlider'),
+    heroDots: $('#heroDots'),
+
+    // Admin
     adminLoginModal: $('#adminLoginModal'),
-    adminPinInput: $('#adminPinInput'),
-    // Header & Search
-    bottomNav: $('#bottomNav'),
-    searchWrap: $('#searchWrap'),
-    searchToggleBtn: $('#searchToggleBtn'),
-    searchCloseBtn: $('#searchCloseBtn'),
-    menuSearchInput: $('#menuSearchInput'),
-    // Table select modal
-    openTableModalBtn: $('#openTableModalBtn'),
-    tableSelectModal: $('#tableSelectModal'),
-    closeTableModal: $('#closeTableModal'),
-    tableGridPresets: $('#tableGridPresets'),
-    customTableInput: $('#customTableInput'),
-    confirmTableBtn: $('#confirmTableBtn'),
-    addMenuItemFull: $('#addMenuItemFull'),
-    activeTableBanner: $('#activeTableBanner'),
-    tableManageList: $('#tableManageList'),
-    manageTableGroup: $('#manageTableGroup'),
-    manageTableInput: $('#manageTableInput'),
-    manageAddTableBtn: $('#manageAddTableBtn'),
-    // Side drawer
-    drawerOverlay: $('#drawerOverlay'),
-    menuToggleBtn: $('#menuToggleBtn'),
-    drawerItems: $$('.drawer-item'),
-    bottomNav: $('#bottomNav'),
-    // Item detail sheet (customer UX)
-    itemDetailOverlay: $('#itemDetailOverlay'),
-    itemDetailGallery: $('#itemDetailGallery'),
-    itemDetailDots: $('#itemDetailDots'),
-    itemDetailCategory: $('#itemDetailCategory'),
-    itemDetailName: $('#itemDetailName'),
-    itemDetailDesc: $('#itemDetailDesc'),
-    itemDetailPrice: $('#itemDetailPrice'),
-    itemDetailAddBtn: $('#itemDetailAddBtn')
+    adminPinInput: $('#adminPinInput')
   };
 
   const DEFAULT_TABLE_PRESETS = {
@@ -2078,15 +2049,21 @@
     // (Edit image upload logic moved to top-level event listeners)
 
     // Addon modal
-    $('#closeAddonModal').addEventListener('click', () => els.addonModal.classList.add('hidden'));
-    $('#cancelAddonBtn').addEventListener('click', () => els.addonModal.classList.add('hidden'));
-    $('#confirmAddonBtn').addEventListener('click', confirmAddons);
-    els.addonModal.addEventListener('click', (e) => {
-      if (e.target === els.addonModal) els.addonModal.classList.add('hidden');
-    });
+    const closeAddon = () => {
+      els.addonModal.classList.add('hidden');
+      pendingAddonItem = null;
+      editingCartItemId = null;
+    };
+    if (els.closeAddonModal) els.closeAddonModal.onclick = closeAddon;
+    if (els.confirmAddonBtn) els.confirmAddonBtn.onclick = confirmAddons;
+    
+    if (els.addonModal) {
+      els.addonModal.addEventListener('click', (e) => {
+        if (e.target === els.addonModal) closeAddon();
+      });
+    }
 
-    // Sidebar toggle (simple)
-    $('#menuToggleBtn').addEventListener('click', () => showToast('Menu: use bottom nav'));
+    // Sidebar toggle is handled in the Floating immersive controls section
   }
 
   // --- Service Worker ---
