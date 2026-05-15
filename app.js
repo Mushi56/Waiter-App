@@ -727,14 +727,21 @@
   function renderMenu() {
     const categoryTabs = document.getElementById('categoryTabs');
     if (categoryTabs) {
-      let tabsHtml = `<button class="cat-tab ${activeCategory === 'All' ? 'active' : ''}" data-category="All">
-          <div class="cat-circle"><img src="images/cat_all.png" alt="All"></div>
+      let tabsHtml = `
+        <button class="cat-tab ${activeCategory === 'All' ? 'active' : ''}" data-category="All">
+          <div class="cat-circle">
+            <div class="grid-icon">
+              <div></div><div></div><div></div><div></div>
+            </div>
+          </div>
           <span class="cat-name">All</span>
         </button>`;
       appCategories.forEach(c => {
-        const content = c.image ? `<img src="${c.image}" alt="${c.name}">` : `<span>${c.emoji}</span>`;
-        tabsHtml += `<button class="cat-tab ${activeCategory === c.name ? 'active' : ''}" data-category="${c.name}">
-          <div class="cat-circle">${content}</div>
+        tabsHtml += `
+        <button class="cat-tab ${activeCategory === c.name ? 'active' : ''}" data-category="${c.name}">
+          <div class="cat-circle">
+            ${c.image ? `<img src="${c.image}" alt="${c.name}" loading="lazy">` : `<span>${c.emoji}</span>`}
+          </div>
           <span class="cat-name">${c.name}</span>
         </button>`;
       });
@@ -807,21 +814,18 @@
     els.heroSection.classList.remove('hidden');
     els.heroSlider.innerHTML = heroItems.map((item, idx) => `
       <div class="hero-card" onclick="openItemDetail(${item.id})">
-        <img src="${item.image || 'icons/icon-192.svg'}" alt="${item.name}" class="hero-card-img">
-        <div class="hero-card-gradient"></div>
-        ${item.heroText ? `<div class="hero-badge">${item.heroText}</div>` : '<div class="hero-badge">FEATURED</div>'}
-        <div class="hero-card-info">
-          <div class="hero-card-main-text">
-            <h3>${item.name}</h3>
-            <p class="hero-card-desc">${item.description || ''}</p>
+        <div class="hero-card-overlay">
+          ${item.heroText ? `<div class="hero-badge">${item.heroText}</div>` : '<div class="hero-badge">PREMIUM</div>'}
+          <h3>${item.name}</h3>
+          <p class="hero-card-desc">${item.description || ''}</p>
+          <div class="hero-card-price">RM ${item.price.toFixed(2)}</div>
+          <div class="hero-cta">
+             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+             ORDER NOW
           </div>
-          <div class="hero-card-meta">
-            <p>RM ${item.price.toFixed(2)}</p>
-            <span class="hero-cta">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-              Order
-            </span>
-          </div>
+        </div>
+        <div class="hero-card-img-wrap">
+          <img src="${item.image || 'icons/icon-192.svg'}" alt="${item.name}" class="hero-card-img" loading="lazy">
         </div>
       </div>
     `).join('');
