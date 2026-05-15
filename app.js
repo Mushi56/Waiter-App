@@ -24,16 +24,16 @@
     { id: 15, name: 'Lamb Grilled 500g', price: 59.90, category: 'Main Course', image: 'images/lamb_grilled.png', description: 'A generous portion of our signature grilled lamb chops with sides.' },
     { id: 16, name: 'Mix Platter', price: 38.90, category: 'Main Course', image: 'images/mix_platter.png', description: 'The best of both worlds—a combination of grilled chicken and lamb chops.' },
     // Pasta
-    { id: 17, name: 'Aglio Bolognaise', price: 18.90, category: 'Pasta', image: null, description: 'Classic Aglio Olio pasta topped with a rich, slow-cooked beef bolognaise.' },
-    { id: 18, name: 'Aglio Olio', price: 15.90, category: 'Pasta', image: null, description: 'Simple and delicious pasta tossed in olive oil, garlic, and chili flakes.' },
-    { id: 19, name: 'Amatricana', price: 19.90, category: 'Pasta', image: null, description: 'Pasta in a spicy tomato-based sauce with savory beef bits and onions.' },
-    { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: null, description: 'Hearty pasta served with a traditional rich minced beef and tomato sauce.' },
-    { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: null, description: 'Creamy pasta sauce with beef bacon bits, parmesan, and a hint of black pepper.' },
-    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: null, description: 'Silky pasta tossed in fragrant garlic butter and topped with melted cheese.' },
-    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: null, description: 'Rich and creamy garlic butter pasta that melts in your mouth.' },
-    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: null, description: 'The ultimate comfort food—baked pasta in a thick, gooey cheese sauce.' },
-    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: null, description: 'Fresh pasta tossed in a zesty tomato sauce with aromatic herbs.' },
-    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: null, description: 'A perfect blend of tangy tomato and smooth cream sauce.' },
+    { id: 17, name: 'Aglio Bolognaise', price: 18.90, category: 'Pasta', image: 'images/pasta_aglio_bolognaise.png', description: 'Classic Aglio Olio pasta topped with a rich, slow-cooked beef bolognaise.' },
+    { id: 18, name: 'Aglio Olio', price: 15.90, category: 'Pasta', image: 'images/pasta_aglio_olio.png', description: 'Simple and delicious pasta tossed in olive oil, garlic, and chili flakes.' },
+    { id: 19, name: 'Amatricana', price: 19.90, category: 'Pasta', image: 'images/pasta_amatricana.png', description: 'Pasta in a spicy tomato-based sauce with savory beef bits and onions.' },
+    { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: 'images/pasta_beef_bolognaise.png', description: 'Hearty pasta served with a traditional rich minced beef and tomato sauce.' },
+    { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: 'images/pasta_carbonara.png', description: 'Creamy pasta sauce with beef bacon bits, parmesan, and a hint of black pepper.' },
+    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1546549032-9571cd6b27df?w=400', description: 'Silky pasta tossed in fragrant garlic butter and topped with melted cheese.' },
+    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400', description: 'Rich and creamy garlic butter pasta that melts in your mouth.' },
+    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=400', description: 'The ultimate comfort food—baked pasta in a thick, gooey cheese sauce.' },
+    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400', description: 'Fresh pasta tossed in a zesty tomato sauce with aromatic herbs.' },
+    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=400', description: 'A perfect blend of tangy tomato and smooth cream sauce.' },
     // Salted Egg
     { id: 27, name: 'Salted Egg Calamari', price: 17.90, category: 'Salted Egg', image: null, description: 'Crispy fried calamari rings coated in a rich and savory salted egg sauce.' },
     { id: 28, name: 'Salted Egg Chicken', price: 14.90, category: 'Salted Egg', image: null, description: 'Fried chicken pieces tossed in a creamy, buttery salted egg yolk sauce.' },
@@ -69,12 +69,17 @@
   ];
 
   let appCategories = JSON.parse(localStorage.getItem('waiter_categories')) || [
-    { name: 'Main Course', emoji: '🥩' }, { name: 'Pasta', emoji: '🍝' },
-    { name: 'Burgers', emoji: '🍔' }, { name: 'Wraps', emoji: '🌯' },
-    { name: 'Salted Egg', emoji: '🥚' }, { name: 'Snacks', emoji: '🍟' },
-    { name: 'Add ons', emoji: '➕' }, { name: 'Mocktails', emoji: '🍹' },
-    { name: 'Coffee', emoji: '☕' }, { name: 'Non Coffee', emoji: '🧋' },
-    { name: 'Desserts', emoji: '🍰' }
+    { name: 'Main Course', emoji: '🥩', image: 'images/cat_main_course.png' },
+    { name: 'Pasta', emoji: '🍝', image: 'images/cat_pasta.png' },
+    { name: 'Burgers', emoji: '🍔', image: 'images/cat_burgers.png' },
+    { name: 'Wraps', emoji: '🌯', image: 'images/cat_wraps.png' },
+    { name: 'Salted Egg', emoji: '🥚', image: 'images/cat_salted_egg.png' },
+    { name: 'Snacks', emoji: '🍟', image: 'images/cat_snacks.png' },
+    { name: 'Mocktails', emoji: '🍹', image: 'images/cat_mocktails.png' },
+    { name: 'Coffee', emoji: '☕', image: 'images/cat_coffee.png' },
+    { name: 'Non Coffee', emoji: '🧋', image: 'images/cat_non_coffee.png' },
+    { name: 'Desserts', emoji: '🍰', image: 'images/cat_desserts.png' },
+    { name: 'Add ons', emoji: '➕', image: 'images/cat_add_ons.png' }
   ];
   let EMOJI_MAP = {};
   function updateEmojiMap() {
@@ -100,7 +105,10 @@
           <div class="drag-handle" style="color:var(--text-muted); cursor:grab;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
           </div>
-          <span><span style="font-size:1.2rem; margin-right:8px;">${c.emoji}</span> <strong>${c.name}</strong></span>
+          <div class="cat-manage-img-wrap" onclick="triggerCatImageUpload(${idx})">
+            ${c.image ? `<img src="${c.image}" alt="${c.name}">` : `<span style="font-size:1.2rem;">${c.emoji}</span>`}
+          </div>
+          <strong>${c.name}</strong>
         </div>
         <div style="display:flex; gap: 8px; align-items:center;">
           <button type="button" class="btn-cat-addons" onclick="openCategoryAddons('${c.name}')">Add-ons</button>
@@ -109,6 +117,30 @@
       </div>
     `).join('');
     setupCategoryDragAndDrop();
+  }
+
+  let activeUploadCatIdx = null;
+  window.triggerCatImageUpload = (idx) => {
+    activeUploadCatIdx = idx;
+    const input = document.getElementById('catImageInput');
+    if (input) input.click();
+  };
+
+  const catImageInput = document.getElementById('catImageInput');
+  if (catImageInput) {
+    catImageInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (activeUploadCatIdx !== null) {
+        const croppedData = await autoCropSquare(file);
+        appCategories[activeUploadCatIdx].image = croppedData;
+        saveCategories();
+        renderManageCategories();
+        renderMenu();
+        showToast('Category image updated');
+      }
+      e.target.value = '';
+    });
   }
 
   function setupCategoryDragAndDrop() {
@@ -276,6 +308,7 @@
   // --- State ---
   let menuItems = [];
   let currentOrder = []; // { id, name, price, qty }
+  let currentDineType = 'Dine-in';
   let orders = [];
   let tableNumber = '';
   let activeCategory = 'All';
@@ -590,7 +623,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '7'; // Bumped for Grouped Category Addons
+  const MENU_VERSION = '8'; // Bumped for Pasta Item Images
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
@@ -676,10 +709,15 @@
   function renderMenu() {
     const categoryTabs = document.getElementById('categoryTabs');
     if (categoryTabs) {
-      let tabsHtml = `<button class="cat-tab ${activeCategory === 'All' ? 'active' : ''}" data-category="All">All</button>`;
+      let tabsHtml = `<button class="cat-tab ${activeCategory === 'All' ? 'active' : ''}" data-category="All">
+          <div class="cat-circle"><img src="images/cat_all.png" alt="All"></div>
+          <span class="cat-name">All</span>
+        </button>`;
       appCategories.forEach(c => {
+        const content = c.image ? `<img src="${c.image}" alt="${c.name}">` : `<span>${c.emoji}</span>`;
         tabsHtml += `<button class="cat-tab ${activeCategory === c.name ? 'active' : ''}" data-category="${c.name}">
-          <span style="margin-right:6px;">${c.emoji}</span>${c.name}
+          <div class="cat-circle">${content}</div>
+          <span class="cat-name">${c.name}</span>
         </button>`;
       });
       categoryTabs.innerHTML = tabsHtml;
@@ -725,7 +763,7 @@
             <div class="menu-card-bottom">
               <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
               <button class="menu-card-add" data-id="${item.id}">
-                ADD <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
               </button>
             </div>
           </div>
@@ -755,8 +793,10 @@
         <div class="hero-card-gradient"></div>
         ${item.heroText ? `<div class="hero-badge">${item.heroText}</div>` : '<div class="hero-badge">FEATURED</div>'}
         <div class="hero-card-info">
-          <h3>${item.name}</h3>
-          <p class="hero-card-desc">${item.description || ''}</p>
+          <div class="hero-card-main-text">
+            <h3>${item.name}</h3>
+            <p class="hero-card-desc">${item.description || ''}</p>
+          </div>
           <div class="hero-card-meta">
             <p>RM ${item.price.toFixed(2)}</p>
             <span class="hero-cta">
@@ -1034,8 +1074,8 @@
   // --- Save Order ---
   function saveOrder() {
     if (!tableNumber) {
-      showToast('⚠️ Please set a table number first!');
-      els.tableNumberInput.focus();
+      showToast('⚠️ Please select a table first!');
+      if (els.tableSelectModal) els.tableSelectModal.classList.remove('hidden');
       return;
     }
     if (currentOrder.length === 0) {
@@ -1049,6 +1089,7 @@
     const order = {
       id: Date.now(),
       table: tableNumber,
+      dineType: currentDineType,
       items: [...currentOrder],
       note: els.orderNote ? els.orderNote.value.trim() : '',
       totalQty,
@@ -1109,7 +1150,7 @@
           </svg>
         </div>
         <div class="history-info">
-          <div class="history-table">Table ${order.table}</div>
+          <div class="history-table">Table ${order.table} <span style="font-size:0.65rem; padding:2px 6px; border-radius:10px; background:rgba(255,255,255,0.05); margin-left:4px; border:1px solid rgba(255,255,255,0.1); color:var(--text-secondary);">${order.dineType || 'Dine-in'}</span></div>
           <div class="history-meta">${dateStr} • ${timeStr}<br>Items: ${order.totalQty} • RM ${order.totalPrice.toFixed(2)}</div>
         </div>
         <div class="history-actions">
@@ -1133,6 +1174,7 @@
     const timeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
 
     let html = `<div class="detail-row"><span class="detail-label">Date</span><span>${dateStr} • ${timeStr}</span></div>`;
+    html += `<div class="detail-row"><span class="detail-label">Dine Option</span><span style="color:var(--accent); font-weight:700;">${order.dineType || 'Dine-in'}</span></div>`;
     if (order.note) {
       html += `<div class="detail-row" style="background:rgba(231,160,30,0.08);padding:10px;border-radius:var(--radius-sm);margin:8px 0;"><span class="detail-label" style="color:var(--accent)">General Note</span><span style="font-style:italic;">${order.note}</span></div>`;
     }
@@ -1713,17 +1755,17 @@
     tableNumber = tableVal.toUpperCase();
     localStorage.setItem('waiter_table_number', tableNumber);
 
-    // Update Banner
+    // Update Banner (Hidden but updated for compatibility)
     if (els.activeTableBanner) {
-      els.activeTableBanner.classList.remove('hidden');
-      const tableIdEl = els.activeTableBanner.querySelector('.table-id');
+      const tableIdEl = els.activeTableBanner.querySelector('.table-id') || document.getElementById('activeTableNum');
       if (tableIdEl) tableIdEl.textContent = tableNumber;
     }
 
-    // Hide selection button
-    if (els.tableSection) els.tableSection.classList.add('hidden');
+    // Update the badge in the order modal
+    const badgeText = document.getElementById('orderModalTableText');
+    if (badgeText) badgeText.textContent = `Table ${tableNumber}`;
 
-    // Close Modal
+    // Close Modals
     if (els.tableSelectModal) els.tableSelectModal.classList.add('hidden');
     if (els.customTableInput) els.customTableInput.value = '';
 
@@ -1999,6 +2041,16 @@
     // Save order
     $('#saveOrderBtn').addEventListener('click', saveOrder);
 
+    // Dine Type Selector
+    const dineBtns = $$('.dine-type-btn');
+    dineBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        dineBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentDineType = btn.dataset.type;
+      });
+    });
+
     // Item detail overlay (customer UX)
     if (els.itemDetailOverlay) {
       els.itemDetailOverlay.addEventListener('click', (e) => {
@@ -2157,7 +2209,13 @@
       };
     }
 
-    // sidebar toggle is handled in the Floating immersive controls section
+    // Table Selector Badge in Order Modal
+    const orderModalTableBadge = document.getElementById('orderModalTableBadge');
+    if (orderModalTableBadge) {
+      orderModalTableBadge.onclick = () => {
+        if (els.tableSelectModal) els.tableSelectModal.classList.remove('hidden');
+      };
+    }
 
     // Category Management
     if (els.addNewCategoryBtn) {
