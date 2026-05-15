@@ -364,6 +364,8 @@
     totalItemsCount: $('#totalItemsCount'),
     totalAmount: $('#totalAmount'),
     orderDetailModal: $('#orderDetailModal'),
+    orderDetailTitle: $('#orderDetailTitle'),
+    orderDetailBody: $('#orderDetailBody'),
     closeOrderDetail: $('#closeOrderDetail'),
     closeOrderDetailBtn: $('#closeOrderDetailBtn'),
     historyPreviewList: $('#historyPreviewList'),
@@ -623,7 +625,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '8'; // Bumped for Pasta Item Images
+  const MENU_VERSION = '9'; // Bumped for Category Images & Fixes
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
@@ -632,11 +634,27 @@
     // Reset menu if version changed (new menu data)
     if (storedVersion !== MENU_VERSION) {
       menuItems = [...DEFAULT_MENU];
+      // Also reset categories to get the new images/order
+      appCategories = [
+        { name: 'Main Course', emoji: '🥩', image: 'images/cat_main_course.png' },
+        { name: 'Pasta', emoji: '🍝', image: 'images/cat_pasta.png' },
+        { name: 'Burgers', emoji: '🍔', image: 'images/cat_burgers.png' },
+        { name: 'Wraps', emoji: '🌯', image: 'images/cat_wraps.png' },
+        { name: 'Salted Egg', emoji: '🥚', image: 'images/cat_salted_egg.png' },
+        { name: 'Snacks', emoji: '🍟', image: 'images/cat_snacks.png' },
+        { name: 'Mocktails', emoji: '🍹', image: 'images/cat_mocktails.png' },
+        { name: 'Coffee', emoji: '☕', image: 'images/cat_coffee.png' },
+        { name: 'Non Coffee', emoji: '🧋', image: 'images/cat_non_coffee.png' },
+        { name: 'Desserts', emoji: '🍰', image: 'images/cat_desserts.png' },
+        { name: 'Add Ons', emoji: '➕', image: 'images/cat_add_ons.png' }
+      ];
       saveMenu();
+      saveCategories();
       localStorage.setItem('wh_menu_version', MENU_VERSION);
     } else {
       menuItems = storedMenu ? JSON.parse(storedMenu) : [...DEFAULT_MENU];
       if (!storedMenu) saveMenu();
+      appCategories = JSON.parse(localStorage.getItem('waiter_categories')) || appCategories;
     }
 
     const storedOrders = localStorage.getItem('wh_orders');
