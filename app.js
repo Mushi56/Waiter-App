@@ -379,7 +379,7 @@
     tableSection: $('#tableSection'),
     activeTableBanner: $('#activeTableBanner'),
     activeTableNum: $('#activeTableNum'),
-    tableNumberInput: $('#tableNumberInput'),
+    tableNumberInput: $('#customTableInput'), /* Corrected ID */
     tableSelectModal: $('#tableSelectModal'),
     tableGridPresets: $('#tableGridPresets'),
     customTableInput: $('#customTableInput'),
@@ -784,7 +784,6 @@
         }
           <div class="menu-card-info">
             <div class="menu-card-name">${item.name}</div>
-            <div class="menu-card-desc">${item.description || ''}</div>
             <div class="menu-card-bottom">
               <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
               <button class="menu-card-add" data-id="${item.id}">
@@ -927,6 +926,10 @@
 
     els.totalItemsCount.textContent = totalQty;
     els.totalAmount.textContent = `RM ${totalPrice.toFixed(2)}`;
+    if (els.headerCartBadge) {
+      els.headerCartBadge.textContent = totalQty;
+      els.headerCartBadge.classList.toggle('hidden', totalQty === 0);
+    }
     if (els.cartBadge) els.cartBadge.textContent = totalQty;
     if (els.cartTotalBtn) els.cartTotalBtn.textContent = `RM ${totalPrice.toFixed(2)}`;
   }
@@ -1220,10 +1223,15 @@
 
     // Load order into active state
     tableNumber = order.table;
-    els.activeTableNum.textContent = tableNumber;
-    els.tableSection.classList.add('hidden');
-    els.activeTableBanner.classList.remove('hidden');
-    els.tableNumberInput.value = tableNumber;
+    if (els.activeTableNum) els.activeTableNum.textContent = tableNumber;
+    
+    // Also update the order modal badge if it exists
+    const orderModalTableText = document.getElementById('orderModalTableText');
+    if (orderModalTableText) orderModalTableText.textContent = `Table ${tableNumber}`;
+
+    if (els.tableSection) els.tableSection.classList.add('hidden');
+    if (els.activeTableBanner) els.activeTableBanner.classList.remove('hidden');
+    if (els.tableNumberInput) els.tableNumberInput.value = tableNumber;
 
     currentOrder = JSON.parse(JSON.stringify(order.items)); // Deep copy
     if (els.orderNote) els.orderNote.value = order.note || '';
@@ -1239,7 +1247,7 @@
     renderHistoryPage();
 
     navigateTo('pageHome');
-    els.orderModalOverlay.classList.remove('hidden');
+    if (els.orderModalOverlay) els.orderModalOverlay.classList.remove('hidden');
     showToast('Order loaded for editing');
   }
 
