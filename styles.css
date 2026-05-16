@@ -446,13 +446,13 @@ textarea:focus {
 }
 
 .page {
-  padding-top: 32px; /* Adjusted: 16px + 16px more */
+  padding-top: 12px; /* Reduced space */
   min-height: 100vh;
 }
 
 @supports (padding-top: env(safe-area-inset-top)) {
   .page {
-    padding-top: calc(32px + var(--safe-top));
+    padding-top: calc(12px + var(--safe-top));
   }
 }
 .app-header {
@@ -460,15 +460,15 @@ textarea:focus {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000; /* Higher z-index for professional layering */
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: calc(32px + var(--safe-top)) 16px 12px; /* Reverted to original design */
-  background: rgba(10, 12, 16, 0.8);
+  padding: calc(12px + var(--safe-top)) 16px 10px; /* Slimmer header */
+  background: rgba(10, 12, 16, 0.85);
   backdrop-filter: blur(20px) saturate(1.8);
   -webkit-backdrop-filter: blur(20px) saturate(1.8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: all var(--transition);
 }
 
@@ -479,8 +479,8 @@ textarea:focus {
 }
 
 .logo-box {
-  width: 44px;
-  height: 44px;
+  width: 32px; /* Compact logo */
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -493,7 +493,7 @@ textarea:focus {
 }
 
 .header-brand h1 {
-  font-size: 1.1rem;
+  font-size: 1rem; /* Slightly smaller */
   font-weight: 800;
   margin: 0;
   color: #fff;
@@ -516,8 +516,8 @@ textarea:focus {
 }
 
 .header-btn {
-  width: 44px;
-  height: 44px;
+  width: 38px; /* Slimmer buttons */
+  height: 38px;
   border: 1px solid rgba(255,255,255,0.05);
   background: #1A1A1A;
   color: #fff;
