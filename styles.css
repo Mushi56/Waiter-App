@@ -734,7 +734,8 @@ textarea:focus {
   font-size: 1rem; /* Reduced size */
   font-weight: 800;
   color: #E7A01E;
-  margin-bottom: 6px; /* Reduced margin */
+  margin-top: 6px; /* Added margin top instead of bottom */
+  margin-bottom: 0;
 }
 
 .hero-cta {
@@ -750,6 +751,7 @@ textarea:focus {
   text-transform: uppercase;
   width: fit-content;
   transition: transform 0.2s;
+  margin-bottom: 4px; /* Space between button and price below it */
 }
 
 .hero-cta:active { transform: scale(0.96); }

@@ -838,11 +838,11 @@
           ${item.heroText ? `<div class="hero-badge">${item.heroText}</div>` : '<div class="hero-badge">PREMIUM</div>'}
           <h3>${item.name}</h3>
           <p class="hero-card-desc">${item.description || ''}</p>
-          <div class="hero-card-price">RM ${item.price.toFixed(2)}</div>
           <div class="hero-cta">
              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
              ORDER NOW
           </div>
+          <div class="hero-card-price">RM ${item.price.toFixed(2)}</div>
         </div>
         <div class="hero-card-img-wrap">
           <img src="${item.image || 'icons/icon-192.svg'}" alt="${item.name}" class="hero-card-img" loading="lazy">
@@ -1148,7 +1148,7 @@
 
     currentOrder = [];
     if (els.orderNote) els.orderNote.value = '';
-    changeTable();
+    changeTable(true); // Silent reset for new order
     renderOrder();
     renderMenu();
     renderHistoryPreview();
@@ -1823,16 +1823,19 @@
     showToast(`Table ${tableNumber} Set`);
   }
 
-  function changeTable() {
+  function changeTable(silent = false) {
     tableNumber = '';
     localStorage.removeItem('waiter_table_number');
+
+    // Reset UI indicators
+    const badgeText = document.getElementById('orderModalTableText');
+    if (badgeText) badgeText.textContent = 'Select Table';
+
     if (els.activeTableBanner) els.activeTableBanner.classList.add('hidden');
     if (els.tableSection) {
       els.tableSection.classList.remove('hidden');
-      // If we are changing, open the modal automatically
-      if (els.tableSelectModal) els.tableSelectModal.classList.remove('hidden');
     }
-    showToast('Table cleared');
+    if (!silent) showToast('Table cleared');
   }
 
   // --- Toast ---
