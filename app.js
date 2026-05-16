@@ -34,11 +34,11 @@
     { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=400', description: 'The ultimate comfort food—baked pasta in a thick, gooey cheese sauce.' },
     { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400', description: 'Fresh pasta tossed in a zesty tomato sauce with aromatic herbs.' },
     { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=400', description: 'A perfect blend of tangy tomato and smooth cream sauce.' },
-    // Salted Egg
-    { id: 27, name: 'Salted Egg Calamari', price: 17.90, category: 'Salted Egg', image: null, description: 'Crispy fried calamari rings coated in a rich and savory salted egg sauce.' },
-    { id: 28, name: 'Salted Egg Chicken', price: 14.90, category: 'Salted Egg', image: null, description: 'Fried chicken pieces tossed in a creamy, buttery salted egg yolk sauce.' },
-    { id: 29, name: 'Salted Egg Prawn', price: 21.90, category: 'Salted Egg', image: null, description: 'Succulent prawns glazed in a signature golden salted egg sauce.' },
-    { id: 30, name: 'Salted Egg Zinger', price: 19.90, category: 'Salted Egg', image: null, description: 'Spicy zinger fillet elevated with a generous drizzle of salted egg sauce.' },
+    // Rice
+    { id: 27, name: 'Salted Egg Calamari Rice', price: 17.90, category: 'Rice', image: null, description: 'Crispy fried calamari rings served with fragrant white rice and rich salted egg sauce.' },
+    { id: 28, name: 'Salted Egg Chicken Rice', price: 14.90, category: 'Rice', image: null, description: 'Fried chicken pieces tossed in creamy salted egg yolk sauce, served with steamed white rice.' },
+    { id: 29, name: 'Salted Egg Prawn Rice', price: 21.90, category: 'Rice', image: null, description: 'Succulent prawns glazed in golden salted egg sauce, served with white rice.' },
+    { id: 30, name: 'Salted Egg Zinger Rice', price: 19.90, category: 'Rice', image: null, description: 'Spicy zinger fillet with salted egg sauce, served with a portion of white rice.' },
     // Snacks
     { id: 31, name: 'Cheesy Bacon Fries', price: 12.90, category: 'Snacks', image: null, description: 'Golden fries topped with melted cheese sauce and crispy beef bacon bits.' },
     { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: null, description: 'Crispy fries drizzled with a generous amount of creamy cheese sauce.' },
@@ -73,7 +73,7 @@
     { name: 'Pasta', emoji: '🍝', image: 'images/cat_pasta.png' },
     { name: 'Burgers', emoji: '🍔', image: 'images/cat_burgers.png' },
     { name: 'Wraps', emoji: '🌯', image: 'images/cat_wraps.png' },
-    { name: 'Salted Egg', emoji: '🥚', image: 'images/cat_salted_egg.png' },
+    { name: 'Rice', emoji: '🍚', image: 'images/cat_salted_egg.png' },
     { name: 'Snacks', emoji: '🍟', image: 'images/cat_snacks.png' },
     { name: 'Mocktails', emoji: '🍹', image: 'images/cat_mocktails.png' },
     { name: 'Coffee', emoji: '☕', image: 'images/cat_coffee.png' },
