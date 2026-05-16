@@ -688,7 +688,7 @@ textarea:focus {
   position: absolute;
   top: 0;
   left: 0;
-  width: 55%; /* Covers left side with text */
+  width: 65%; /* Expanded to fit side-by-side footer */
   height: 100%;
   background: linear-gradient(to right, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 70%, transparent 100%);
   z-index: 2;
@@ -730,11 +730,18 @@ textarea:focus {
   max-width: 95%;
 }
 
+.hero-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-top: 4px;
+}
+
 .hero-card-price {
-  font-size: 1rem; /* Reduced size */
+  font-size: 0.95rem; 
   font-weight: 800;
   color: #E7A01E;
-  margin-top: 6px; /* Added margin top instead of bottom */
   margin-bottom: 0;
 }
 
@@ -751,7 +758,6 @@ textarea:focus {
   text-transform: uppercase;
   width: fit-content;
   transition: transform 0.2s;
-  margin-bottom: 4px; /* Space between button and price below it */
 }
 
 .hero-cta:active { transform: scale(0.96); }
