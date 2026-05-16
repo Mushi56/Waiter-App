@@ -446,7 +446,7 @@ textarea:focus {
 }
 
 .page {
-  padding-top: calc(54px + var(--safe-top) + 8px); /* Precisely calculated for slim header + gap */
+  padding-top: 0; /* Consolidated with main-content padding */
   min-height: 100vh;
 }
 
@@ -869,7 +869,7 @@ textarea:focus {
 
 /* ===== MAIN ===== */
 .main-content {
-  padding: calc(72px + var(--safe-top)) calc(16px + var(--safe-right)) calc(110px + var(--safe-bottom)) calc(16px + var(--safe-left));
+  padding: calc(54px + var(--safe-top) + 16px) calc(16px + var(--safe-right)) calc(110px + var(--safe-bottom)) calc(16px + var(--safe-left));
   width: 100%;
   margin: 0 auto;
 }
