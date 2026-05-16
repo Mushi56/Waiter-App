@@ -66,7 +66,9 @@
     { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: null, description: 'Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone.' },
     { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: null, description: 'Delicious dessert with layers of banana, cream, and buttery toffee.' },
     { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: null, description: 'Creamy cheesecake topped with a generous layer of crushed Biscoff cookies.' },
-    { id: 53, name: 'Roti John Wagyu Truffle', price: 28.90, category: 'Main Course', image: 'images/roti_john_wagyu_truffle.png', isHero: true, heroText: 'NEW ARRIVAL', description: 'Premium baguette bread filled with minced Wagyu beef, eggs, and signature truffle sauce.' },
+    { id: 53, name: 'Roti John Wagyu Truffle', price: 50.00, category: 'Ramadhan Sementara', image: 'images/roti_john_wagyu_truffle.png', isHero: true, heroText: 'BEST SELLER', description: 'Homemade brioche bread of roti john serves with 100g marble 8 wagyu shabu shabu meat with signature truffle sauce.' },
+    { id: 54, name: 'Roti John Pulled Beef', price: 24.00, category: 'Ramadhan Sementara', image: 'images/roti_john_pulled_beef.png', description: 'Home made brioche bread of roti john serves with 8 hours long braised brisket with house marination and topped with Macaroni and cheese' },
+    { id: 55, name: 'Roti John Zinger', price: 22.00, category: 'Ramadhan Sementara', image: 'images/roti_john_zinger.png', description: 'Home made brioche bread of roti john serves with our signature zinger patty and cheese sauce.' },
   ];
 
   let appCategories = JSON.parse(localStorage.getItem('waiter_categories')) || [
@@ -80,7 +82,8 @@
     { name: 'Coffee', emoji: '☕', image: 'images/cat_coffee.png' },
     { name: 'Non Coffee', emoji: '🧋', image: 'images/cat_non_coffee.png' },
     { name: 'Desserts', emoji: '🍰', image: 'images/cat_desserts.png' },
-    { name: 'Add ons', emoji: '➕', image: 'images/cat_add_ons.png' }
+    { name: 'Add ons', emoji: '➕', image: 'images/cat_add_ons.png' },
+    { name: 'Ramadhan Sementara', emoji: '🌙', image: 'images/roti_john_wagyu_truffle.png' }
   ];
   let EMOJI_MAP = {};
   function updateEmojiMap() {
@@ -461,44 +464,56 @@
   }
 
   let ADDONS_DATA = JSON.parse(localStorage.getItem('waiter_addons_data')) || {
-    'Main Course': [{
-      name: 'Add-ons',
-      type: 'checkbox',
-      options: [
-        { name: 'Mac and Cheese', price: 4 },
-        { name: 'Extra Grilled/Fried Chicken', price: 12 },
-        { name: '2 pcs Beef Bacon', price: 4 },
-        { name: 'Mashed Potato', price: 3 },
-        { name: 'Extra Brown Sauce', price: 3 },
-        { name: 'Plain Rice', price: 2 }
-      ]
-    }],
-    'Pasta': [{
-      name: 'Add-ons',
-      type: 'checkbox',
-      options: [
-        { name: 'Grilled Chicken', price: 3 },
-        { name: 'Seafood', price: 5 },
-        { name: 'Prawn Only', price: 5 },
-        { name: 'Squid Only', price: 5 },
-        { name: 'Zinger', price: 3 },
-        { name: 'Grilled Lamb', price: 13 },
-        { name: 'Beef Patty', price: 5 },
-        { name: 'Australian Wagyu', price: 20 }
-      ]
-    }],
-    'Burgers': [{
-      name: 'Add-ons',
-      type: 'checkbox',
-      options: [
-        { name: 'Mac and Cheese', price: 4 },
-        { name: '2 pcs Beef Bacon', price: 3 },
-        { name: '3 pcs Onion Ring', price: 2 },
-        { name: 'Cheddar Cheese', price: 1 },
-        { name: 'Mozarella Cheese', price: 4 },
-        { name: 'Truffle Sauce', price: 5 }
-      ]
-    }]
+    'Main Course': [
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] },
+      { name: 'Add-ons', type: 'checkbox', options: [
+        { name: 'Mac and Cheese', price: 4 }, { name: 'Extra Grilled/Fried Chicken', price: 12 },
+        { name: '2 pcs Beef Bacon', price: 4 }, { name: 'Mashed Potato', price: 3 },
+        { name: 'Extra Brown Sauce', price: 3 }, { name: 'Plain Rice', price: 2 }
+      ]}
+    ],
+    'Pasta': [
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] },
+      { name: 'Add-ons', type: 'checkbox', options: [
+        { name: 'Grilled Chicken', price: 3 }, { name: 'Seafood', price: 5 },
+        { name: 'Prawn Only', price: 5 }, { name: 'Squid Only', price: 5 },
+        { name: 'Zinger', price: 3 }, { name: 'Grilled Lamb', price: 13 },
+        { name: 'Beef Patty', price: 5 }, { name: 'Australian Wagyu', price: 20 }
+      ]}
+    ],
+    'Burgers': [
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] },
+      { name: 'Add-ons', type: 'checkbox', options: [
+        { name: 'Mac and Cheese', price: 4 }, { name: '2 pcs Beef Bacon', price: 3 },
+        { name: '3 pcs Onion Ring', price: 2 }, { name: 'Cheddar Cheese', price: 1 },
+        { name: 'Mozarella Cheese', price: 4 }, { name: 'Truffle Sauce', price: 5 }
+      ]}
+    ],
+    'Wraps': [
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+    ],
+    'Rice': [
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+    ],
+    'Snacks': [
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+    ],
+    'Mocktails': [
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+    ],
+    'Coffee': [
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+    ],
+    'Non Coffee': [
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+    ],
+    'Desserts': [
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+    ],
+    'Ramadhan Sementara': [
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] },
+      { name: 'Add ons', type: 'checkbox', options: [{ name: 'Truffle sauce', price: 10 }] }
+    ]
   };
 
   // --- Init ---
@@ -626,7 +641,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '9'; // Bumped for Category Images & Fixes
+  const MENU_VERSION = '12'; // Bumped for Ramadhan & Global Takeaway
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
@@ -635,20 +650,25 @@
     // Reset menu if version changed (new menu data)
     if (storedVersion !== MENU_VERSION) {
       menuItems = [...DEFAULT_MENU];
-      // Also reset categories to get the new images/order
+      // Reset categories to the latest defaults (includes Rice and Ramadhan Sementara)
       appCategories = [
         { name: 'Main Course', emoji: '🥩', image: 'images/cat_main_course.png' },
         { name: 'Pasta', emoji: '🍝', image: 'images/cat_pasta.png' },
         { name: 'Burgers', emoji: '🍔', image: 'images/cat_burgers.png' },
         { name: 'Wraps', emoji: '🌯', image: 'images/cat_wraps.png' },
-        { name: 'Salted Egg', emoji: '🥚', image: 'images/cat_salted_egg.png' },
+        { name: 'Rice', emoji: '🍚', image: 'images/cat_salted_egg.png' },
         { name: 'Snacks', emoji: '🍟', image: 'images/cat_snacks.png' },
         { name: 'Mocktails', emoji: '🍹', image: 'images/cat_mocktails.png' },
         { name: 'Coffee', emoji: '☕', image: 'images/cat_coffee.png' },
         { name: 'Non Coffee', emoji: '🧋', image: 'images/cat_non_coffee.png' },
         { name: 'Desserts', emoji: '🍰', image: 'images/cat_desserts.png' },
-        { name: 'Add Ons', emoji: '➕', image: 'images/cat_add_ons.png' }
+        { name: 'Add ons', emoji: '➕', image: 'images/cat_add_ons.png' },
+        { name: 'Ramadhan Sementara', emoji: '🌙', image: 'images/roti_john_wagyu_truffle.png' }
       ];
+      
+      // Force reset ADDONS_DATA to apply global Takeaway
+      localStorage.removeItem('waiter_addons_data'); 
+      
       saveMenu();
       saveCategories();
       localStorage.setItem('wh_menu_version', MENU_VERSION);
