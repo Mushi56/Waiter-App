@@ -97,7 +97,7 @@
   --text-muted: #6B7280;
   --border: var(--color-border-light);
   
-  --accent: var(--color-text-primary-light); /* Yellow text becomes black in light mode */
+  --accent: #E7A01E; /* Maintain gold brand color even in light mode */
   --accent-bg: var(--color-primary-gradient); /* Button backgrounds stay yellow */
   
   --glass-bg: rgba(255, 255, 255, 0.85);
@@ -1295,9 +1295,9 @@ textarea:focus {
 }
 
 .cat-name {
-  font-size: 0.7rem; /* Reduced to fit 6 in a row */
+  font-size: 0.7rem;
   font-weight: 600;
-  color: rgba(255,255,255,0.5);
+  color: var(--text-secondary); /* Dynamic color for visibility */
   transition: color 0.3s;
 }
 
