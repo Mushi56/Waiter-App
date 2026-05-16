@@ -465,7 +465,7 @@
 
   let ADDONS_DATA = JSON.parse(localStorage.getItem('waiter_addons_data')) || {
     'Main Course': [
-      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] },
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] },
       { name: 'Add-ons', type: 'checkbox', options: [
         { name: 'Mac and Cheese', price: 4 }, { name: 'Extra Grilled/Fried Chicken', price: 12 },
         { name: '2 pcs Beef Bacon', price: 4 }, { name: 'Mashed Potato', price: 3 },
@@ -473,7 +473,7 @@
       ]}
     ],
     'Pasta': [
-      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] },
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] },
       { name: 'Add-ons', type: 'checkbox', options: [
         { name: 'Grilled Chicken', price: 3 }, { name: 'Seafood', price: 5 },
         { name: 'Prawn Only', price: 5 }, { name: 'Squid Only', price: 5 },
@@ -482,7 +482,7 @@
       ]}
     ],
     'Burgers': [
-      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] },
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] },
       { name: 'Add-ons', type: 'checkbox', options: [
         { name: 'Mac and Cheese', price: 4 }, { name: '2 pcs Beef Bacon', price: 3 },
         { name: '3 pcs Onion Ring', price: 2 }, { name: 'Cheddar Cheese', price: 1 },
@@ -490,28 +490,28 @@
       ]}
     ],
     'Wraps': [
-      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] }
     ],
     'Rice': [
-      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] }
     ],
     'Snacks': [
-      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] }
     ],
     'Mocktails': [
-      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] }
     ],
     'Coffee': [
-      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] }
     ],
     'Non Coffee': [
-      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] }
     ],
     'Desserts': [
-      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] }
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] }
     ],
     'Ramadhan Sementara': [
-      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'Takeaway (+RM 0.50)', price: 0.50 }] },
+      { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] },
       { name: 'Add ons', type: 'checkbox', options: [{ name: 'Truffle sauce', price: 10 }] }
     ]
   };
@@ -641,7 +641,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '12'; // Bumped for Ramadhan & Global Takeaway
+  const MENU_VERSION = '13'; // Bumped for refined Takeaway & Addons
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
@@ -666,7 +666,7 @@
         { name: 'Ramadhan Sementara', emoji: '🌙', image: 'images/roti_john_wagyu_truffle.png' }
       ];
       
-      // Force reset ADDONS_DATA to apply global Takeaway
+      // Force reset ADDONS_DATA
       localStorage.removeItem('waiter_addons_data'); 
       
       saveMenu();
