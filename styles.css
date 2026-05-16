@@ -1384,7 +1384,7 @@ textarea:focus {
 }
 
 .menu-card-info {
-  padding: 8px 12px 12px;
+  padding: 6px 10px 10px; /* Reduced vertical padding */
 }
 
 .menu-card-name {
@@ -1392,12 +1392,12 @@ textarea:focus {
   font-weight: 800;
   line-height: 1.2;
   color: var(--text-primary);
-  margin-bottom: 2px;
+  margin-bottom: 0; /* Removed bottom margin */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 2.1rem; /* Consistent height for 2 lines but tighter */
+  /* Removed fixed min-height to reduce extra space for 1-line names */
 }
 
 .menu-card-price {
@@ -1412,7 +1412,7 @@ textarea:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 4px; /* Reduced gap */
+  margin-top: 2px; /* Minimal gap for compact look */
 }
 
 .menu-card-add {
