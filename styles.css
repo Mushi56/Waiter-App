@@ -21,7 +21,7 @@
 
   --color-bg-dark: #0A0C10;
   --color-surface-dark: #12151B;
-  --color-surface-elevated-dark: #1A1F27;
+  --color-surface-elevated-dark: #1A1A1A;
 
   --color-text-primary-light: #111827;
   --color-text-secondary-light: #4B5563;
@@ -1334,7 +1334,8 @@ textarea:focus {
 }
 
 .menu-card {
-  background: var(--bg-card);
+  background: #1A1A1A; /* Matched to header buttons */
+  border: 1px solid rgba(255,255,255,0.05); /* Matched to header buttons */
   border-radius: 24px;
   overflow: hidden;
   cursor: pointer;
