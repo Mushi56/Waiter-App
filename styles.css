@@ -838,7 +838,7 @@ textarea:focus {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
-  padding: 0 4px;
+  padding: 0; /* Removed redundant padding to align with 16px grid */
 }
 
 .section-header h2 {
@@ -1227,8 +1227,8 @@ textarea:focus {
 .category-tabs {
   display: flex;
   overflow-x: auto;
-  gap: 12px; /* Reduced gap for 6-in-a-row */
-  padding: 6px 16px;
+  gap: 12px;
+  padding: 6px 0; /* Removed horizontal padding to align with parent grid */
   scrollbar-width: none;
 }
 
