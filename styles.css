@@ -842,10 +842,12 @@ textarea:focus {
 }
 
 .section-header h2 {
-  font-size: 1.2rem;
+  font-size: 0.8rem; /* Even more compact and subtle */
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--text-muted); /* Using muted color for less prominence */
   margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .badge {
