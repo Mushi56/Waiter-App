@@ -5,7 +5,7 @@
   // --- Default Menu ---
   const DEFAULT_MENU = [
     // Wraps
-    { id: 1, name: 'Beef Tortilla', price: 18.90, category: 'Wraps', image: 'images/beef_tortilla.png', isHero: true, heroText: 'HOT DEAL', description: 'Juicy grilled beef strips wrapped in a soft flour tortilla with fresh greens and savory sauce.' },
+    { id: 1, name: 'Beef Tortilla', price: 18.90, category: 'Wraps', image: 'images/beef_tortilla.png', isHero: false, heroText: 'HOT DEAL', description: 'Juicy grilled beef strips wrapped in a soft flour tortilla with fresh greens and savory sauce.' },
     { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: null, description: 'Tender seasoned chicken breast wrap with crisp vegetables and a signature dressing.' },
     { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: null, description: 'Extra crunchy spicy chicken zinger fillet wrapped with fresh lettuce and mayo.' },
     // Burgers
@@ -16,8 +16,8 @@
     { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: null, description: 'Three layers of juicy patties and melted cheese for the biggest appetite.' },
     { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: null, description: 'Our signature spicy fried chicken fillet with fresh lettuce on a toasted sesame bun.' },
     // Main Course
-    { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: 'images/angus_ribeye_steak.png', isHero: true, heroText: 'PREMIUM', description: 'High-quality Angus ribeye grilled to perfection, served with black pepper sauce.' },
-    { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/fried_chicken_chop.png', description: 'Crispy deep-fried breaded chicken chop served with coleslaw and fries.' },
+    { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: 'images/angus_ribeye_steak.png', isHero: false, heroText: 'PREMIUM', description: 'High-quality Angus ribeye grilled to perfection, served with black pepper sauce.' },
+    { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/fried_chicken_chop.png', isHero: true, heroText: 'BEST SELLER', description: 'Crispy deep-fried breaded chicken chop served with coleslaw and fries.' },
     { id: 12, name: 'Grill Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/grill_chicken_chop.png', description: 'Succulent grilled chicken thigh served with our special homemade gravy.' },
     { id: 13, name: 'Lamb Grilled', price: 36.90, category: 'Main Course', image: 'images/lamb_grilled.png', description: 'Tender grilled lamb chops seasoned with aromatic herbs and spices.' },
     { id: 14, name: 'Lamb Grilled 1KG', price: 109.90, category: 'Main Course', image: 'images/lamb_grilled.png', description: 'Massive platter of grilled lamb chops, perfect for sharing with family.' },
@@ -30,7 +30,7 @@
     { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: 'images/pasta_beef_bolognaise.png', description: 'Hearty pasta served with a traditional rich minced beef and tomato sauce.' },
     { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: 'images/pasta_carbonara.png', description: 'Creamy pasta sauce with beef bacon bits, parmesan, and a hint of black pepper.' },
     { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1546549032-9571cd6b27df?w=400', description: 'Silky pasta tossed in fragrant garlic butter and topped with melted cheese.' },
-    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400', description: 'Rich and creamy garlic butter pasta that melts in your mouth.' },
+    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400', isHero: true, heroText: 'POPULAR', description: 'Rich and creamy garlic butter pasta that melts in your mouth.' },
     { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=400', description: 'The ultimate comfort food—baked pasta in a thick, gooey cheese sauce.' },
     { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400', description: 'Fresh pasta tossed in a zesty tomato sauce with aromatic herbs.' },
     { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=400', description: 'A perfect blend of tangy tomato and smooth cream sauce.' },
@@ -40,7 +40,7 @@
     { id: 29, name: 'Salted Egg Prawn Rice', price: 21.90, category: 'Rice', image: null, description: 'Succulent prawns glazed in golden salted egg sauce, served with white rice.' },
     { id: 30, name: 'Salted Egg Zinger Rice', price: 19.90, category: 'Rice', image: null, description: 'Spicy zinger fillet with salted egg sauce, served with a portion of white rice.' },
     // Snacks
-    { id: 31, name: 'Cheesy Bacon Fries', price: 12.90, category: 'Snacks', image: null, description: 'Golden fries topped with melted cheese sauce and crispy beef bacon bits.' },
+    { id: 31, name: 'Triple Cheasy Bacon Fries', price: 12.90, category: 'Snacks', image: 'images/french_fries.png', isHero: true, heroText: 'TOP CHOICE', description: 'Loaded golden fries topped with extra cheese sauce and crispy beef bacon bits.' },
     { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: null, description: 'Crispy fries drizzled with a generous amount of creamy cheese sauce.' },
     { id: 33, name: 'Chicken n Fries', price: 12.90, category: 'Snacks', image: null, description: 'A classic combination of crispy chicken pieces served with golden fries.' },
     { id: 34, name: 'Onion Rings', price: 9.90, category: 'Snacks', image: null, description: 'Sweet onions battered and fried until golden and extra crunchy.' },
@@ -66,6 +66,7 @@
     { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: null, description: 'Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone.' },
     { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: null, description: 'Delicious dessert with layers of banana, cream, and buttery toffee.' },
     { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: null, description: 'Creamy cheesecake topped with a generous layer of crushed Biscoff cookies.' },
+    { id: 53, name: 'Roti John Wagyu Truffle', price: 28.90, category: 'Main Course', image: 'images/roti_john_wagyu_truffle.png', isHero: true, heroText: 'NEW ARRIVAL', description: 'Premium baguette bread filled with minced Wagyu beef, eggs, and signature truffle sauce.' },
   ];
 
   let appCategories = JSON.parse(localStorage.getItem('waiter_categories')) || [
