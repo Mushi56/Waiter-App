@@ -1,5 +1,5 @@
 // Waiter Helper - Service Worker
-const CACHE_NAME = 'waiter-helper-v59';
+const CACHE_NAME = 'waiter-helper-v60';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

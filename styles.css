@@ -631,7 +631,7 @@ textarea:focus {
 /* ===== HERO SLIDER — Modern Depth + Cinematic ===== */
 .hero-section {
   position: relative;
-  margin: 0 -16px 12px; /* Consistent spacing */
+  margin: 0 -16px 10px; /* Standardized Gap 1: 10px */
   padding: 0 16px;
 }
 
@@ -837,9 +837,8 @@ textarea:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
-  margin: 0 -16px 16px; /* Pull to edge */
-  padding: 0 16px; /* Content back to 16px */
+  margin: 0 -16px 0; /* Unified Gap 1: 10px above (from hero) | Gap 2: handled by category-tabs padding below */
+  padding: 0 16px;
 }
 
 .section-header h2 {
@@ -1228,9 +1227,9 @@ textarea:focus {
 .category-tabs {
   display: flex;
   overflow-x: auto;
-  gap: 8px; /* Slightly tighter gap to compensate for tab padding */
-  margin: 0 -22px; /* Pull further to edge for buffer */
-  padding: 8px 22px; /* 16px grid + 6px safe buffer */
+  gap: 8px;
+  margin: 0 -22px;
+  padding: 4px 22px 10px; /* Precise 10px Gap from MENU text above */
   scrollbar-width: none;
 }
 
