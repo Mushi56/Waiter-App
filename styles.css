@@ -790,17 +790,10 @@ textarea:focus {
 }
 
 .hero-dot.active {
-  width: 20px; /* Pill shape for active as in image */
-  height: 4px;
-  border-radius: 10px;
-  background: #E7A01E;
-}
-
-.hero-dot.active {
-  width: 20px;
-  height: 5px;
-  background: var(--accent-bg);
-  border-radius: 3px;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
   box-shadow: 0 0 10px rgba(255, 184, 0, 0.5);
 }
 
