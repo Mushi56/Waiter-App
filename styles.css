@@ -715,7 +715,7 @@ textarea:focus {
 
 .hero-card-overlay h3 {
   margin: 0 0 2px 0; /* Minimal margin */
-  font-size: 1.15rem; /* Scaled for smaller card */
+  font-size: 1.05rem; /* Reduced per request */
   font-weight: 800;
   color: #fff;
   line-height: 1.1;
@@ -765,10 +765,15 @@ textarea:focus {
 
 /* --- Dots: Professional minimal dots --- */
 .hero-dots-container {
+  position: absolute;
+  bottom: 12px; /* Placed inside the card area */
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 14px; /* Space below card */
+  z-index: 10;
+  margin-top: 0;
   pointer-events: none;
 }
 
