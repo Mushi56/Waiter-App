@@ -488,19 +488,39 @@ textarea:focus {
   object-fit: contain;
 }
 
+.header-brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px; /* Tightly groups h1 and subtitle together */
+}
+
 .header-brand h1 {
-  font-size: 1rem; /* Slightly smaller */
+  font-size: 1.18rem; /* Scaled up to perfectly match the combined 32px height of the logo box */
   font-weight: 800;
   margin: 0;
   color: var(--text-primary);
-  line-height: 1.1;
+  line-height: 1.02;
+  white-space: nowrap;
+}
+
+.header-accent-word {
+  color: var(--accent); /* Signature yellow/gold color */
 }
 
 .header-subtitle {
-  font-size: 0.65rem;
-  color: #E7A01E;
-  font-weight: 600;
-  text-transform: capitalize;
+  font-size: 0.57rem; /* Scaled up proportionally to naturally match the new "Smart Menu" width */
+  color: rgba(255, 255, 255, 0.7); /* White color in dark mode */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.1px; /* Proportional tracking for exact alignment */
+  line-height: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .header-subtitle {
+  color: rgba(18, 21, 26, 0.65); /* Dark gray contrast fallback for light mode */
 }
 
 /* Header brand removed older structure */
@@ -850,9 +870,9 @@ textarea:focus {
 }
 
 .section-header h2 {
-  font-size: 0.8rem; /* Even more compact and subtle */
+  font-size: 0.8rem;
   font-weight: 800;
-  color: var(--text-muted); /* Using muted color for less prominence */
+  color: var(--accent); /* Yellow/gold same as pricing and logo */
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -1236,13 +1256,33 @@ textarea:focus {
   position: sticky;
   top: calc(56px + var(--safe-top)); /* Sticks flush to the fixed navbar with 0px gap */
   z-index: 100;
-  background: var(--bg-primary); /* Covers menu cards scrolling underneath */
+  background: transparent; /* Seamless blend when not stuck */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: none; /* No physical border */
   display: flex;
   overflow-x: auto;
   gap: 8px;
   margin: 0 -22px;
-  padding: 12px 22px 12px; /* Solid background padding for clean sticky visual masking */
+  padding: 12px 22px 12px; /* Normal vertical padding: 12px */
   scrollbar-width: none;
+  transition: background-color 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* Highly immersive premium transition when category header sticks/attaches to the navbar! */
+.category-tabs.is-stuck {
+  padding: 12px 22px 12px; /* Retain consistent compact padding */
+  background: var(--glass-bg); /* Applies glassmorphic backdrop color matching the navbar */
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border-bottom: none; /* Absolutely no bottom stroke line */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25); /* Sleek drop shadow to floating glass sheet */
+}
+
+[data-theme="light"] .category-tabs.is-stuck {
+  background: var(--glass-bg);
+  border-bottom: none;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
 }
 
 .category-tabs::-webkit-scrollbar { display: none; }

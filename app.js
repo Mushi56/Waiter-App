@@ -1957,6 +1957,21 @@
       if (e.target === els.drawerOverlay) closeDrawer();
     });
 
+    // Sticky Category scroll observer with high-performance passive rendering
+    const categoryTabs = document.getElementById('categoryTabs');
+    const appHeader = document.getElementById('appHeader');
+    if (categoryTabs && appHeader) {
+      window.addEventListener('scroll', () => {
+        const headerHeight = appHeader.offsetHeight || 56;
+        const isStuck = categoryTabs.getBoundingClientRect().top <= headerHeight + 1;
+        if (isStuck) {
+          categoryTabs.classList.add('is-stuck');
+        } else {
+          categoryTabs.classList.remove('is-stuck');
+        }
+      }, { passive: true });
+    }
+
     // Search Interaction (In-Nav Transformation)
     if (els.searchToggleBtn) {
       els.searchToggleBtn.onclick = () => {
