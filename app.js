@@ -66,9 +66,23 @@
     { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: null, description: 'Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone.' },
     { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: null, description: 'Delicious dessert with layers of banana, cream, and buttery toffee.' },
     { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: null, description: 'Creamy cheesecake topped with a generous layer of crushed Biscoff cookies.' },
-    { id: 53, name: 'Roti John Wagyu Truffle', price: 50.00, category: 'Ramadhan Sementara', image: 'images/roti_john_wagyu_truffle.png', isHero: true, heroText: 'BEST SELLER', description: 'Homemade brioche bread of roti john serves with 100g marble 8 wagyu shabu shabu meat with signature truffle sauce.' },
-    { id: 54, name: 'Roti John Pulled Beef', price: 24.00, category: 'Ramadhan Sementara', image: 'images/roti_john_pulled_beef.png', description: 'Home made brioche bread of roti john serves with 8 hours long braised brisket with house marination and topped with Macaroni and cheese' },
-    { id: 55, name: 'Roti John Zinger', price: 22.00, category: 'Ramadhan Sementara', image: 'images/roti_john_zinger.png', description: 'Home made brioche bread of roti john serves with our signature zinger patty and cheese sauce.' },
+    { id: 53, name: 'Roti John Wagyu Truffle', price: 50.00, category: 'Roti John', image: 'images/roti_john_wagyu_truffle.png', isHero: true, heroText: 'BEST SELLER', description: 'Homemade brioche bread of roti john serves with 100g marble 8 wagyu shabu shabu meat with signature truffle sauce.' },
+    { id: 54, name: 'Roti John Pulled Beef', price: 24.00, category: 'Roti John', image: 'images/roti_john_pulled_beef.png', description: 'Home made brioche bread of roti john serves with 8 hours long braised brisket with house marination and topped with Macaroni and cheese' },
+    { id: 55, name: 'Roti John Zinger', price: 22.00, category: 'Roti John', image: 'images/roti_john_zinger.png', description: 'Home made brioche bread of roti john serves with our signature zinger patty and cheese sauce.' },
+    // Standalone Add-ons
+    { id: 56, name: 'Add-on: Extra Grilled Chicken', price: 12.00, category: 'Add ons', image: null, description: 'Extra serving of perfectly grilled chicken thigh fillet.' },
+    { id: 57, name: 'Add-on: Extra Beef Patty', price: 5.00, category: 'Add ons', image: null, description: 'Extra juicy flame-grilled beef patty.' },
+    { id: 58, name: 'Add-on: Australian Wagyu (200g)', price: 20.00, category: 'Add ons', image: null, description: 'Premium extra marbled Australian Wagyu beef portion.' },
+    { id: 59, name: 'Add-on: 2 pcs Beef Bacon', price: 4.00, category: 'Add ons', image: null, description: 'Two pieces of crispy, savory beef bacon strips.' },
+    { id: 60, name: 'Add-on: Mac and Cheese portion', price: 4.00, category: 'Add ons', image: null, description: 'A side serving of our classic creamy and gooey mac and cheese.' },
+    { id: 61, name: 'Add-on: Mash Potato', price: 3.00, category: 'Add ons', image: null, description: 'Creamy and smooth mashed potatoes.' },
+    { id: 62, name: 'Add-on: 3 pcs Onion Rings', price: 2.00, category: 'Add ons', image: null, description: 'Three pieces of crispy golden-brown onion rings.' },
+    { id: 63, name: 'Add-on: Cheddar Cheese Slice', price: 1.00, category: 'Add ons', image: null, description: 'A melted slice of premium cheddar cheese.' },
+    { id: 64, name: 'Add-on: Mozzarella Cheese portion', price: 4.00, category: 'Add ons', image: null, description: 'A generous extra serving of melted gooey mozzarella cheese.' },
+    { id: 65, name: 'Add-on: Truffle Sauce', price: 5.00, category: 'Add ons', image: null, description: 'Fragrant and rich signature gourmet truffle sauce.' },
+    { id: 66, name: 'Add-on: Plain Rice', price: 2.00, category: 'Add ons', image: null, description: 'An extra serving of warm, fragrant steamed white rice.' },
+    { id: 67, name: 'Add-on: Seafood portion', price: 5.00, category: 'Add ons', image: null, description: 'Mix of fresh prawns and squid.' },
+    { id: 68, name: 'Add-on: Extra Brown Sauce', price: 3.00, category: 'Add ons', image: null, description: 'Extra cup of savory classic black pepper brown sauce.' }
   ];
 
   let appCategories = JSON.parse(localStorage.getItem('waiter_categories')) || [
@@ -83,7 +97,7 @@
     { name: 'Non Coffee', emoji: '🧋', image: 'images/cat_non_coffee.png' },
     { name: 'Desserts', emoji: '🍰', image: 'images/cat_desserts.png' },
     { name: 'Add ons', emoji: '➕', image: 'images/cat_add_ons.png' },
-    { name: 'Ramadhan Sementara', emoji: '🌙', image: 'images/roti_john_wagyu_truffle.png' }
+    { name: 'Roti John', emoji: '🥖', image: 'images/roti_john_wagyu_truffle.png' }
   ];
   let EMOJI_MAP = {};
   function updateEmojiMap() {
@@ -510,7 +524,7 @@
     'Desserts': [
       { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] }
     ],
-    'Ramadhan Sementara': [
+    'Roti John': [
       { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] },
       { name: 'Add ons', type: 'checkbox', options: [{ name: 'Truffle sauce', price: 10 }] }
     ]
@@ -641,7 +655,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '19'; // Bumped for refined Takeaway & Addons
+  const MENU_VERSION = '25'; // Bumped for refined Takeaway & Addons
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
@@ -650,7 +664,7 @@
     // Reset menu if version changed (new menu data)
     if (storedVersion !== MENU_VERSION) {
       menuItems = [...DEFAULT_MENU];
-      // Reset categories to the latest defaults (includes Rice and Ramadhan Sementara)
+      // Reset categories to the latest defaults (includes Rice and Roti John)
       appCategories = [
         { name: 'Main Course', emoji: '🥩', image: 'images/cat_main_course.png' },
         { name: 'Pasta', emoji: '🍝', image: 'images/cat_pasta.png' },
@@ -663,7 +677,7 @@
         { name: 'Non Coffee', emoji: '🧋', image: 'images/cat_non_coffee.png' },
         { name: 'Desserts', emoji: '🍰', image: 'images/cat_desserts.png' },
         { name: 'Add ons', emoji: '➕', image: 'images/cat_add_ons.png' },
-        { name: 'Ramadhan Sementara', emoji: '🌙', image: 'images/roti_john_wagyu_truffle.png' }
+        { name: 'Roti John', emoji: '🥖', image: 'images/roti_john_wagyu_truffle.png' }
       ];
       
       // Force reset ADDONS_DATA
@@ -799,24 +813,38 @@
       return `
         <div class="menu-card" data-id="${item.id}">
           <div class="menu-card-qty ${qty > 0 ? 'show' : ''}">${qty}</div>
-          ${item.image
-          ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy">`
-          : `<div class="menu-card-placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`
-        }
+          
+          <div class="menu-card-img-wrap">
+            ${item.image
+            ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy">`
+            : `<div class="menu-card-placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`
+            }
+          </div>
+          
           <div class="menu-card-info">
-            <div class="menu-card-name">${item.name}</div>
-            <div class="menu-card-bottom">
+            ${item.image ? `<div class="menu-card-info-bg" style="background-image: url('${item.image}');"></div>` : ''}
+            <div class="menu-card-info-blur-overlay"></div>
+            <div class="menu-card-text-group">
+              <div class="menu-card-name">${item.name}</div>
               <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
-              <button class="menu-card-add" data-id="${item.id}">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-              </button>
             </div>
+            <button class="menu-card-add" data-id="${item.id}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            </button>
           </div>
         </div>`;
     }).join('');
 
-    // Staggered card entrance animation
+    // Staggered card entrance animation and marquee setup for long names
     requestAnimationFrame(() => {
+      els.menuGrid.querySelectorAll('.menu-card-name').forEach((el) => {
+        if (el.scrollWidth > el.clientWidth) {
+          el.classList.add('is-marquee');
+          const text = el.textContent.trim();
+          el.innerHTML = `<span class="marquee-content">${text}</span><span class="marquee-content" aria-hidden="true">${text}</span>`;
+        }
+      });
+
       els.menuGrid.querySelectorAll('.menu-card').forEach((card, i) => {
         setTimeout(() => card.classList.add('visible'), i * 40);
       });
