@@ -6,15 +6,15 @@
   const DEFAULT_MENU = [
     // Wraps
     { id: 1, name: 'Beef Tortilla', price: 18.90, category: 'Wraps', image: 'images/beef_tortilla.png', isHero: false, heroText: 'HOT DEAL', description: 'Juicy grilled beef strips wrapped in a soft flour tortilla with fresh greens and savory sauce.' },
-    { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: null, description: 'Tender seasoned chicken breast wrap with crisp vegetables and a signature dressing.' },
-    { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: null, description: 'Extra crunchy spicy chicken zinger fillet wrapped with fresh lettuce and mayo.' },
+    { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: 'images/wrap_chicken_tortilla.png', description: 'Tender seasoned chicken breast wrap with crisp vegetables and a signature dressing.' },
+    { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: 'images/wrap_zinger_tortilla.png', description: 'Extra crunchy spicy chicken zinger fillet wrapped with fresh lettuce and mayo.' },
     // Burgers
     { id: 4, name: 'Burger Wagyu Truffle', price: 49.90, category: 'Burgers', image: 'images/burger_wagyu_truffle.png', isHero: true, heroText: 'BEST SELLER', description: 'Premium Wagyu beef patty infused with aromatic truffle oil and melted cheese.' },
-    { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: null, description: 'Perfectly grilled chicken thigh fillet served with fresh toppings on a toasted bun.' },
-    { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: null, description: 'A towering burger featuring a juicy beef patty topped with creamy mac and cheese.' },
-    { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: null, description: 'Beef, Bacon, and Barbecue sauce—the ultimate savory burger experience.' },
-    { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: null, description: 'Three layers of juicy patties and melted cheese for the biggest appetite.' },
-    { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: null, description: 'Our signature spicy fried chicken fillet with fresh lettuce on a toasted sesame bun.' },
+    { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: 'images/burger_grill_chicken.png', description: 'Perfectly grilled chicken thigh fillet served with fresh toppings on a toasted bun.' },
+    { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: 'images/burger_mac_daddy.png', description: 'A towering burger featuring a juicy beef patty topped with creamy mac and cheese.' },
+    { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: 'images/burger_triple_b.png', description: 'Beef, Bacon, and Barbecue sauce—the ultimate savory burger experience.' },
+    { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: 'images/burger_triple_stack.png', description: 'Three layers of juicy patties and melted cheese for the biggest appetite.' },
+    { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: 'images/burger_zinger.png', description: 'Our signature spicy fried chicken fillet with fresh lettuce on a toasted sesame bun.' },
     // Main Course
     { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: 'images/angus_ribeye_steak.png', isHero: false, heroText: 'PREMIUM', description: 'High-quality Angus ribeye grilled to perfection, served with black pepper sauce.' },
     { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/fried_chicken_chop.png', isHero: true, heroText: 'BEST SELLER', description: 'Crispy deep-fried breaded chicken chop served with coleslaw and fries.' },
@@ -29,27 +29,27 @@
     { id: 19, name: 'Amatricana', price: 19.90, category: 'Pasta', image: 'images/pasta_amatricana.png', description: 'Pasta in a spicy tomato-based sauce with savory beef bits and onions.' },
     { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: 'images/pasta_beef_bolognaise.png', description: 'Hearty pasta served with a traditional rich minced beef and tomato sauce.' },
     { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: 'images/pasta_carbonara.png', description: 'Creamy pasta sauce with beef bacon bits, parmesan, and a hint of black pepper.' },
-    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1546549032-9571cd6b27df?w=400', description: 'Silky pasta tossed in fragrant garlic butter and topped with melted cheese.' },
-    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400', isHero: true, heroText: 'POPULAR', description: 'Rich and creamy garlic butter pasta that melts in your mouth.' },
-    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=400', description: 'The ultimate comfort food—baked pasta in a thick, gooey cheese sauce.' },
-    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400', description: 'Fresh pasta tossed in a zesty tomato sauce with aromatic herbs.' },
-    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=400', description: 'A perfect blend of tangy tomato and smooth cream sauce.' },
+    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: 'images/pasta_garlic_cheese.png', description: 'Silky pasta tossed in fragrant garlic butter and topped with melted cheese.' },
+    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: 'images/pasta_garlic_cream.png', isHero: true, heroText: 'POPULAR', description: 'Rich and creamy garlic butter pasta that melts in your mouth.' },
+    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: 'images/pasta_mac_cheese.png', description: 'The ultimate comfort food—baked pasta in a thick, gooey cheese sauce.' },
+    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: 'images/pasta_marinara.png', description: 'Fresh pasta tossed in a zesty tomato sauce with aromatic herbs.' },
+    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: 'images/pasta_tomato_cream.png', description: 'A perfect blend of tangy tomato and smooth cream sauce.' },
     // Rice
-    { id: 27, name: 'Salted Egg Calamari Rice', price: 17.90, category: 'Rice', image: null, description: 'Crispy fried calamari rings served with fragrant white rice and rich salted egg sauce.' },
-    { id: 28, name: 'Salted Egg Chicken Rice', price: 14.90, category: 'Rice', image: null, description: 'Fried chicken pieces tossed in creamy salted egg yolk sauce, served with steamed white rice.' },
-    { id: 29, name: 'Salted Egg Prawn Rice', price: 21.90, category: 'Rice', image: null, description: 'Succulent prawns glazed in golden salted egg sauce, served with white rice.' },
-    { id: 30, name: 'Salted Egg Zinger Rice', price: 19.90, category: 'Rice', image: null, description: 'Spicy zinger fillet with salted egg sauce, served with a portion of white rice.' },
+    { id: 27, name: 'Salted Egg Calamari Rice', price: 17.90, category: 'Rice', image: 'images/rice_salted_egg_calamari.png', description: 'Crispy fried calamari rings served with fragrant white rice and rich salted egg sauce.' },
+    { id: 28, name: 'Salted Egg Chicken Rice', price: 14.90, category: 'Rice', image: 'images/rice_salted_egg_chicken.png', description: 'Fried chicken pieces tossed in creamy salted egg yolk sauce, served with steamed white rice.' },
+    { id: 29, name: 'Salted Egg Prawn Rice', price: 21.90, category: 'Rice', image: 'images/rice_salted_egg_prawn.png', description: 'Succulent prawns glazed in golden salted egg sauce, served with white rice.' },
+    { id: 30, name: 'Salted Egg Zinger Rice', price: 19.90, category: 'Rice', image: 'images/rice_salted_egg_zinger.png', description: 'Spicy zinger fillet with salted egg sauce, served with a portion of white rice.' },
     // Snacks
     { id: 31, name: 'Triple Cheasy Bacon Fries', price: 12.90, category: 'Snacks', image: 'images/french_fries.png', isHero: true, heroText: 'TOP CHOICE', description: 'Loaded golden fries topped with extra cheese sauce and crispy beef bacon bits.' },
-    { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: null, description: 'Crispy fries drizzled with a generous amount of creamy cheese sauce.' },
-    { id: 33, name: 'Chicken n Fries', price: 12.90, category: 'Snacks', image: null, description: 'A classic combination of crispy chicken pieces served with golden fries.' },
-    { id: 34, name: 'Onion Rings', price: 9.90, category: 'Snacks', image: null, description: 'Sweet onions battered and fried until golden and extra crunchy.' },
-    { id: 35, name: 'Plain Fries', price: 7.00, category: 'Snacks', image: null, description: 'Perfectly salted, crispy golden french fries.' },
-    { id: 36, name: 'Sober Cheese Snack', price: 5.00, category: 'Snacks', image: null, description: 'A light and cheesy snack perfect for sharing.' },
+    { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: 'images/snack_cheesy_fries.png', description: 'Crispy fries drizzled with a generous amount of creamy cheese sauce.' },
+    { id: 33, name: 'Chicken n Fries', price: 12.90, category: 'Snacks', image: 'images/snack_chicken_fries.png', description: 'A classic combination of crispy chicken pieces served with golden fries.' },
+    { id: 34, name: 'Onion Rings', price: 9.90, category: 'Snacks', image: 'images/snack_onion_rings.png', description: 'Sweet onions battered and fried until golden and extra crunchy.' },
+    { id: 35, name: 'Plain Fries', price: 7.00, category: 'Snacks', image: 'images/snack_plain_fries.png', description: 'Perfectly salted, crispy golden french fries.' },
+    { id: 36, name: 'Sober Cheese Snack', price: 5.00, category: 'Snacks', image: 'images/snack_sober_cheese.png', description: 'A light and cheesy snack perfect for sharing.' },
     // Coffee
-    { id: 37, name: 'Mocha', price: 12.00, category: 'Coffee', image: null, description: 'A rich blend of espresso, steamed milk, and decadent chocolate.' },
-    { id: 38, name: 'Latte', price: 10.90, category: 'Coffee', image: null, description: 'Smooth espresso combined with perfectly steamed silky milk.' },
-    { id: 39, name: 'Americano', price: 7.00, category: 'Coffee', image: null, description: 'A classic bold espresso shot diluted with hot water.' },
+    { id: 37, name: 'Mocha', price: 12.00, category: 'Coffee', image: 'images/coffee_mocha.png', description: 'A rich blend of espresso, steamed milk, and decadent chocolate.' },
+    { id: 38, name: 'Latte', price: 10.90, category: 'Coffee', image: 'images/coffee_latte.png', description: 'Smooth espresso combined with perfectly steamed silky milk.' },
+    { id: 39, name: 'Americano', price: 7.00, category: 'Coffee', image: 'images/coffee_americano.png', description: 'A classic bold espresso shot diluted with hot water.' },
     // Non Coffee
     { id: 40, name: 'Chocolate', price: 12.00, category: 'Non Coffee', image: null, description: 'Creamy and rich cocoa drink served hot or iced.' },
     { id: 41, name: 'Matcha', price: 11.00, category: 'Non Coffee', image: null, description: 'Authentic Japanese green tea latte with a smooth, earthy flavor.' },
@@ -57,11 +57,11 @@
     { id: 43, name: 'Ice Passionfruit Tea', price: 4.00, category: 'Non Coffee', image: null, description: 'Zesty and tropical iced tea with real passionfruit notes.' },
     { id: 44, name: 'Ice Lemon Tea', price: 4.00, category: 'Non Coffee', image: null, description: 'The classic thirst-quencher—iced tea with a fresh citrus kick.' },
     // Mocktails
-    { id: 45, name: 'Watermelon Blackcurrant', price: 6.90, category: 'Mocktails', image: null, description: 'A unique and refreshing mocktail blend of fruity watermelon and tart blackcurrant.' },
-    { id: 46, name: 'Virgin Mojitos', price: 6.90, category: 'Mocktails', image: null, description: 'Refreshing lime and mint mocktail served chilled with soda.' },
-    { id: 47, name: 'Tropical Sunrise', price: 6.90, category: 'Mocktails', image: null, description: 'A vibrant layered mocktail with citrus and exotic fruit flavors.' },
-    { id: 48, name: 'TripleBerries', price: 6.90, category: 'Mocktails', image: null, description: 'A sweet and tangy berry explosion featuring three types of berries.' },
-    { id: 49, name: 'Solero', price: 6.00, category: 'Mocktails', image: null, description: 'A nostalgic creamy lime mocktail inspired by the classic ice cream.' },
+    { id: 45, name: 'Watermelon Blackcurrant', price: 6.90, category: 'Mocktails', image: 'images/mocktail_watermelon_blackcurrant.png', description: 'A unique and refreshing mocktail blend of fruity watermelon and tart blackcurrant.' },
+    { id: 46, name: 'Virgin Mojitos', price: 6.90, category: 'Mocktails', image: 'images/mocktail_virgin_mojito.png', description: 'Refreshing lime and mint mocktail served chilled with soda.' },
+    { id: 47, name: 'Tropical Sunrise', price: 6.90, category: 'Mocktails', image: 'images/mocktail_tropical_sunrise.png', description: 'A vibrant layered mocktail with citrus and exotic fruit flavors.' },
+    { id: 48, name: 'TripleBerries', price: 6.90, category: 'Mocktails', image: 'images/mocktail_triple_berries.png', description: 'A sweet and tangy berry explosion featuring three types of berries.' },
+    { id: 49, name: 'Solero', price: 6.00, category: 'Mocktails', image: 'images/mocktail_solero.png', description: 'A nostalgic creamy lime mocktail inspired by the classic ice cream.' },
     // Desserts
     { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: null, description: 'Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone.' },
     { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: null, description: 'Delicious dessert with layers of banana, cream, and buttery toffee.' },
@@ -641,7 +641,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '13'; // Bumped for refined Takeaway & Addons
+  const MENU_VERSION = '19'; // Bumped for refined Takeaway & Addons
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');

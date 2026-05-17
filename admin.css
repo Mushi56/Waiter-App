@@ -1,5 +1,5 @@
 /* admin.css */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
 
 :root {
   --bg-primary: #0a0c10;
@@ -21,7 +21,7 @@
   --sidebar-width: 250px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
 body { background: var(--bg-primary); color: var(--text-primary); display: flex; height: 100vh; overflow: hidden; }
 
 /* Sidebar */
@@ -46,29 +46,29 @@ body { background: var(--bg-primary); color: var(--text-primary); display: flex;
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* Shared Components */
-.section-title { font-size: 1.8rem; margin-bottom: 24px; font-weight: 700; }
+.section-title { font-size: 1.8rem; margin-bottom: 24px; font-weight: var(--fw-bold); }
 .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 32px; }
 .stat-card { background: var(--bg-card); padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--border); display: flex; align-items: center; gap: 20px; }
 .stat-icon { width: 48px; height: 48px; border-radius: var(--radius-md); background: var(--accent-glow); color: var(--accent); display: flex; align-items: center; justify-content: center; }
-.stat-info h4 { color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; margin-bottom: 4px; }
-.stat-info .val { font-size: 1.8rem; font-weight: 700; }
+.stat-info h4 { color: var(--text-secondary); font-size: 0.9375rem; font-weight: var(--fw-medium); margin-bottom: 4px; }
+.stat-info .val { font-size: 1.8rem; font-weight: var(--fw-bold); }
 
 /* Tables */
 .admin-table-container { background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden; }
 .admin-table { width: 100%; border-collapse: collapse; }
 .admin-table th, .admin-table td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--border); }
-.admin-table th { color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; background: var(--bg-sidebar); }
+.admin-table th { color: var(--text-secondary); font-weight: var(--fw-semibold); font-size: 0.9375rem; text-transform: uppercase; background: var(--bg-sidebar); }
 .admin-table tbody tr:hover { background: var(--bg-hover); }
 
 /* Badges */
-.badge { padding: 4px 10px; border-radius: var(--radius-pill); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+.badge { padding: 4px 10px; border-radius: var(--radius-pill); font-size: 0.75rem; font-weight: var(--fw-bold); text-transform: uppercase; }
 .badge-pending { background: rgba(255, 184, 0, 0.1); color: var(--warning); }
 .badge-preparing { background: rgba(52, 152, 219, 0.1); color: #3498db; }
 .badge-ready { background: rgba(46, 204, 113, 0.1); color: var(--success); }
 .badge-completed { background: rgba(158, 158, 158, 0.1); color: #9e9e9e; }
 
 /* Buttons & Inputs */
-.btn-primary { background: var(--accent); color: #000; padding: 10px 20px; border-radius: var(--radius-sm); border: none; font-weight: 600; cursor: pointer; transition: 0.3s; }
+.btn-primary { background: var(--accent); color: #000; padding: 10px 20px; border-radius: var(--radius-sm); border: none; font-weight: var(--fw-semibold); cursor: pointer; transition: 0.3s; }
 .btn-primary:hover { filter: brightness(1.1); }
 .input-control { background: var(--bg-sidebar); border: 1px solid var(--border); color: var(--text-primary); padding: 10px 16px; border-radius: var(--radius-sm); width: 100%; outline: none; }
 .input-control:focus { border-color: var(--accent); }
@@ -81,3 +81,85 @@ body { background: var(--bg-primary); color: var(--text-primary); display: flex;
 /* utility */
 .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;}
 .flex-gap { display: flex; gap: 12px; }
+
+
+/* ==========================================================================
+   MODERN LUXURY TYPOGRAPHY REFINEMENTS
+   ========================================================================== */
+
+/* Headings Base */
+h1, h2, h3, h4, h5, h6,
+.page-title, .section-title, .header-brand h1 {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: var(--ls-tight);
+  color: var(--text-primary);
+}
+
+/* Page Titles & Hero Titles - Cinematic & Bold */
+h1, .page-title {
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5em;
+}
+
+/* Section Headings - Elegant & Structured */
+h2, .section-header h2, .section-title {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75em;
+}
+
+/* Card Titles / Subheadings */
+h3, h4, .hero-card-overlay h3 {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* Body Text - Highly Readable */
+p, .about-content p, .policy-section p {
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
+  color: var(--text-secondary);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.01em;
+}
+
+/* Labels, Navigation, and Buttons */
+button, .nav-btn, .header-btn, .cat-tab, label, .drawer-item, .hero-cta {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.02em;
+}
+
+/* Prices - Premium Display */
+.price, .cart-total, .hero-card-price, .val {
+  font-weight: var(--fw-extrabold);
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+/* Badges & Tags - Micro Typography */
+.badge, .drawer-badge, .hero-badge, .header-subtitle, .drawer-section-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em; /* Wide tracking for uppercase */
+  font-weight: var(--fw-bold);
+}
+
+/* Structural Spacing & Rhythm */
+.section-header {
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.premium-card {
+  padding: 2rem;
+}
