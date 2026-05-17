@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="styles.css">
   <script>
     (function () {
-      const savedTheme = localStorage.getItem('wh_theme') || 'dark';
+      const savedTheme = localStorage.getItem('wh_theme') || 'auto';
       let themeToApply = savedTheme;
       if (savedTheme === 'auto') {
         themeToApply = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';

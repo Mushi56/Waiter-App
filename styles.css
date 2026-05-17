@@ -11,10 +11,10 @@
 
 :root {
   /* SEMANTIC COLOR SYSTEM */
-  --color-primary: #FFEB3B;
-  --color-primary-hover: #FDD835;
-  --color-primary-active: #FBC02D;
-  --color-primary-gradient: linear-gradient(135deg, #FFEB3B, #FBC02D);
+  --color-primary: #E7A01E; /* Premium gold brand color shared in both dark and light themes */
+  --color-primary-hover: #C58514;
+  --color-primary-active: #A66E0D;
+  --color-primary-gradient: linear-gradient(135deg, #E7A01E, #A66E0D);
 
   --color-bg-light: #FFFFFF;
   --color-surface-light: #F9FAFB;
@@ -46,7 +46,7 @@
   --accent: var(--color-primary); /* For text/icons */
   --accent-bg: var(--color-primary-gradient); /* For button backgrounds */
   --accent-hover: var(--color-primary-hover);
-  --accent-glow: rgba(255, 235, 59, 0.2);
+  --accent-glow: rgba(231, 160, 30, 0.2);
   
   --text-primary: var(--color-text-primary-dark);
   --text-secondary: var(--color-text-secondary-dark);
@@ -1515,7 +1515,7 @@ textarea:focus {
 }
 
 .menu-card-name {
-  font-size: 14px;
+  font-size: 12px; /* Perfect compact font size for premium grid alignment */
   font-weight: 800;
   line-height: 1.1;
   color: #FFFFFF;

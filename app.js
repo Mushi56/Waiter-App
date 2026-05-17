@@ -567,7 +567,7 @@
   function initTheme() {
     const themeToggleBtn = document.getElementById('themeToggleBtn');
     const themes = ['dark', 'light', 'auto'];
-    let currentTheme = localStorage.getItem('wh_theme') || 'dark';
+    let currentTheme = localStorage.getItem('wh_theme') || 'auto';
     
     applyTheme(currentTheme);
 
