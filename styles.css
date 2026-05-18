@@ -1500,8 +1500,7 @@ textarea:focus {
 }
 
 /* Ensure contents sit on top of the blur overlay */
-.menu-card-text-group,
-.menu-card-add {
+.menu-card-text-group {
   position: relative;
   z-index: 3;
 }
@@ -1575,38 +1574,50 @@ textarea:focus {
 }
 
 .menu-card-add {
-  background: rgba(231, 160, 30, 0.08); /* Subtle background for better definition */
-  color: var(--accent);
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 5; /* Sit on top of the image and other content */
+  width: 32px;
+  height: 32px;
+  border-radius: 50% !important; /* Perfect circular floating button */
+  background: rgba(17, 20, 22, 0.65); /* Dark semi-transparent glass backplate */
+  backdrop-filter: blur(10px); /* Frosted glass effect on top of the image */
+  -webkit-backdrop-filter: blur(10px);
   border: 1.5px solid var(--accent);
-  border-radius: 12px;
-  padding: 6px;
-  font-size: 0.75rem;
-  font-weight: var(--fw-extrabold);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: var(--accent);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  transition: all var(--transition);
-  letter-spacing: 0.5px;
+  padding: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35); /* Premium floating shadow */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-theme="light"] .menu-card-add {
-  color: #B47B16;
-  border-color: #B47B16;
-  background: rgba(180, 123, 22, 0.08);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(231, 160, 30, 0.85); /* Solid gold medallion for high legibility */
+  box-shadow: 0 4px 10px rgba(180, 123, 22, 0.3);
 }
 
 .menu-card-add:hover {
-  background: var(--accent-hover);
-  transform: translateY(-2px);
+  background: var(--accent);
+  color: #111416; /* Pure contrast black */
+  transform: translateY(-2px) scale(1.05);
   box-shadow: 0 6px 16px var(--accent-glow);
 }
 
+[data-theme="light"] .menu-card-add:hover {
+  background: #C58514;
+  color: #FFFFFF;
+  box-shadow: 0 6px 16px rgba(180, 123, 22, 0.4);
+}
+
 .menu-card-add:active {
-  transform: translateY(0) scale(0.95);
-  box-shadow: 0 2px 5px var(--accent-glow);
+  transform: translateY(0) scale(0.92);
+  box-shadow: 0 2px 6px var(--accent-glow);
 }
 
 .menu-card-qty {

@@ -819,6 +819,9 @@
             ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy">`
             : `<div class="menu-card-placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`
             }
+            <button class="menu-card-add" data-id="${item.id}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            </button>
           </div>
           
           <div class="menu-card-info">
@@ -828,9 +831,6 @@
               <div class="menu-card-name">${item.name}</div>
               <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
             </div>
-            <button class="menu-card-add" data-id="${item.id}">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            </button>
           </div>
         </div>`;
     }).join('');
