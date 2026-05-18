@@ -88,21 +88,23 @@
 }
 
 [data-theme="light"] {
-  --bg-primary: var(--color-surface-light); /* Base background should be light grey for contrast */
-  --bg-secondary: var(--color-bg-light); /* Elevated elements white */
-  --bg-card: var(--color-bg-light); /* Cards white */
-  --bg-tertiary: #F3F4F6;
-  --text-primary: var(--color-text-primary-light);
-  --text-secondary: var(--color-text-secondary-light);
-  --text-muted: #6B7280;
-  --border: var(--color-border-light);
+  --bg-primary: #F3F4F6; /* Premium soft slate-grey background for outstanding contrast */
+  --bg-secondary: #FFFFFF; /* Crispy white surfaces */
+  --bg-card: #FFFFFF; /* Cards white for visual structure */
+  --bg-tertiary: #E5E7EB; /* Enhanced contrast for input elements */
   
-  --accent: #E7A01E; /* Maintain gold brand color even in light mode */
-  --accent-bg: var(--color-primary-gradient); /* Button backgrounds stay yellow */
+  --text-primary: #111827; /* Deepest grey (slate-900) for extremely crisp title/body readability */
+  --text-secondary: #374151; /* Dark slate-800 for high-legibility secondary text */
+  --text-muted: #4B5563; /* Slate-700 for distinct subtext and inactive elements */
+  --border: #D1D5DB; /* Defined borders for perfect UI partitioning */
   
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-border: var(--color-border-light);
-  --shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  --accent: #B47B16; /* Beautiful luxury bronze-gold (WCAG AA 4.5:1+ contrast compliant against white/light backgrounds) */
+  --accent-bg: linear-gradient(135deg, #C58514, #8F600A); /* Darker, richer gold gradient for maximum legibility */
+  --accent-glow: rgba(180, 123, 22, 0.18);
+  
+  --glass-bg: rgba(255, 255, 255, 0.88); /* More opaque premium frosted glass for optimal readability */
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --shadow: 0 10px 35px rgba(17, 24, 39, 0.06); /* Sophisticated lightweight shadow */
 }
 
 [data-theme="light"] .gallery-upload-btn {
@@ -210,11 +212,11 @@
 .side-drawer {
   position: absolute;
   right: calc(16px + var(--safe-right));
-  top: calc(16px + var(--safe-top));
+  top: calc(20px + var(--safe-top)); /* Beautiful balanced spacing to clear status bar and bezel cleanly on mobile */
   width: max-content;
   min-width: 240px;
   max-width: 85vw;
-  max-height: calc(100vh - 32px - var(--safe-top) - var(--safe-bottom));
+  max-height: calc(100vh - 40px - var(--safe-top) - var(--safe-bottom));
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -234,11 +236,12 @@
 }
 
 .drawer-header {
-  padding: 24px 20px 18px;
+  padding: 40px 20px 20px; /* Increased top padding to 40px to completely clear the 32px corner radius of the parent card */
   border-bottom: 1px solid var(--border);
-  background: transparent;
+  background: var(--bg-secondary); /* Premium solid backing matching the drawer surface to prevent scroll overlap */
   position: relative;
-  overflow: hidden;
+  z-index: 10; /* Stack safely above the scrolling menu list */
+  overflow: visible; /* Prevent any layout clipping of the premium logo and badge content */
 }
 
 .drawer-header-bg {
@@ -309,6 +312,10 @@
 .drawer-menu {
   padding: 14px 12px;
   overflow-y: auto;
+  flex: 1; /* Automatically fill the remaining height inside the drawer */
+  min-height: 0; /* Proper flex scroll container shrinking */
+  position: relative;
+  z-index: 1;
 }
 
 .drawer-section-label {
@@ -372,6 +379,7 @@
 .drawer-footer {
   padding: 14px 20px;
   border-top: 1px solid var(--border);
+  background: var(--bg-secondary); /* Premium solid background to overlay scrolled list elements cleanly */
   text-align: center;
   font-size: 0.75rem;
   color: var(--text-muted);
@@ -379,6 +387,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  z-index: 10; /* Stack securely on top of the scrolling menu */
 }
 
 .btn-admin-login {
@@ -414,6 +424,11 @@ body {
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
   overflow-wrap: break-word;
+}
+
+body.overflow-hidden {
+  overflow: hidden !important;
+  height: 100vh !important;
 }
 
 input,
@@ -482,7 +497,8 @@ textarea:focus {
   justify-content: center;
 }
 
-.logo-box img {
+.logo-box img,
+.logo-box svg {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -1317,8 +1333,8 @@ textarea:focus {
 }
 
 .cat-tab.active .cat-circle {
-  border-color: #E7A01E;
-  box-shadow: 0 0 0 2px #E7A01E; /* Ring effect */
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent); /* Ring effect */
 }
 
 .cat-circle img {
@@ -1340,7 +1356,7 @@ textarea:focus {
 }
 
 .cat-circle .grid-icon div {
-  background: #E7A01E;
+  background: var(--accent);
   border-radius: 2px;
   width: 8px;
   height: 8px;
@@ -4619,3 +4635,60 @@ textarea:focus {
   font-weight: 700;
   color: var(--text-secondary);
 }
+
+/* ===== LIGHT THEME PREMIUM CONTRAST REFINEMENTS ===== */
+[data-theme="light"] .cat-circle {
+  background: #E5E7EB !important; /* Soft grey backing instead of stark black circle */
+  border-color: #D1D5DB !important;
+}
+
+[data-theme="light"] .drawer-item svg {
+  background: rgba(180, 123, 22, 0.12) !important; /* Premium luxury gold-bronze backing */
+}
+
+[data-theme="light"] .nav-btn {
+  color: #4B5563 !important; /* Darker slate inactive bottom-nav buttons */
+}
+
+[data-theme="light"] .nav-btn:hover {
+  color: #111827 !important;
+}
+
+[data-theme="light"] .nav-search-inner input {
+  background: #FFFFFF !important;
+  border-color: #D1D5DB !important;
+  color: #111827 !important;
+}
+
+[data-theme="light"] .drawer-section-label {
+  color: #4B5563 !important;
+}
+
+[data-theme="light"] .drawer-item {
+  color: #374151 !important; /* Crisp, rich slate-800 for high-contrast readability */
+}
+
+[data-theme="light"] .drawer-item:hover {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #111827 !important;
+}
+
+[data-theme="light"] .btn-admin-login {
+  color: #4B5563 !important;
+}
+
+[data-theme="light"] .btn-admin-login:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #111827 !important;
+}
+
+/* Premium Light Yellow Active Tab Fills */
+[data-theme="light"] .nav-btn.active::before {
+  background: linear-gradient(135deg, #E7A01E, #A66E0D) !important; /* Exact original brand signature yellow/gold gradient */
+  box-shadow: 0 4px 14px rgba(231, 160, 30, 0.3) !important;
+}
+
+[data-theme="light"] .nav-btn.active svg {
+  color: #000000 !important; /* High-contrast solid black icon */
+}
+

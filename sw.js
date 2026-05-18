@@ -1,5 +1,5 @@
 // Waiter Helper - Service Worker
-const CACHE_NAME = 'waiter-helper-v115';
+const CACHE_NAME = 'waiter-helper-v116';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -40,15 +40,18 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - Network-First, fallback to cache
 self.addEventListener('fetch', (event) => {
+  // Only handle GET requests to prevent issues with POST/PUT/etc.
+  if (event.request.method !== 'GET') return;
+
+  // Ignore cross-origin and non-http/https requests (like chrome-extension)
+  if (!event.request.url.startsWith(self.location.origin)) return;
+
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).then((response) => {
-        // Cache new successful requests
+    fetch(event.request)
+      .then((response) => {
+        // Cache successful local GET requests dynamically
         if (response.status === 200) {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -56,12 +59,18 @@ self.addEventListener('fetch', (event) => {
           });
         }
         return response;
-      }).catch(() => {
-        // Offline fallback
-        if (event.request.destination === 'document') {
-          return caches.match('./index.html');
-        }
-      });
-    })
+      })
+      .catch(() => {
+        // Network failed (offline), check cache
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          // Document offline fallback
+          if (event.request.destination === 'document') {
+            return caches.match('./index.html');
+          }
+        });
+      })
   );
 });

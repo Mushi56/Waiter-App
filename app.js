@@ -217,7 +217,7 @@
     const nameInput = els.newCategoryName;
     const emojiInput = els.newCategoryEmoji;
     if (!nameInput || !emojiInput) return;
-    
+
     const name = nameInput.value.trim();
     const emoji = emojiInput.value.trim() || '🍴';
     if (!name) return showToast('Please enter category name');
@@ -283,9 +283,9 @@
     const priceInput = document.getElementById(`newOptPrice_${gIdx}`);
     const name = nameInput.value.trim();
     const price = parseFloat(priceInput.value) || 0;
-    
+
     if (!name) return showToast('Enter option name');
-    
+
     ADDONS_DATA[currentAddonCategory][gIdx].options.push({ name, price });
     saveCategories();
     renderCategoryAddons();
@@ -305,7 +305,7 @@
 
     if (!ADDONS_DATA[currentAddonCategory]) ADDONS_DATA[currentAddonCategory] = [];
     ADDONS_DATA[currentAddonCategory].push({ name, type, options: [] });
-    
+
     els.catGroupName.value = '';
     saveCategories();
     renderCategoryAddons();
@@ -418,7 +418,7 @@
     manageCategoriesModal: $('#manageCategoriesModal'),
     categoryAddonsModal: $('#categoryAddonsModal'),
     closeCategoriesModal: $('#closeCategoriesModal'),
-    
+
     // Form Elements (Admin)
     newItemName: $('#newItemName'),
     newItemPrice: $('#newItemPrice'),
@@ -480,28 +480,34 @@
   let ADDONS_DATA = JSON.parse(localStorage.getItem('waiter_addons_data')) || {
     'Main Course': [
       { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] },
-      { name: 'Add-ons', type: 'checkbox', options: [
-        { name: 'Mac and Cheese', price: 4 }, { name: 'Extra Grilled/Fried Chicken', price: 12 },
-        { name: '2 pcs Beef Bacon', price: 4 }, { name: 'Mashed Potato', price: 3 },
-        { name: 'Extra Brown Sauce', price: 3 }, { name: 'Plain Rice', price: 2 }
-      ]}
+      {
+        name: 'Add-ons', type: 'checkbox', options: [
+          { name: 'Mac and Cheese', price: 4 }, { name: 'Extra Grilled/Fried Chicken', price: 12 },
+          { name: '2 pcs Beef Bacon', price: 4 }, { name: 'Mashed Potato', price: 3 },
+          { name: 'Extra Brown Sauce', price: 3 }, { name: 'Plain Rice', price: 2 }
+        ]
+      }
     ],
     'Pasta': [
       { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] },
-      { name: 'Add-ons', type: 'checkbox', options: [
-        { name: 'Grilled Chicken', price: 3 }, { name: 'Seafood', price: 5 },
-        { name: 'Prawn Only', price: 5 }, { name: 'Squid Only', price: 5 },
-        { name: 'Zinger', price: 3 }, { name: 'Grilled Lamb', price: 13 },
-        { name: 'Beef Patty', price: 5 }, { name: 'Australian Wagyu', price: 20 }
-      ]}
+      {
+        name: 'Add-ons', type: 'checkbox', options: [
+          { name: 'Grilled Chicken', price: 3 }, { name: 'Seafood', price: 5 },
+          { name: 'Prawn Only', price: 5 }, { name: 'Squid Only', price: 5 },
+          { name: 'Zinger', price: 3 }, { name: 'Grilled Lamb', price: 13 },
+          { name: 'Beef Patty', price: 5 }, { name: 'Australian Wagyu', price: 20 }
+        ]
+      }
     ],
     'Burgers': [
       { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] },
-      { name: 'Add-ons', type: 'checkbox', options: [
-        { name: 'Mac and Cheese', price: 4 }, { name: '2 pcs Beef Bacon', price: 3 },
-        { name: '3 pcs Onion Ring', price: 2 }, { name: 'Cheddar Cheese', price: 1 },
-        { name: 'Mozarella Cheese', price: 4 }, { name: 'Truffle Sauce', price: 5 }
-      ]}
+      {
+        name: 'Add-ons', type: 'checkbox', options: [
+          { name: 'Mac and Cheese', price: 4 }, { name: '2 pcs Beef Bacon', price: 3 },
+          { name: '3 pcs Onion Ring', price: 2 }, { name: 'Cheddar Cheese', price: 1 },
+          { name: 'Mozarella Cheese', price: 4 }, { name: 'Truffle Sauce', price: 5 }
+        ]
+      }
     ],
     'Wraps': [
       { name: 'Takeaway', type: 'checkbox', options: [{ name: 'for packaging', price: 0.50 }] }
@@ -530,6 +536,52 @@
     ]
   };
 
+  // --- Scroll Lock Observer ---
+  function initScrollLockObserver() {
+    const overlaySelectors = [
+      '#drawerOverlay',
+      '#orderModalOverlay',
+      '#itemDetailOverlay',
+      '#addonModal',
+      '#categoryAddonsModal',
+      '#tableSelectModal',
+      '#addItemModal',
+      '#editItemModal',
+      '#manageCategoriesModal',
+      '#adminLoginModal',
+      '#orderDetailModal'
+    ];
+
+    const updateScrollLock = () => {
+      const isAnyOverlayVisible = overlaySelectors.some(selector => {
+        const el = document.querySelector(selector);
+        return el && !el.classList.contains('hidden');
+      });
+      if (isAnyOverlayVisible) {
+        document.body.classList.add('overflow-hidden');
+      } else {
+        document.body.classList.remove('overflow-hidden');
+      }
+    };
+
+    updateScrollLock();
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          updateScrollLock();
+        }
+      });
+    });
+
+    overlaySelectors.forEach(selector => {
+      const el = document.querySelector(selector);
+      if (el) {
+        observer.observe(el, { attributes: true, attributeFilter: ['class'] });
+      }
+    });
+  }
+
   // --- Init ---
   function init() {
     loadData();
@@ -542,6 +594,7 @@
     renderTablePresets();
     bindEvents();
     registerSW();
+    initScrollLockObserver(); // Start background scroll lock listener
 
     // Handle initial hash or back button
     window.addEventListener('hashchange', () => {
@@ -559,7 +612,7 @@
         navigateTo(hash, false);
       }
     }
-    
+
     initIosInstallPrompt();
     initTheme();
   }
@@ -568,9 +621,9 @@
     let likedItems = JSON.parse(localStorage.getItem('wh_liked_items') || '[]');
     const index = likedItems.indexOf(itemId);
     const likeNumEl = btn.closest('.menu-card').querySelector(`.like-number[data-id="${itemId}"]`);
-    
+
     let baseLikes = 20 + (itemId % 7) * 12;
-    
+
     if (index === -1) {
       likedItems.push(itemId);
       btn.classList.add('liked');
@@ -578,7 +631,7 @@
       if (svg) svg.setAttribute('fill', 'currentColor');
       btn.style.transform = 'scale(1.28)';
       setTimeout(() => btn.style.transform = '', 200);
-      
+
       // Increment the count in the DOM with a subtle bounce and red color flash!
       if (likeNumEl) {
         likeNumEl.textContent = baseLikes + 1;
@@ -596,7 +649,7 @@
       if (svg) svg.setAttribute('fill', 'none');
       btn.style.transform = 'scale(0.85)';
       setTimeout(() => btn.style.transform = '', 150);
-      
+
       // Decrement the count in the DOM
       if (likeNumEl) {
         likeNumEl.textContent = baseLikes;
@@ -613,7 +666,7 @@
     const themeToggleBtn = document.getElementById('themeToggleBtn');
     const themes = ['dark', 'light', 'auto'];
     let currentTheme = localStorage.getItem('wh_theme') || 'auto';
-    
+
     applyTheme(currentTheme);
 
     if (themeToggleBtn) {
@@ -636,7 +689,7 @@
     const html = document.documentElement;
     const themeStatusText = document.getElementById('themeStatusText');
     const themeIcon = document.getElementById('themeIcon');
-    
+
     const icons = {
       dark: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`,
       light: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
@@ -660,7 +713,7 @@
   function updateThemeColorMeta(theme) {
     const meta = document.querySelector('meta[name="theme-color"]');
     if (!meta) return;
-    
+
     if (theme === 'dark') {
       meta.setAttribute('content', '#0A0C10');
     } else {
@@ -724,10 +777,10 @@
         { name: 'Add ons', emoji: '➕', image: 'images/cat_add_ons.png' },
         { name: 'Roti John', emoji: '🥖', image: 'images/roti_john_wagyu_truffle.png' }
       ];
-      
+
       // Force reset ADDONS_DATA
-      localStorage.removeItem('waiter_addons_data'); 
-      
+      localStorage.removeItem('waiter_addons_data');
+
       saveMenu();
       saveCategories();
       localStorage.setItem('wh_menu_version', MENU_VERSION);
@@ -866,9 +919,9 @@
           
           <div class="menu-card-img-wrap">
             ${item.image
-            ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy">`
-            : `<div class="menu-card-placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`
-            }
+          ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy">`
+          : `<div class="menu-card-placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`
+        }
             <button class="menu-card-like ${isLiked ? 'liked' : ''}" data-id="${item.id}" aria-label="Like ${item.name}">
               <svg class="heart-icon" width="14" height="14" viewBox="0 0 24 24" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
@@ -955,7 +1008,7 @@
       if (!card) return;
       const cardWidth = card.offsetWidth;
       const activeIdx = Math.round(scrollPos / cardWidth);
-      
+
       const dots = els.heroDots.querySelectorAll('.hero-dot');
       dots.forEach((dot, idx) => {
         dot.classList.toggle('active', idx === activeIdx);
@@ -970,12 +1023,12 @@
       if (!card) return;
       const width = card.offsetWidth;
       let nextScroll = els.heroSlider.scrollLeft + width;
-      
+
       // If at end, loop back
       if (nextScroll >= els.heroSlider.scrollWidth - els.heroSlider.offsetWidth) {
         nextScroll = 0;
       }
-      
+
       els.heroSlider.scrollTo({ left: nextScroll, behavior: 'smooth' });
     }, 4000);
   }
@@ -1339,7 +1392,7 @@
     // Load order into active state
     tableNumber = order.table;
     if (els.activeTableNum) els.activeTableNum.textContent = tableNumber;
-    
+
     // Also update the order modal badge if it exists
     const orderModalTableText = document.getElementById('orderModalTableText');
     if (orderModalTableText) orderModalTableText.textContent = `Table ${tableNumber}`;
@@ -2161,6 +2214,7 @@
       els.manageCategoriesBtn.onclick = () => {
         renderManageCategories();
         els.manageCategoriesModal.classList.remove('hidden');
+        closeDrawer();
       };
     }
     if (els.closeCategoriesModal) {
@@ -2184,7 +2238,7 @@
       els.addNewAddonBtn.onclick = () => {
         const name = els.newAddonName.value.trim();
         const price = parseFloat(els.newAddonPrice.value) || 0;
-        if(!name) return showToast('Enter addon name');
+        if (!name) return showToast('Enter addon name');
         // Logic to add to pending modifiers for new item
         // This would need a separate list for NEW item pending modifiers
       };
@@ -2329,7 +2383,7 @@
     $('#closeEditItemModal').addEventListener('click', () => els.editItemModal.classList.add('hidden'));
     $('#cancelEditItem').addEventListener('click', () => els.editItemModal.classList.add('hidden'));
     $('#confirmEditItem').addEventListener('click', confirmEditItem);
-    
+
     // Hero Toggles
     if (els.newItemIsHero) {
       els.newItemIsHero.onchange = (e) => {
@@ -2356,7 +2410,7 @@
     };
     if (els.closeAddonModal) els.closeAddonModal.onclick = closeAddon;
     if (els.confirmAddonBtn) els.confirmAddonBtn.onclick = confirmAddons;
-    
+
     if (els.addonModal) {
       els.addonModal.addEventListener('click', (e) => {
         if (e.target === els.addonModal) closeAddon();

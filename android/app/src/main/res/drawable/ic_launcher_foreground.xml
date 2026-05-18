@@ -3,19 +3,19 @@
     android:height="108dp"
     android:viewportWidth="512"
     android:viewportHeight="512">
-    <!-- Path 1: Cloche Gold Base 'M' Path -->
+    <!-- Path 1: Cloche Gold Base 'M' Path (scaled down & centered for optimal safe area rendering) -->
     <path
         android:strokeColor="#E7A01E"
-        android:strokeWidth="40"
+        android:strokeWidth="24"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
-        android:pathData="M120,380V180L256,310L392,180V380" />
+        android:pathData="M174.4,353.5V233.5L256,311.5L337.6,233.5V353.5" />
     <!-- Path 2: Cloche Dome Cover -->
     <path
         android:fillColor="#E7A01E"
-        android:pathData="M100,140C100,110 120,90 150,90H362C392,90 412,110 412,140V150H100V140Z" />
+        android:pathData="M162.4,209.5C162.4,191.5 174.4,179.5 192.4,179.5H319.6C337.6,179.5 349.6,191.5 349.6,209.5V215.5H162.4V209.5Z" />
     <!-- Circle 1: Cloche top knob -->
     <path
         android:fillColor="#E7A01E"
-        android:pathData="M256,70m-15,0a15,15 0,1 1,30 0a15,15 0,1 1,-30 0" />
+        android:pathData="M256,167.5m-9,0a9,9 0,1 1,18 0a9,9 0,1 1,-18 0" />
 </vector>
