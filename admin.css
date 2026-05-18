@@ -163,3 +163,62 @@ button, .nav-btn, .header-btn, .cat-tab, label, .drawer-item, .hero-cta {
 .premium-card {
   padding: 2rem;
 }
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS (SMART MENU PRO)
+   ========================================================================== */
+.hamburger-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 4px;
+}
+
+@media (max-width: 768px) {
+  .hamburger-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .header-date {
+    display: none;
+  }
+  
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  }
+  
+  .admin-sidebar.open {
+    left: 0;
+  }
+  
+  .admin-header {
+    padding: 0 16px;
+    height: 60px;
+  }
+  
+  .admin-content {
+    padding: 16px;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin-table-container {
+    overflow-x: auto;
+  }
+  
+  .stat-card {
+    padding: 16px;
+  }
+}

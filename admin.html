@@ -34,7 +34,12 @@
 
   <main class="admin-main">
     <header class="admin-header">
-      <div style="color:var(--text-secondary)">Tuesday, 28 April 2026</div>
+      <div style="display:flex; align-items:center; gap: 12px;">
+        <button id="adminHamburger" class="hamburger-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div style="color:var(--text-secondary)" class="header-date">Tuesday, 28 April 2026</div>
+      </div>
       <div style="display:flex; gap: 16px; align-items:center;">
         <button style="background:transparent; border:none; color:var(--text-primary); cursor:pointer;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></button>
         <div style="width:36px; height:36px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#000; font-weight:bold;">A</div>
@@ -60,16 +65,36 @@
           </div>
         </div>
         <div class="dashboard-grid">
-          <div class="chart-container">
+          <div class="chart-container" style="display:flex; flex-direction:column;">
             <h3 style="margin-bottom: 16px;">Revenue Trend</h3>
-            <canvas id="revenueChart"></canvas>
+            <div style="position: relative; height: 260px; width: 100%; flex: 1;">
+              <canvas id="revenueChart"></canvas>
+            </div>
           </div>
           <div class="list-container">
-            <h3 style="margin-bottom: 16px;">Low Stock Alerts</h3>
-            <div style="display:flex; flex-direction:column; gap:12px;">
-              <div style="display:flex; justify-content:space-between; padding-bottom:8px; border-bottom:1px solid var(--border);"><span>Wagyu Beef</span> <span style="color:var(--danger)">5 kg left</span></div>
-              <div style="display:flex; justify-content:space-between; padding-bottom:8px; border-bottom:1px solid var(--border);"><span>Truffle Oil</span> <span style="color:var(--warning)">2 btls left</span></div>
-              <div style="display:flex; justify-content:space-between; padding-bottom:8px; border-bottom:1px solid var(--border);"><span>Coffee Beans</span> <span style="color:var(--danger)">1.5 kg left</span></div>
+            <h3 style="margin-bottom: 20px;">Low Stock Alerts</h3>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:12px; border-radius:var(--radius-sm); background:rgba(255, 77, 77, 0.05); border-left:3px solid var(--danger);">
+                <div>
+                  <div style="font-weight:600; margin-bottom:4px;">Wagyu Beef</div>
+                  <div style="font-size:0.8rem; color:var(--text-secondary);">Meat Category</div>
+                </div>
+                <div style="color:var(--danger); font-weight:700;">5 kg</div>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:12px; border-radius:var(--radius-sm); background:rgba(255, 184, 0, 0.05); border-left:3px solid var(--warning);">
+                <div>
+                  <div style="font-weight:600; margin-bottom:4px;">Truffle Oil</div>
+                  <div style="font-size:0.8rem; color:var(--text-secondary);">Pantry</div>
+                </div>
+                <div style="color:var(--warning); font-weight:700;">2 btls</div>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:12px; border-radius:var(--radius-sm); background:rgba(255, 77, 77, 0.05); border-left:3px solid var(--danger);">
+                <div>
+                  <div style="font-weight:600; margin-bottom:4px;">Coffee Beans</div>
+                  <div style="font-size:0.8rem; color:var(--text-secondary);">Beverages</div>
+                </div>
+                <div style="color:var(--danger); font-weight:700;">1.5 kg</div>
+              </div>
             </div>
           </div>
         </div>
@@ -189,11 +214,45 @@
 
       <!-- 9. Reports -->
       <section id="reports" class="page-section">
-        <h1 class="section-title">Analytics & Reports</h1>
+        <div class="header-actions">
+          <h1 class="section-title" style="margin:0;">Analytics & Reports</h1>
+          <button class="btn-primary" style="display:flex; align-items:center; gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Export</button>
+        </div>
+        
+        <div class="grid-cards" style="margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(46, 204, 113, 0.1); color: var(--success);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+            <div class="stat-info"><h4>Avg. Order Value</h4><div class="val">RM 42.50</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(52, 152, 219, 0.1); color: #3498db;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+            <div class="stat-info"><h4>Busiest Hour</h4><div class="val">7:00 PM</div></div>
+          </div>
+        </div>
+
         <div class="dashboard-grid">
-           <div class="chart-container">
-            <h3 style="margin-bottom: 16px;">Orders by Category</h3>
-            <canvas id="categoryChart"></canvas>
+          <div class="chart-container" style="display:flex; flex-direction:column; align-items:center;">
+            <h3 style="margin-bottom: 16px; width: 100%; text-align: left;">Orders by Category</h3>
+            <div style="position: relative; height: 260px; width: 100%; display:flex; justify-content:center;">
+              <canvas id="categoryChart"></canvas>
+            </div>
+          </div>
+          <div class="list-container">
+            <h3 style="margin-bottom: 20px;">Top Selling Items</h3>
+            <div style="display:flex; flex-direction:column; gap:20px;">
+              <div class="progress-row">
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="font-weight:600; color:var(--text-primary);">Burger Wagyu Truffle</span> <span style="color:var(--text-secondary); font-size:0.9rem;">142 orders</span></div>
+                <div style="height:8px; background:var(--bg-sidebar); border-radius:4px; overflow:hidden;"><div style="width:85%; height:100%; background:var(--accent);"></div></div>
+              </div>
+              <div class="progress-row">
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="font-weight:600; color:var(--text-primary);">Truffle Mushroom Pasta</span> <span style="color:var(--text-secondary); font-size:0.9rem;">98 orders</span></div>
+                <div style="height:8px; background:var(--bg-sidebar); border-radius:4px; overflow:hidden;"><div style="width:65%; height:100%; background:var(--success);"></div></div>
+              </div>
+              <div class="progress-row">
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="font-weight:600; color:var(--text-primary);">Iced Latte</span> <span style="color:var(--text-secondary); font-size:0.9rem;">76 orders</span></div>
+                <div style="height:8px; background:var(--bg-sidebar); border-radius:4px; overflow:hidden;"><div style="width:45%; height:100%; background:#3498db;"></div></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

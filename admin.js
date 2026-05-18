@@ -4,20 +4,45 @@ document.addEventListener('DOMContentLoaded', () => {
   const navItems = document.querySelectorAll('.nav-item');
   const sections = document.querySelectorAll('.page-section');
 
+  function activateSection(targetId) {
+    const targetNav = document.querySelector(`.nav-item[data-target="${targetId}"]`);
+    if (!targetNav) return;
+    
+    // Remove active from all nav items
+    navItems.forEach(nav => nav.classList.remove('active'));
+    sections.forEach(sec => sec.classList.remove('active'));
+    
+    // Add active to target
+    targetNav.classList.add('active');
+    document.getElementById(targetId).classList.add('active');
+    
+    // On mobile, close sidebar after clicking
+    const sidebar = document.querySelector('.admin-sidebar');
+    if(sidebar) sidebar.classList.remove('open');
+  }
+
   navItems.forEach(item => {
     item.addEventListener('click', () => {
-      // Remove active from all nav items
-      navItems.forEach(nav => nav.classList.remove('active'));
-      item.classList.add('active');
-
-      // Hide all sections
-      sections.forEach(sec => sec.classList.remove('active'));
-      
-      // Show target section
       const targetId = item.getAttribute('data-target');
-      document.getElementById(targetId).classList.add('active');
+      window.location.hash = targetId; // Update hash for deep linking
+      activateSection(targetId);
     });
   });
+
+  // Handle initial load hash
+  const initialHash = window.location.hash.replace('#', '');
+  if (initialHash && document.getElementById(initialHash)) {
+    activateSection(initialHash);
+  }
+  
+  // Mobile Hamburger Toggle
+  const hamburger = document.getElementById('adminHamburger');
+  const sidebar = document.querySelector('.admin-sidebar');
+  if (hamburger && sidebar) {
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+  }
 
   // Chart.js Mock Data
   initCharts();
