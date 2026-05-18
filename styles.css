@@ -1619,10 +1619,7 @@ textarea:focus {
 .menu-card-like {
   position: absolute;
   top: 10px;
-  left: 10px;
-  z-index: 5;
-  width: 32px;
-  height: 32px;
+  right: 10px; /* Moved to top-right corner! */
   border-radius: 50%;
   background: rgba(17, 20, 22, 0.4); /* Glassmorphic backplate with lower opacity */
   backdrop-filter: blur(10px);
@@ -1688,7 +1685,7 @@ textarea:focus {
 .menu-card-qty {
   position: absolute;
   top: 10px;
-  right: 10px;
+  left: 10px; /* Moved to top-left corner! */
   background: var(--accent-bg);
   color: #000;
   font-size: 0.75rem;
@@ -1698,6 +1695,54 @@ textarea:focus {
   border-radius: 50%;
   display: flex;
   align-items: center;
+}
+
+/* Metadata Row (Rating & Like Counts) inserted between Name and Price */
+.menu-card-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.68rem; /* Compact metadata font size */
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin: 1px 0 2px;
+  min-height: 14px;
+}
+
+.menu-card-rating,
+.menu-card-likes-count {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.menu-card-rating {
+  color: var(--accent); /* Star rating matches premium gold! */
+}
+
+[data-theme="light"] .menu-card-rating {
+  color: #B47B16;
+}
+
+.menu-card-likes-count {
+  color: #EF4444; /* Heart icon matches vibrant red! */
+}
+
+.like-number {
+  display: inline-block;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.25s ease;
+}
+
+.star-icon {
+  animation: starPulse 2.5s infinite ease-in-out;
+  display: inline-block;
+}
+
+@keyframes starPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
   justify-content: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   z-index: 5;

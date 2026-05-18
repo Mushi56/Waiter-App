@@ -567,6 +567,10 @@
   function toggleLikeItem(itemId, btn) {
     let likedItems = JSON.parse(localStorage.getItem('wh_liked_items') || '[]');
     const index = likedItems.indexOf(itemId);
+    const likeNumEl = btn.closest('.menu-card').querySelector(`.like-number[data-id="${itemId}"]`);
+    
+    let baseLikes = 20 + (itemId % 7) * 12;
+    
     if (index === -1) {
       likedItems.push(itemId);
       btn.classList.add('liked');
@@ -574,6 +578,17 @@
       if (svg) svg.setAttribute('fill', 'currentColor');
       btn.style.transform = 'scale(1.28)';
       setTimeout(() => btn.style.transform = '', 200);
+      
+      // Increment the count in the DOM with a subtle bounce and red color flash!
+      if (likeNumEl) {
+        likeNumEl.textContent = baseLikes + 1;
+        likeNumEl.style.transform = 'scale(1.25) translateY(-1px)';
+        likeNumEl.style.color = '#EF4444';
+        setTimeout(() => {
+          likeNumEl.style.transform = '';
+          likeNumEl.style.color = '';
+        }, 300);
+      }
     } else {
       likedItems.splice(index, 1);
       btn.classList.remove('liked');
@@ -581,6 +596,15 @@
       if (svg) svg.setAttribute('fill', 'none');
       btn.style.transform = 'scale(0.85)';
       setTimeout(() => btn.style.transform = '', 150);
+      
+      // Decrement the count in the DOM
+      if (likeNumEl) {
+        likeNumEl.textContent = baseLikes;
+        likeNumEl.style.transform = 'scale(0.8) translateY(1px)';
+        setTimeout(() => {
+          likeNumEl.style.transform = '';
+        }, 200);
+      }
     }
     localStorage.setItem('wh_liked_items', JSON.stringify(likedItems));
   }
@@ -833,6 +857,9 @@
     els.menuGrid.innerHTML = filtered.map((item) => {
       const qty = getOrderQty(item.id);
       const isLiked = likedItems.includes(item.id);
+      const rating = (4.5 + (item.id % 5) * 0.1).toFixed(1);
+      const baseLikes = 20 + (item.id % 7) * 12;
+      const likesCount = baseLikes + (isLiked ? 1 : 0);
       return `
         <div class="menu-card" data-id="${item.id}">
           <div class="menu-card-qty ${qty > 0 ? 'show' : ''}">${qty}</div>
@@ -855,6 +882,16 @@
             <div class="menu-card-info-blur-overlay"></div>
             <div class="menu-card-text-group">
               <div class="menu-card-name">${item.name}</div>
+              <div class="menu-card-meta-row">
+                <span class="menu-card-rating">
+                  <svg class="star-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <span>${rating}</span>
+                </span>
+                <span class="menu-card-likes-count">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  <span class="like-number" data-id="${item.id}">${likesCount}</span>
+                </span>
+              </div>
               <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
             </div>
           </div>
