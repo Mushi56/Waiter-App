@@ -883,7 +883,6 @@
             <div class="menu-card-text-group">
               <div class="menu-card-name">${item.name}</div>
               <div class="menu-card-price-row">
-                <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
                 <div class="menu-card-meta-row">
                   <span class="menu-card-rating">
                     <svg class="star-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -894,6 +893,7 @@
                     <span class="like-number" data-id="${item.id}">${likesCount}</span>
                   </span>
                 </div>
+                <div class="menu-card-price">RM ${item.price.toFixed(2)}</div>
               </div>
             </div>
           </div>

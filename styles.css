@@ -1624,56 +1624,56 @@ textarea:focus {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(17, 20, 22, 0.4); /* Glassmorphic backplate with lower opacity */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  background: transparent; /* Removed circular background */
+  backdrop-filter: none; /* Removed backdrop blur */
+  -webkit-backdrop-filter: none;
+  border: none; /* Removed circular border */
   color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  box-shadow: none; /* Removed container drop shadow */
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .menu-card-like.liked {
   color: #EF4444; /* Vibrant warm red for liked state */
-  border-color: #EF4444;
-  background: rgba(239, 68, 68, 0.15); /* Warm red glass glow backplate! */
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  border: none;
+  background: transparent;
+  box-shadow: none;
 }
 
 [data-theme="light"] .menu-card-like {
   color: #111416;
-  border-color: rgba(0, 0, 0, 0.15);
-  background: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: none;
+  background: transparent;
+  box-shadow: none;
 }
 
 [data-theme="light"] .menu-card-like.liked {
   color: #EF4444;
-  border-color: #EF4444;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+  border: none;
+  background: transparent;
+  box-shadow: none;
 }
 
 .menu-card-like:hover {
-  transform: scale(1.1);
-  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.2);
+  background: transparent;
 }
 
 [data-theme="light"] .menu-card-like:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: transparent;
 }
 
 .menu-card-like.liked:hover {
-  background: rgba(239, 68, 68, 0.25);
+  background: transparent;
 }
 
 [data-theme="light"] .menu-card-like.liked:hover {
-  background: rgba(255, 255, 255, 1);
+  background: transparent;
 }
 
 .menu-card-like:active {
