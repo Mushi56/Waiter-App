@@ -65,7 +65,7 @@
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   --shadow-glow: 0 4px 20px var(--accent-glow);
   --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  --glass-bg: rgba(18, 21, 26, 0.75);
+  --glass-bg: rgba(18, 21, 26, 0.55);
   --glass-border: rgba(255, 255, 255, 0.05);
 
   /* TYPOGRAPHY SYSTEM */
@@ -100,7 +100,7 @@
   --accent: #E7A01E; /* Maintain gold brand color even in light mode */
   --accent-bg: var(--color-primary-gradient); /* Button backgrounds stay yellow */
   
-  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-bg: rgba(255, 255, 255, 0.65);
   --glass-border: var(--color-border-light);
   --shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
@@ -1581,7 +1581,7 @@ textarea:focus {
   width: 32px;
   height: 32px;
   border-radius: 50% !important; /* Perfect circular floating button */
-  background: rgba(17, 20, 22, 0.65); /* Dark semi-transparent glass backplate */
+  background: rgba(17, 20, 22, 0.4); /* Dark glassy backplate with reduced opacity */
   backdrop-filter: blur(10px); /* Frosted glass effect on top of the image */
   -webkit-backdrop-filter: blur(10px);
   border: 1.5px solid var(--accent);
@@ -1613,6 +1613,71 @@ textarea:focus {
   background: #C58514;
   color: #FFFFFF;
   box-shadow: 0 6px 16px rgba(180, 123, 22, 0.4);
+}
+
+/* Brand-New Interactive Favorite Like Button Floating FAB */
+.menu-card-like {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 5;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(17, 20, 22, 0.4); /* Glassmorphic backplate with lower opacity */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-card-like.liked {
+  color: #EF4444; /* Vibrant warm red for liked state */
+  border-color: #EF4444;
+  background: rgba(239, 68, 68, 0.15); /* Warm red glass glow backplate! */
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="light"] .menu-card-like {
+  color: #111416;
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .menu-card-like.liked {
+  color: #EF4444;
+  border-color: #EF4444;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
+.menu-card-like:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .menu-card-like:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.menu-card-like.liked:hover {
+  background: rgba(239, 68, 68, 0.25);
+}
+
+[data-theme="light"] .menu-card-like.liked:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.menu-card-like:active {
+  transform: scale(0.9);
 }
 
 .menu-card-add:active {

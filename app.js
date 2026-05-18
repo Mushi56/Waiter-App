@@ -564,6 +564,27 @@
     initTheme();
   }
 
+  function toggleLikeItem(itemId, btn) {
+    let likedItems = JSON.parse(localStorage.getItem('wh_liked_items') || '[]');
+    const index = likedItems.indexOf(itemId);
+    if (index === -1) {
+      likedItems.push(itemId);
+      btn.classList.add('liked');
+      const svg = btn.querySelector('.heart-icon');
+      if (svg) svg.setAttribute('fill', 'currentColor');
+      btn.style.transform = 'scale(1.28)';
+      setTimeout(() => btn.style.transform = '', 200);
+    } else {
+      likedItems.splice(index, 1);
+      btn.classList.remove('liked');
+      const svg = btn.querySelector('.heart-icon');
+      if (svg) svg.setAttribute('fill', 'none');
+      btn.style.transform = 'scale(0.85)';
+      setTimeout(() => btn.style.transform = '', 150);
+    }
+    localStorage.setItem('wh_liked_items', JSON.stringify(likedItems));
+  }
+
   function initTheme() {
     const themeToggleBtn = document.getElementById('themeToggleBtn');
     const themes = ['dark', 'light', 'auto'];
@@ -808,8 +829,10 @@
       });
     }
 
+    const likedItems = JSON.parse(localStorage.getItem('wh_liked_items') || '[]');
     els.menuGrid.innerHTML = filtered.map((item) => {
       const qty = getOrderQty(item.id);
+      const isLiked = likedItems.includes(item.id);
       return `
         <div class="menu-card" data-id="${item.id}">
           <div class="menu-card-qty ${qty > 0 ? 'show' : ''}">${qty}</div>
@@ -819,8 +842,11 @@
             ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy">`
             : `<div class="menu-card-placeholder">${EMOJI_MAP[item.category] || '🍴'}</div>`
             }
+            <button class="menu-card-like ${isLiked ? 'liked' : ''}" data-id="${item.id}" aria-label="Like ${item.name}">
+              <svg class="heart-icon" width="14" height="14" viewBox="0 0 24 24" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
             <button class="menu-card-add" data-id="${item.id}">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             </button>
           </div>
           
@@ -2073,6 +2099,8 @@
     els.menuGrid.addEventListener('click', (e) => {
       const addBtn = e.target.closest('.menu-card-add');
       if (addBtn) { addToOrder(parseInt(addBtn.dataset.id)); return; }
+      const likeBtn = e.target.closest('.menu-card-like');
+      if (likeBtn) { toggleLikeItem(parseInt(likeBtn.dataset.id), likeBtn); return; }
       const card = e.target.closest('.menu-card');
       if (card) openItemDetail(parseInt(card.dataset.id));
     });
