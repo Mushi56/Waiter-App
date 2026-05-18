@@ -1620,6 +1620,9 @@ textarea:focus {
   position: absolute;
   top: 10px;
   right: 10px; /* Moved to top-right corner! */
+  z-index: 5;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: rgba(17, 20, 22, 0.4); /* Glassmorphic backplate with lower opacity */
   backdrop-filter: blur(10px);
@@ -1697,15 +1700,23 @@ textarea:focus {
   align-items: center;
 }
 
-/* Metadata Row (Rating & Like Counts) inserted between Name and Price */
+/* Container for price and metadata aligned on the same row */
+.menu-card-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* Metadata Row (Rating & Like Counts) placed adjacent to the price */
 .menu-card-meta-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   font-size: 0.68rem; /* Compact metadata font size */
   font-weight: 700;
   color: var(--text-secondary);
-  margin: 1px 0 2px;
   min-height: 14px;
 }
 
