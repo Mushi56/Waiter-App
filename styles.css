@@ -1628,7 +1628,8 @@ textarea:focus {
   backdrop-filter: none; /* Removed backdrop blur */
   -webkit-backdrop-filter: none;
   border: none; /* Removed circular border */
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.9); /* Constant premium white color in both themes */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45)); /* Floating shadow overlay */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1643,10 +1644,11 @@ textarea:focus {
   border: none;
   background: transparent;
   box-shadow: none;
+  filter: drop-shadow(0 2px 4px rgba(239, 68, 68, 0.3));
 }
 
 [data-theme="light"] .menu-card-like {
-  color: #111416;
+  color: rgba(255, 255, 255, 0.9); /* Prevent changing to black in light mode */
   border: none;
   background: transparent;
   box-shadow: none;
