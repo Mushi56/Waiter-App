@@ -52,3 +52,31 @@ try {
 } catch(Exception e) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
 }
+
+// Auto-copy built APKs to 'Apks' folder with version code and name
+android.applicationVariants.all { variant ->
+    if (variant.buildType.name == "debug") {
+        variant.outputs.all { output ->
+            def assembleTask = variant.assembleProvider.get()
+            assembleTask.doLast {
+                def apksDir = new File(project.rootDir, "Apks")
+                if (!apksDir.exists()) {
+                    apksDir.mkdirs()
+                }
+                def srcFile = output.outputFile
+                if (srcFile.exists()) {
+                    def verName = variant.versionName
+                    def verCode = variant.versionCode
+                    copy {
+                        from srcFile
+                        into apksDir
+                        rename { String fileName -> "app-debug-v${verName}-${verCode}.apk" }
+                    }
+                    println "=========================================================="
+                    println "SUCCESS: Copied latest debug APK to android/Apks/app-debug-v${verName}-${verCode}.apk"
+                    println "=========================================================="
+                }
+            }
+        }
+    }
+}
