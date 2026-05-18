@@ -700,7 +700,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '25'; // Bumped for refined Takeaway & Addons
+  const MENU_VERSION = '26'; // Bumped for Non-Coffee and Dessert pictures
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
