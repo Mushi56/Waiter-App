@@ -328,6 +328,7 @@
   let currentOrder = []; // { id, name, price, qty }
   let currentDineType = 'Dine-in';
   let activeNoteCartItemId = null;
+  let currentlyViewingOrder = null;
   let orders = [];
   let tableNumber = '';
   let activeCategory = 'All';
@@ -394,6 +395,7 @@
     orderDetailBody: $('#orderDetailBody'),
     closeOrderDetail: $('#closeOrderDetail'),
     closeOrderDetailBtn: $('#closeOrderDetailBtn'),
+    printReceiptBtn: $('#printReceiptBtn'),
     historyPreviewList: $('#historyPreviewList'),
     ordersFullList: $('#ordersFullList'),
     historyFullList: $('#historyFullList'),
@@ -1404,6 +1406,8 @@
     const order = orders.find((o) => o.id === orderId);
     if (!order) return;
 
+    currentlyViewingOrder = order;
+
     els.orderDetailTitle.textContent = `Table ${order.table}`;
     const d = new Date(order.timestamp);
     const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -1423,6 +1427,191 @@
     html += `<div class="detail-row detail-total"><span>Total</span><span>RM ${order.totalPrice.toFixed(2)}</span></div>`;
     els.orderDetailBody.innerHTML = html;
     els.orderDetailModal.classList.remove('hidden');
+  }
+
+  function printReceipt(order) {
+    if (!order) return;
+
+    const d = new Date(order.timestamp);
+    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const timeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+    let itemsHtml = order.items.map((item) => {
+      let modText = item.modifiers && item.modifiers.length > 0 
+        ? `<div class="receipt-item-addon">+ ${item.modifiers.map(m => m.name).join(', ')}</div>` 
+        : '';
+      let noteText = item.note 
+        ? `<div class="receipt-item-note">* Note: ${item.note}</div>` 
+        : '';
+      
+      return `
+        <div class="receipt-item-row">
+          <div class="receipt-item-desc">
+            <span class="receipt-item-name">${item.name}</span>
+            ${modText}
+            ${noteText}
+          </div>
+          <div class="receipt-item-qty">${item.qty}</div>
+          <div class="receipt-item-price">${(item.price * item.qty).toFixed(2)}</div>
+        </div>
+      `;
+    }).join('');
+
+    const receiptHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Receipt - Table ${order.table}</title>
+        <style>
+          body {
+            font-family: 'Courier New', Courier, monospace;
+            width: 80mm;
+            margin: 0 auto;
+            padding: 10px;
+            color: #000;
+            background: #fff;
+            font-size: 12px;
+            line-height: 1.4;
+          }
+          .text-center { text-align: center; }
+          .bold { font-weight: bold; }
+          .header {
+            margin-bottom: 15px;
+          }
+          .brand {
+            font-size: 18px;
+            margin-bottom: 4px;
+          }
+          .divider {
+            border-bottom: 1px dashed #000;
+            margin: 8px 0;
+          }
+          .meta-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+          }
+          .receipt-item-row {
+            display: flex;
+            margin-bottom: 6px;
+          }
+          .receipt-item-desc {
+            flex: 1;
+            padding-right: 5px;
+          }
+          .receipt-item-name {
+            font-weight: bold;
+          }
+          .receipt-item-addon, .receipt-item-note {
+            font-size: 10px;
+            margin-left: 10px;
+          }
+          .receipt-item-qty {
+            width: 25px;
+            text-align: center;
+          }
+          .receipt-item-price {
+            width: 60px;
+            text-align: right;
+          }
+          .total-section {
+            margin-top: 10px;
+            font-size: 14px;
+          }
+          .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-top: 4px;
+          }
+          .footer {
+            margin-top: 20px;
+            font-size: 10px;
+          }
+          @media print {
+            body { width: 100%; margin: 0; padding: 0; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header text-center">
+          <div class="brand bold">SMART MENU</div>
+          <div>Take Order, Save Time</div>
+          <div class="divider"></div>
+          <div class="meta-row">
+            <span>Table: <strong>${order.table}</strong></span>
+            <span>Type: <strong>${order.dineType || 'Dine-in'}</strong></span>
+          </div>
+          <div class="meta-row">
+            <span>Date: ${dateStr}</span>
+            <span>Time: ${timeStr}</span>
+          </div>
+          <div class="meta-row">
+            <span>Order ID: ${order.id.toString().slice(-6)}</span>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="items-section">
+          <div class="receipt-item-row bold">
+            <div class="receipt-item-desc">Item Description</div>
+            <div class="receipt-item-qty">Qty</div>
+            <div class="receipt-item-price">Total</div>
+          </div>
+          <div class="divider"></div>
+          ${itemsHtml}
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="total-section">
+          <div class="total-row">
+            <span>TOTAL ITEMS</span>
+            <span>${order.totalQty}</span>
+          </div>
+          <div class="total-row" style="font-size: 16px;">
+            <span>TOTAL AMOUNT</span>
+            <span>RM ${order.totalPrice.toFixed(2)}</span>
+          </div>
+        </div>
+
+        ${order.note ? `
+          <div class="divider"></div>
+          <div style="font-size: 10px;">
+            <strong>General Note:</strong><br>
+            ${order.note}
+          </div>
+        ` : ''}
+
+        <div class="divider"></div>
+
+        <div class="footer text-center">
+          <div class="bold">THANK YOU FOR DINING WITH US!</div>
+          <div>Please pay at the cashier counter.</div>
+          <div style="margin-top: 5px; font-size: 8px; color: #555;">Smart Menu PWA</div>
+        </div>
+
+        <script>
+          window.onload = function() {
+            window.print();
+            setTimeout(function() {
+              window.close();
+            }, 500);
+          };
+        <\/script>
+      </body>
+      </html>
+    `;
+
+    const printWindow = window.open('', '_blank', 'width=450,height=600');
+    if (printWindow) {
+      printWindow.document.open();
+      printWindow.document.write(receiptHtml);
+      printWindow.document.close();
+    } else {
+      showToast('⚠️ Pop-up blocked! Please allow popups to print receipts.');
+    }
   }
 
   function editOrder(orderId) {
@@ -2408,6 +2597,12 @@
     // Order detail modal close
     $('#closeOrderDetail').addEventListener('click', () => els.orderDetailModal.classList.add('hidden'));
     $('#closeOrderDetailBtn').addEventListener('click', () => els.orderDetailModal.classList.add('hidden'));
+
+    if (els.printReceiptBtn) {
+      els.printReceiptBtn.addEventListener('click', () => {
+        printReceipt(currentlyViewingOrder);
+      });
+    }
 
     // Close modals on backdrop
     els.addItemModal.addEventListener('click', (e) => {
