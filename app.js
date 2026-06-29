@@ -327,6 +327,7 @@
   let menuItems = [];
   let currentOrder = []; // { id, name, price, qty }
   let currentDineType = 'Dine-in';
+  let activeNoteCartItemId = null;
   let orders = [];
   let tableNumber = '';
   let activeCategory = 'All';
@@ -376,6 +377,13 @@
     addonList: $('#addonList'),
     closeAddonModal: $('#closeAddonModal'),
     confirmAddonBtn: $('#confirmAddonBtn'),
+
+    // Item Note Modal
+    itemNoteModal: $('#itemNoteModal'),
+    itemNoteModalSubtitle: $('#itemNoteModalSubtitle'),
+    itemNoteInput: $('#itemNoteInput'),
+    closeItemNoteModal: $('#closeItemNoteModal'),
+    saveItemNoteBtn: $('#saveItemNoteBtn'),
 
     // Order & History
     orderItems: $('#orderItems'),
@@ -1065,11 +1073,17 @@
       const canEditAddons = (menuItem && menuItem.addons && menuItem.addons.length > 0) || ADDONS_DATA[category];
 
       const modText = item.modifiers && item.modifiers.length > 0 ? `<br><span style="color:var(--text-secondary);font-size:0.75rem;">+ ${item.modifiers.map(m => m.name).join(', ')}</span>` : '';
+      const noteText = item.note ? `<br><span class="item-note-display" style="color:var(--accent);font-size:0.75rem;font-style:italic;">Note: ${item.note}</span>` : '';
 
       const editAddonBtn = canEditAddons ? `
         <button class="order-item-edit-addons" data-cart-id="${item.cartItemId}" data-action="edit-addons" title="Edit Add-ons">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>` : '';
+
+      const editNoteBtn = `
+        <button class="order-item-edit-note" data-cart-id="${item.cartItemId}" data-action="edit-note" title="Add/Edit Note" style="color: ${item.note ? 'var(--accent)' : 'var(--text-secondary)'}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </button>`;
 
       return `
         <div class="order-item">
@@ -1078,9 +1092,10 @@
             <span class="order-item-qty">${item.qty}</span>
             <button class="qty-btn" data-cart-id="${item.cartItemId}" data-action="inc">+</button>
           </div>
-          <span class="order-item-name">${item.name}${modText}</span>
+          <span class="order-item-name">${item.name}${modText}${noteText}</span>
           <span class="order-item-price">RM ${(item.price * item.qty).toFixed(2)}</span>
           <div class="order-item-actions">
+            ${editNoteBtn}
             ${editAddonBtn}
             <button class="order-item-delete" data-cart-id="${item.cartItemId}" data-action="remove">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1163,6 +1178,34 @@
 
     editingCartItemId = cartItemId;
     openAddonModal(menuItem, cartItem.modifiers || []);
+  }
+
+  function openEditNoteModal(cartItemId) {
+    const cartItem = currentOrder.find(o => o.cartItemId === cartItemId);
+    if (!cartItem) return;
+
+    activeNoteCartItemId = cartItemId;
+    if (els.itemNoteModalSubtitle) els.itemNoteModalSubtitle.textContent = `Adding note for: ${cartItem.name}`;
+    if (els.itemNoteInput) els.itemNoteInput.value = cartItem.note || '';
+    if (els.itemNoteModal) els.itemNoteModal.classList.remove('hidden');
+    setTimeout(() => { if (els.itemNoteInput) els.itemNoteInput.focus(); }, 300);
+  }
+
+  function closeEditNoteModal() {
+    if (els.itemNoteModal) els.itemNoteModal.classList.add('hidden');
+    activeNoteCartItemId = null;
+  }
+
+  function saveItemNote() {
+    if (!activeNoteCartItemId) return;
+    const cartItem = currentOrder.find(o => o.cartItemId === activeNoteCartItemId);
+    if (cartItem) {
+      if (els.itemNoteInput) {
+        cartItem.note = els.itemNoteInput.value.trim();
+      }
+      renderOrder();
+    }
+    closeEditNoteModal();
   }
 
   function confirmAddons() {
@@ -1374,7 +1417,8 @@
     html += `<div class="detail-row" style="font-weight:600;margin-top:8px"><span>Item</span><span>Qty × Price</span></div>`;
     order.items.forEach((item) => {
       let modText = item.modifiers && item.modifiers.length > 0 ? `<br><small style="color:var(--text-secondary);font-size:0.75rem;">+ ${item.modifiers.map(m => m.name).join(', ')}</small>` : '';
-      html += `<div class="detail-row"><span>${item.name}${modText}</span><span>${item.qty} × RM ${item.price.toFixed(2)} = RM ${(item.qty * item.price).toFixed(2)}</span></div>`;
+      let noteText = item.note ? `<br><small style="color:var(--accent);font-size:0.75rem;font-style:italic;">Note: ${item.note}</small>` : '';
+      html += `<div class="detail-row"><span>${item.name}${modText}${noteText}</span><span>${item.qty} × RM ${item.price.toFixed(2)} = RM ${(item.qty * item.price).toFixed(2)}</span></div>`;
     });
     html += `<div class="detail-row detail-total"><span>Total</span><span>RM ${order.totalPrice.toFixed(2)}</span></div>`;
     els.orderDetailBody.innerHTML = html;
@@ -2203,6 +2247,8 @@
       if (btn) {
         if (btn.dataset.action === 'edit-addons') {
           openEditAddonModal(btn.dataset.cartId);
+        } else if (btn.dataset.action === 'edit-note') {
+          openEditNoteModal(btn.dataset.cartId);
         } else {
           changeQty(btn.dataset.cartId, btn.dataset.action);
         }
@@ -2414,6 +2460,15 @@
     if (els.addonModal) {
       els.addonModal.addEventListener('click', (e) => {
         if (e.target === els.addonModal) closeAddon();
+      });
+    }
+
+    // Item Note modal
+    if (els.closeItemNoteModal) els.closeItemNoteModal.onclick = closeEditNoteModal;
+    if (els.saveItemNoteBtn) els.saveItemNoteBtn.onclick = saveItemNote;
+    if (els.itemNoteModal) {
+      els.itemNoteModal.addEventListener('click', (e) => {
+        if (e.target === els.itemNoteModal) closeEditNoteModal();
       });
     }
 
