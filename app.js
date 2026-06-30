@@ -327,7 +327,6 @@
   let menuItems = [];
   let currentOrder = []; // { id, name, price, qty }
   let currentDineType = 'Dine-in';
-  let activeNoteCartItemId = null;
   let currentlyViewingOrder = null;
   let orders = [];
   let tableNumber = '';
@@ -376,15 +375,9 @@
     addonModal: $('#addonModal'),
     addonTitle: $('#addonTitle'),
     addonList: $('#addonList'),
+    addonItemNoteInput: $('#addonItemNoteInput'),
     closeAddonModal: $('#closeAddonModal'),
     confirmAddonBtn: $('#confirmAddonBtn'),
-
-    // Item Note Modal
-    itemNoteModal: $('#itemNoteModal'),
-    itemNoteModalSubtitle: $('#itemNoteModalSubtitle'),
-    itemNoteInput: $('#itemNoteInput'),
-    closeItemNoteModal: $('#closeItemNoteModal'),
-    saveItemNoteBtn: $('#saveItemNoteBtn'),
 
     // Order & History
     orderItems: $('#orderItems'),
@@ -1179,21 +1172,12 @@
       totalQty += item.qty;
       totalPrice += item.price * item.qty;
 
-      const menuItem = menuItems.find(m => m.id === item.id);
-      const category = item.category || (menuItem ? menuItem.category : '');
-      const canEditAddons = (menuItem && menuItem.addons && menuItem.addons.length > 0) || ADDONS_DATA[category];
-
       const modText = item.modifiers && item.modifiers.length > 0 ? `<br><span style="color:var(--text-secondary);font-size:0.75rem;">+ ${item.modifiers.map(m => m.name).join(', ')}</span>` : '';
       const noteText = item.note ? `<br><span class="item-note-display" style="color:var(--accent);font-size:0.75rem;font-style:italic;">Note: ${item.note}</span>` : '';
 
-      const editAddonBtn = canEditAddons ? `
-        <button class="order-item-edit-addons" data-cart-id="${item.cartItemId}" data-action="edit-addons" title="Edit Add-ons">
+      const editAddonBtn = `
+        <button class="order-item-edit-addons" data-cart-id="${item.cartItemId}" data-action="edit-addons" title="Edit Options & Note">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        </button>` : '';
-
-      const editNoteBtn = `
-        <button class="order-item-edit-note ${item.note ? 'has-note' : ''}" data-cart-id="${item.cartItemId}" data-action="edit-note" title="Add/Edit Note">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </button>`;
 
       return `
@@ -1206,14 +1190,7 @@
           <span class="order-item-name">${item.name}${modText}${noteText}</span>
           <span class="order-item-price">RM ${(item.price * item.qty).toFixed(2)}</span>
           <div class="order-item-actions">
-            ${editNoteBtn}
             ${editAddonBtn}
-            <button class="order-item-delete" data-cart-id="${item.cartItemId}" data-action="remove">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
-                <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
-              </svg>
-            </button>
           </div>
         </div>`;
     }).join('');
@@ -1249,33 +1226,46 @@
 
     const modifierGroups = (menuItem.modifierGroups && menuItem.modifierGroups.length > 0) ? menuItem.modifierGroups : (ADDONS_DATA[menuItem.category] || []);
 
-    els.addonList.innerHTML = modifierGroups.map((group, gIdx) => {
-      const optionsHtml = group.options.map((opt, oIdx) => {
-        const isChecked = existingModifiers.some(m => m.name === opt.name) ? 'checked' : '';
-        const inputType = group.type === 'radio' ? 'radio' : 'checkbox';
-        const inputName = group.type === 'radio' ? `name="modGroup_${gIdx}"` : '';
-        return `
-          <div class="addon-item">
-            <label>
-              <input type="${inputType}" ${inputName} value="${gIdx}_${oIdx}" data-gidx="${gIdx}" data-oidx="${oIdx}" ${isChecked}>
-              <span class="addon-name">${opt.name}</span>
-            </label>
-            <span class="addon-price">+RM ${opt.price.toFixed(2)}</span>
-          </div>`;
-      }).join('');
+    if (modifierGroups.length === 0) {
+      els.addonList.innerHTML = '<div style="color:var(--text-secondary); font-size:0.85rem; font-style:italic; padding: 10px 0; text-align:center;">No extra add-ons available for this item.</div>';
+    } else {
+      els.addonList.innerHTML = modifierGroups.map((group, gIdx) => {
+        const optionsHtml = group.options.map((opt, oIdx) => {
+          const isChecked = existingModifiers.some(m => m.name === opt.name) ? 'checked' : '';
+          const inputType = group.type === 'radio' ? 'radio' : 'checkbox';
+          const inputName = group.type === 'radio' ? `name="modGroup_${gIdx}"` : '';
+          return `
+            <div class="addon-item">
+              <label>
+                <input type="${inputType}" ${inputName} value="${gIdx}_${oIdx}" data-gidx="${gIdx}" data-oidx="${oIdx}" ${isChecked}>
+                <span class="addon-name">${opt.name}</span>
+              </label>
+              <span class="addon-price">+RM ${opt.price.toFixed(2)}</span>
+            </div>`;
+        }).join('');
 
-      return `
-        <div class="addon-group">
-          <h4 class="addon-group-title">
-            <span>${group.name}</span> 
-            <span class="addon-group-subtitle">${group.type === 'radio' ? '(Select 1)' : '(Optional)'}</span>
-          </h4>
-          <div class="addon-group-options">
-            ${optionsHtml}
+        return `
+          <div class="addon-group">
+            <h4 class="addon-group-title">
+              <span>${group.name}</span> 
+              <span class="addon-group-subtitle">${group.type === 'radio' ? '(Select 1)' : '(Optional)'}</span>
+            </h4>
+            <div class="addon-group-options">
+              ${optionsHtml}
+            </div>
           </div>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    }
+
+    if (els.addonItemNoteInput) {
+      if (editingCartItemId) {
+        const cartItem = currentOrder.find(o => o.cartItemId === editingCartItemId);
+        els.addonItemNoteInput.value = cartItem ? (cartItem.note || '') : '';
+      } else {
+        els.addonItemNoteInput.value = '';
+      }
+    }
 
     els.addonModal.classList.remove('hidden');
   }
@@ -1291,34 +1281,6 @@
     openAddonModal(menuItem, cartItem.modifiers || []);
   }
 
-  function openEditNoteModal(cartItemId) {
-    const cartItem = currentOrder.find(o => o.cartItemId === cartItemId);
-    if (!cartItem) return;
-
-    activeNoteCartItemId = cartItemId;
-    if (els.itemNoteModalSubtitle) els.itemNoteModalSubtitle.textContent = `Adding note for: ${cartItem.name}`;
-    if (els.itemNoteInput) els.itemNoteInput.value = cartItem.note || '';
-    if (els.itemNoteModal) els.itemNoteModal.classList.remove('hidden');
-    setTimeout(() => { if (els.itemNoteInput) els.itemNoteInput.focus(); }, 300);
-  }
-
-  function closeEditNoteModal() {
-    if (els.itemNoteModal) els.itemNoteModal.classList.add('hidden');
-    activeNoteCartItemId = null;
-  }
-
-  function saveItemNote() {
-    if (!activeNoteCartItemId) return;
-    const cartItem = currentOrder.find(o => o.cartItemId === activeNoteCartItemId);
-    if (cartItem) {
-      if (els.itemNoteInput) {
-        cartItem.note = els.itemNoteInput.value.trim();
-      }
-      renderOrder();
-    }
-    closeEditNoteModal();
-  }
-
   function confirmAddons() {
     if (!pendingAddonItem) return;
     const modifierGroups = (pendingAddonItem.modifierGroups && pendingAddonItem.modifierGroups.length > 0) ? pendingAddonItem.modifierGroups : (ADDONS_DATA[pendingAddonItem.category] || []);
@@ -1330,10 +1292,12 @@
       return modifierGroups[gIdx].options[oIdx];
     });
 
+    const noteVal = els.addonItemNoteInput ? els.addonItemNoteInput.value.trim() : '';
+
     if (editingCartItemId) {
-      updateCartItemModifiers(editingCartItemId, selectedAddons);
+      updateCartItemModifiers(editingCartItemId, selectedAddons, noteVal);
     } else {
-      addCartItem(pendingAddonItem, selectedAddons);
+      addCartItem(pendingAddonItem, selectedAddons, noteVal);
     }
 
     els.addonModal.classList.add('hidden');
@@ -1341,9 +1305,9 @@
     editingCartItemId = null;
   }
 
-  function addCartItem(menuItem, modifiers) {
+  function addCartItem(menuItem, modifiers, note = '') {
     const modifiersKey = modifiers.map(m => m.name).sort().join('|');
-    const existing = currentOrder.find(o => o.id === menuItem.id && (o.modifiersKey || '') === modifiersKey);
+    const existing = currentOrder.find(o => o.id === menuItem.id && (o.modifiersKey || '') === modifiersKey && (o.note || '') === note);
 
     if (existing) {
       existing.qty++;
@@ -1358,7 +1322,8 @@
         qty: 1,
         description: '',
         modifiers: modifiers,
-        modifiersKey: modifiersKey
+        modifiersKey: modifiersKey,
+        note: note
       });
     }
 
@@ -1383,7 +1348,7 @@
     }
   }
 
-  function updateCartItemModifiers(cartItemId, modifiers) {
+  function updateCartItemModifiers(cartItemId, modifiers, note = '') {
     const idx = currentOrder.findIndex(o => o.cartItemId === cartItemId);
     if (idx === -1) return;
 
@@ -1396,6 +1361,7 @@
     currentOrder[idx].modifiers = modifiers;
     currentOrder[idx].modifiersKey = modifiersKey;
     currentOrder[idx].price = unitPrice;
+    currentOrder[idx].note = note;
 
     renderOrder();
     showToast('Add-ons updated');
@@ -2550,8 +2516,6 @@
       if (btn) {
         if (btn.dataset.action === 'edit-addons') {
           openEditAddonModal(btn.dataset.cartId);
-        } else if (btn.dataset.action === 'edit-note') {
-          openEditNoteModal(btn.dataset.cartId);
         } else {
           changeQty(btn.dataset.cartId, btn.dataset.action);
         }
@@ -2775,15 +2739,6 @@
     if (els.addonModal) {
       els.addonModal.addEventListener('click', (e) => {
         if (e.target === els.addonModal) closeAddon();
-      });
-    }
-
-    // Item Note modal
-    if (els.closeItemNoteModal) els.closeItemNoteModal.onclick = closeEditNoteModal;
-    if (els.saveItemNoteBtn) els.saveItemNoteBtn.onclick = saveItemNote;
-    if (els.itemNoteModal) {
-      els.itemNoteModal.addEventListener('click', (e) => {
-        if (e.target === els.itemNoteModal) closeEditNoteModal();
       });
     }
 
