@@ -1,5 +1,26 @@
 // admin.js
 document.addEventListener('DOMContentLoaded', () => {
+  // Theme consistency initialization
+  const initTheme = () => {
+    const html = document.documentElement;
+    const currentTheme = localStorage.getItem('wh_theme') || 'auto';
+    const applyTheme = (theme) => {
+      if (theme === 'auto') {
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        html.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      } else {
+        html.setAttribute('data-theme', theme);
+      }
+    };
+    applyTheme(currentTheme);
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (localStorage.getItem('wh_theme') === 'auto') {
+        applyTheme('auto');
+      }
+    });
+  };
+  initTheme();
+
   // Navigation Logic
   const navItems = document.querySelectorAll('.nav-item');
   const sections = document.querySelectorAll('.page-section');
@@ -41,6 +62,46 @@ document.addEventListener('DOMContentLoaded', () => {
   if (hamburger && sidebar) {
     hamburger.addEventListener('click', () => {
       sidebar.classList.toggle('open');
+    });
+  }
+
+  // Load and save receipt settings
+  const receiptHeaderLogo = document.getElementById('receiptHeaderLogo');
+  const receiptHeaderAddress = document.getElementById('receiptHeaderAddress');
+  const receiptHeaderPhone = document.getElementById('receiptHeaderPhone');
+  const receiptTaxRate = document.getElementById('receiptTaxRate');
+  const receiptFooterMessage1 = document.getElementById('receiptFooterMessage1');
+  const receiptFooterMessage2 = document.getElementById('receiptFooterMessage2');
+  const saveReceiptBtn = document.getElementById('saveReceiptConfigBtn');
+
+  if (saveReceiptBtn) {
+    const savedConfig = JSON.parse(localStorage.getItem('receiptConfig')) || {
+      logo: 'WAITER APP',
+      address: '123 Food Street, Tasty City',
+      phone: '012-3456789',
+      taxRate: 0,
+      footer1: 'THANK YOU FOR DINING WITH US!',
+      footer2: 'Please pay at the cashier counter.'
+    };
+
+    receiptHeaderLogo.value = savedConfig.logo;
+    receiptHeaderAddress.value = savedConfig.address;
+    receiptHeaderPhone.value = savedConfig.phone;
+    receiptTaxRate.value = savedConfig.taxRate;
+    receiptFooterMessage1.value = savedConfig.footer1;
+    receiptFooterMessage2.value = savedConfig.footer2;
+
+    saveReceiptBtn.addEventListener('click', () => {
+      const config = {
+        logo: receiptHeaderLogo.value.trim() || 'WAITER APP',
+        address: receiptHeaderAddress.value.trim() || '123 Food Street, Tasty City',
+        phone: receiptHeaderPhone.value.trim() || '012-3456789',
+        taxRate: parseFloat(receiptTaxRate.value) || 0,
+        footer1: receiptFooterMessage1.value.trim() || 'THANK YOU FOR DINING WITH US!',
+        footer2: receiptFooterMessage2.value.trim() || 'Please pay at the cashier counter.'
+      };
+      localStorage.setItem('receiptConfig', JSON.stringify(config));
+      alert('Receipt configuration saved successfully!');
     });
   }
 

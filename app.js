@@ -625,6 +625,115 @@
 
     initIosInstallPrompt();
     initTheme();
+    initAdminCharts();
+    initAppReceiptSettings();
+  }
+
+  // --- Admin Charts (Dashboard & Reports pages) ---
+  let appRevenueChartInstance = null;
+  let appCategoryChartInstance = null;
+
+  function initAdminCharts() {
+    if (typeof Chart === 'undefined') return;
+
+    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+    const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+    const labelColor = isDark ? '#A0A7B5' : '#6B7280';
+
+    // Revenue Chart
+    const revCtx = document.getElementById('appRevenueChart');
+    if (revCtx) {
+      if (appRevenueChartInstance) appRevenueChartInstance.destroy();
+      appRevenueChartInstance = new Chart(revCtx, {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Revenue (RM)',
+            data: [2100, 3200, 2800, 4100, 5200, 6800, 5900],
+            borderColor: '#E7A01E',
+            backgroundColor: 'rgba(231, 160, 30, 0.1)',
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#E7A01E',
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: labelColor } },
+            x: { grid: { display: false }, ticks: { color: labelColor } }
+          }
+        }
+      });
+    }
+
+    // Category Chart
+    const catCtx = document.getElementById('appCategoryChart');
+    if (catCtx) {
+      if (appCategoryChartInstance) appCategoryChartInstance.destroy();
+      appCategoryChartInstance = new Chart(catCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Burgers', 'Main Course', 'Pasta', 'Beverages'],
+          datasets: [{
+            data: [35, 25, 20, 20],
+            backgroundColor: ['#E7A01E', '#e67e22', '#3B82F6', '#22C55E'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { color: labelColor, padding: 16 } } },
+          cutout: '65%'
+        }
+      });
+    }
+  }
+
+  // --- Receipt Settings (in-app page) ---
+  function initAppReceiptSettings() {
+    const appLogoEl = document.getElementById('appReceiptLogo');
+    const appAddrEl = document.getElementById('appReceiptAddress');
+    const appPhoneEl = document.getElementById('appReceiptPhone');
+    const appTaxEl = document.getElementById('appReceiptTax');
+    const appFoot1El = document.getElementById('appReceiptFooter1');
+    const appFoot2El = document.getElementById('appReceiptFooter2');
+    const appSaveBtn = document.getElementById('appSaveReceiptBtn');
+
+    if (!appSaveBtn) return;
+
+    const savedConfig = JSON.parse(localStorage.getItem('receiptConfig')) || {
+      logo: 'WAITER APP', address: '123 Food Street, Tasty City',
+      phone: '012-3456789', taxRate: 0,
+      footer1: 'THANK YOU FOR DINING WITH US!', footer2: 'Please pay at the cashier counter.'
+    };
+
+    if (appLogoEl) appLogoEl.value = savedConfig.logo;
+    if (appAddrEl) appAddrEl.value = savedConfig.address;
+    if (appPhoneEl) appPhoneEl.value = savedConfig.phone;
+    if (appTaxEl) appTaxEl.value = savedConfig.taxRate;
+    if (appFoot1El) appFoot1El.value = savedConfig.footer1;
+    if (appFoot2El) appFoot2El.value = savedConfig.footer2;
+
+    appSaveBtn.addEventListener('click', () => {
+      const config = {
+        logo: (appLogoEl?.value || '').trim() || 'WAITER APP',
+        address: (appAddrEl?.value || '').trim() || '123 Food Street, Tasty City',
+        phone: (appPhoneEl?.value || '').trim() || '012-3456789',
+        taxRate: parseFloat(appTaxEl?.value) || 0,
+        footer1: (appFoot1El?.value || '').trim() || 'THANK YOU FOR DINING WITH US!',
+        footer2: (appFoot2El?.value || '').trim() || 'Please pay at the cashier counter.'
+      };
+      localStorage.setItem('receiptConfig', JSON.stringify(config));
+      showToast('✅ Receipt layout saved!');
+    });
   }
 
   function toggleLikeItem(itemId, btn) {
@@ -1083,7 +1192,7 @@
         </button>` : '';
 
       const editNoteBtn = `
-        <button class="order-item-edit-note" data-cart-id="${item.cartItemId}" data-action="edit-note" title="Add/Edit Note" style="color: ${item.note ? 'var(--accent)' : 'var(--text-secondary)'}">
+        <button class="order-item-edit-note ${item.note ? 'has-note' : ''}" data-cart-id="${item.cartItemId}" data-action="edit-note" title="Add/Edit Note">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </button>`;
 
@@ -1428,34 +1537,46 @@
     els.orderDetailBody.innerHTML = html;
     els.orderDetailModal.classList.remove('hidden');
   }
+  function printReceipt(order, isPreview = false) {
+    if (!order || !order.items || order.items.length === 0) return;
 
-  function printReceipt(order) {
-    if (!order) return;
+    // Load dynamic receipt config from localStorage
+    const receiptConfig = JSON.parse(localStorage.getItem('receiptConfig')) || {
+      logo: 'WAITER APP',
+      address: '123 Food Street, Tasty City',
+      phone: '012-3456789',
+      taxRate: 0,
+      footer1: 'THANK YOU FOR DINING WITH US!',
+      footer2: 'Please pay at the cashier counter.'
+    };
 
-    const d = new Date(order.timestamp);
-    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const timeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    // Calculate tax and grand total
+    const taxRate = parseFloat(receiptConfig.taxRate) || 0;
+    const subtotal = order.totalPrice;
+    const taxAmount = subtotal * (taxRate / 100);
+    const grandTotal = subtotal + taxAmount;
 
-    let itemsHtml = order.items.map((item) => {
-      let modText = item.modifiers && item.modifiers.length > 0 
+    let itemsHtml = '';
+    order.items.forEach(item => {
+      const addonHtml = (item.modifiers && item.modifiers.length > 0) 
         ? `<div class="receipt-item-addon">+ ${item.modifiers.map(m => m.name).join(', ')}</div>` 
         : '';
-      let noteText = item.note 
+      const noteHtml = item.note 
         ? `<div class="receipt-item-note">* Note: ${item.note}</div>` 
         : '';
       
-      return `
+      itemsHtml += `
         <div class="receipt-item-row">
           <div class="receipt-item-desc">
             <span class="receipt-item-name">${item.name}</span>
-            ${modText}
-            ${noteText}
+            ${addonHtml}
+            ${noteHtml}
           </div>
           <div class="receipt-item-qty">${item.qty}</div>
           <div class="receipt-item-price">${(item.price * item.qty).toFixed(2)}</div>
         </div>
       `;
-    }).join('');
+    });
 
     const receiptHtml = `
       <!DOCTYPE html>
@@ -1465,133 +1586,125 @@
         <style>
           body {
             font-family: 'Courier New', Courier, monospace;
-            width: 80mm;
-            margin: 0 auto;
-            padding: 10px;
+            font-size: 14px;
             color: #000;
             background: #fff;
+            margin: 0;
+            padding: 20px;
+            max-width: 350px;
+            margin: 0 auto;
+          }
+          .receipt-header {
+            text-align: center;
+            margin-bottom: 20px;
+          }
+          .receipt-logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+          }
+          .receipt-info {
             font-size: 12px;
-            line-height: 1.4;
-          }
-          .text-center { text-align: center; }
-          .bold { font-weight: bold; }
-          .header {
-            margin-bottom: 15px;
-          }
-          .brand {
-            font-size: 18px;
-            margin-bottom: 4px;
-          }
-          .divider {
-            border-bottom: 1px dashed #000;
-            margin: 8px 0;
-          }
-          .meta-row {
-            display: flex;
-            justify-content: space-between;
             margin-bottom: 3px;
+          }
+          .receipt-divider {
+            border-top: 1px dashed #000;
+            margin: 15px 0;
           }
           .receipt-item-row {
             display: flex;
-            margin-bottom: 6px;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            align-items: flex-start;
           }
           .receipt-item-desc {
             flex: 1;
-            padding-right: 5px;
+            padding-right: 10px;
           }
           .receipt-item-name {
             font-weight: bold;
           }
           .receipt-item-addon, .receipt-item-note {
-            font-size: 10px;
-            margin-left: 10px;
+            font-size: 11px;
+            margin-top: 2px;
+            color: #444;
           }
           .receipt-item-qty {
-            width: 25px;
+            width: 30px;
             text-align: center;
           }
           .receipt-item-price {
             width: 60px;
             text-align: right;
           }
-          .total-section {
-            margin-top: 10px;
-            font-size: 14px;
-          }
-          .total-row {
+          .receipt-total-row {
             display: flex;
             justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+          }
+          .receipt-total-row.grand-total {
             font-weight: bold;
-            margin-top: 4px;
+            font-size: 18px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #000;
           }
-          .footer {
-            margin-top: 20px;
-            font-size: 10px;
+          .receipt-footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
           }
-          @media print {
-            body { width: 100%; margin: 0; padding: 0; }
-          }
+          .bold { font-weight: bold; }
         </style>
       </head>
       <body>
-        <div class="header text-center">
-          <div class="brand bold">SMART MENU</div>
-          <div>Take Order, Save Time</div>
-          <div class="divider"></div>
-          <div class="meta-row">
-            <span>Table: <strong>${order.table}</strong></span>
-            <span>Type: <strong>${order.dineType || 'Dine-in'}</strong></span>
-          </div>
-          <div class="meta-row">
-            <span>Date: ${dateStr}</span>
-            <span>Time: ${timeStr}</span>
-          </div>
-          <div class="meta-row">
-            <span>Order ID: ${order.id.toString().slice(-6)}</span>
-          </div>
+        <div class="receipt-header">
+          <div class="receipt-logo">${receiptConfig.logo}</div>
+          <div class="receipt-info">${receiptConfig.address}</div>
+          <div class="receipt-info">Tel: ${receiptConfig.phone}</div>
+          <div class="receipt-divider"></div>
+          <div class="receipt-info bold" style="font-size: 16px;">TABLE: ${order.table}</div>
+          <div class="receipt-info">Order ID: #${order.id}</div>
+          <div class="receipt-info">Date: ${new Date(order.timestamp).toLocaleString()}</div>
+          <div class="receipt-info">Type: ${order.dineType || 'Dine-in'}</div>
         </div>
 
-        <div class="divider"></div>
-
-        <div class="items-section">
+        <div class="receipt-items">
           <div class="receipt-item-row bold">
             <div class="receipt-item-desc">Item Description</div>
             <div class="receipt-item-qty">Qty</div>
             <div class="receipt-item-price">Total</div>
           </div>
-          <div class="divider"></div>
+          <div class="receipt-divider"></div>
           ${itemsHtml}
         </div>
 
-        <div class="divider"></div>
+        <div class="receipt-divider"></div>
 
-        <div class="total-section">
-          <div class="total-row">
-            <span>TOTAL ITEMS</span>
-            <span>${order.totalQty}</span>
+        <div class="receipt-totals">
+          <div class="receipt-total-row">
+            <span>Subtotal:</span>
+            <span>RM ${subtotal.toFixed(2)}</span>
           </div>
-          <div class="total-row" style="font-size: 16px;">
-            <span>TOTAL AMOUNT</span>
-            <span>RM ${order.totalPrice.toFixed(2)}</span>
+          <div class="receipt-total-row">
+            <span>Tax (${taxRate}%):</span>
+            <span>RM ${taxAmount.toFixed(2)}</span>
+          </div>
+          <div class="receipt-total-row grand-total">
+            <span>TOTAL:</span>
+            <span>RM ${grandTotal.toFixed(2)}</span>
           </div>
         </div>
 
-        ${order.note ? `
-          <div class="divider"></div>
-          <div style="font-size: 10px;">
-            <strong>General Note:</strong><br>
-            ${order.note}
-          </div>
-        ` : ''}
-
-        <div class="divider"></div>
-
-        <div class="footer text-center">
-          <div class="bold">THANK YOU FOR DINING WITH US!</div>
-          <div>Please pay at the cashier counter.</div>
+        <div class="receipt-footer">
+          <div class="bold">${receiptConfig.footer1}</div>
+          <div>${receiptConfig.footer2}</div>
           <div style="margin-top: 5px; font-size: 8px; color: #555;">Smart Menu PWA</div>
         </div>
 
+        ${isPreview ? '' : `
         <script>
           window.onload = function() {
             window.print();
@@ -1599,7 +1712,8 @@
               window.close();
             }, 500);
           };
-        <\/script>
+        </script>
+        `}
       </body>
       </html>
     `;
@@ -1610,7 +1724,7 @@
       printWindow.document.write(receiptHtml);
       printWindow.document.close();
     } else {
-      showToast('⚠️ Pop-up blocked! Please allow popups to print receipts.');
+      showToast('⚠️ Pop-up blocked! Please allow popups to view/print receipts.');
     }
   }
 
@@ -2596,11 +2710,17 @@
 
     // Order detail modal close
     $('#closeOrderDetail').addEventListener('click', () => els.orderDetailModal.classList.add('hidden'));
-    $('#closeOrderDetailBtn').addEventListener('click', () => els.orderDetailModal.classList.add('hidden'));
 
     if (els.printReceiptBtn) {
       els.printReceiptBtn.addEventListener('click', () => {
-        printReceipt(currentlyViewingOrder);
+        printReceipt(currentlyViewingOrder, false);
+      });
+    }
+
+    const previewReceiptBtn = document.getElementById('previewReceiptBtn');
+    if (previewReceiptBtn) {
+      previewReceiptBtn.addEventListener('click', () => {
+        printReceipt(currentlyViewingOrder, true);
       });
     }
 

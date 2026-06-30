@@ -1071,14 +1071,6 @@ textarea:focus {
   padding-top: 20px;
 }
 
-.custom-table-input-wrap label {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
 
 .input-with-btn {
   display: flex;
@@ -1812,10 +1804,19 @@ textarea:focus {
 .order-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
   animation: slideIn 0.2s ease;
+  transition: all var(--transition);
+}
+
+.order-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(231, 160, 30, 0.3);
 }
 
 @keyframes slideIn {
@@ -1831,23 +1832,27 @@ textarea:focus {
 }
 
 .order-item:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
 }
 
 .order-item-controls {
   display: flex;
   align-items: center;
-  gap: 6px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 2px;
+  gap: 4px;
 }
 
 .qty-btn {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: none;
   background: transparent;
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1856,48 +1861,61 @@ textarea:focus {
   transition: all var(--transition);
 }
 
+.qty-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .qty-btn:active {
-  background: var(--accent-bg);
+  background: var(--accent);
   color: #000;
-  border-color: var(--accent);
+  transform: scale(0.9);
 }
 
 .qty-btn.minus {
   color: var(--danger);
-  border-color: rgba(231, 76, 60, 0.3);
+}
+
+.qty-btn.minus:active {
+  background: var(--danger);
+  color: #fff;
 }
 
 .order-item-qty {
   font-size: 0.85rem;
-  font-weight: 600;
-  min-width: 16px;
+  font-weight: 700;
+  min-width: 18px;
   text-align: center;
+  color: var(--text-primary);
 }
 
 .order-item-name {
   flex: 1;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
 }
 
 .order-item-price {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-left: auto;
 }
 
 .order-item-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-left: 10px;
+  gap: 6px;
+  margin-left: 8px;
 }
 
 .order-item-edit-addons {
   background: rgba(231, 160, 30, 0.1);
   border: none;
   color: var(--accent);
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
@@ -1911,12 +1929,53 @@ textarea:focus {
   transform: scale(0.9);
 }
 
+.order-item-edit-note {
+  background: rgba(52, 152, 219, 0.1); /* light blue */
+  border: none;
+  color: var(--text-secondary);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.order-item-edit-note.has-note {
+  background: rgba(231, 160, 30, 0.1);
+  color: var(--accent);
+}
+
+.order-item-edit-note:active {
+  background: rgba(52, 152, 219, 0.2);
+  transform: scale(0.9);
+}
+
+.order-item-edit-note.has-note:active {
+  background: rgba(231, 160, 30, 0.2);
+}
+
 .order-item-delete {
-  display: none !important;
+  background: rgba(239, 68, 68, 0.1);
+  border: none;
+  color: var(--danger);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.order-item-delete:hover {
+  background: rgba(239, 68, 68, 0.2);
 }
 
 .order-item-delete:active {
-  background: rgba(231, 76, 60, 0.2);
   transform: scale(0.9);
 }
 
@@ -2879,14 +2938,50 @@ textarea:focus {
   color: var(--accent);
 }
 
-.form-group label {
-  display: block;
-  font-size: var(--fs-caption);
-  font-weight: var(--fw-semibold);
-  margin-bottom: 6px;
+/* Premium Outlined Floating Label Form Groups */
+.form-group:not(:has(input[type="checkbox"])):not(:has(input[type="radio"])):not(:has(input[type="file"])) {
+  position: relative;
+  margin-bottom: 24px;
+  margin-top: 12px;
+}
+
+.form-group:not(:has(input[type="checkbox"])):not(:has(input[type="radio"])):not(:has(input[type="file"])) label {
+  position: absolute;
+  left: 12px;
+  top: 14px;
+  padding: 0 6px;
+  background: transparent;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+  font-weight: var(--fw-medium);
+  transition: all var(--transition);
+  pointer-events: none;
+  z-index: 1;
+  display: inline-block;
+  margin: 0;
+  text-transform: none;
+  letter-spacing: normal;
+  border-radius: var(--radius-sm);
+}
+
+/* Floating labels for inputs, textareas, and selects */
+.form-group:not(:has(input[type="checkbox"])):not(:has(input[type="radio"])):not(:has(input[type="file"])):has(input:focus) label,
+.form-group:not(:has(input[type="checkbox"])):not(:has(input[type="radio"])):not(:has(input[type="file"])):has(input:not(:placeholder-shown)) label,
+.form-group:not(:has(input[type="checkbox"])):not(:has(input[type="radio"])):not(:has(input[type="file"])):has(textarea:focus) label,
+.form-group:not(:has(input[type="checkbox"])):not(:has(input[type="radio"])):not(:has(input[type="file"])):has(textarea:not(:placeholder-shown)) label,
+.form-group:not(:has(input[type="checkbox"])):not(:has(input[type="radio"])):not(:has(input[type="file"])):has(select) label {
+  top: -10px;
+  left: 10px;
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: var(--fw-bold);
+  /* Use bg-secondary to perfectly match the modal/surface card background for contrast */
+  background: var(--bg-secondary); 
+}
+
+/* Keep select labels standard color when not focused */
+.form-group:not(:has(input[type="checkbox"])):not(:has(input[type="radio"])):not(:has(input[type="file"])):has(select:not(:focus)) label {
+  color: var(--text-secondary);
 }
 
 .dine-type-selector {
@@ -2935,7 +3030,7 @@ textarea:focus {
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 10px 16px;
+  padding: 14px 16px;
   background: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -2961,15 +3056,23 @@ textarea:focus {
   border-radius: var(--radius-md);
 }
 
-.addon-management-list:empty {
-  display: none !important;
+/* Add placeholder transition and hide when not focused */
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: transparent;
+  transition: color var(--transition);
+}
+
+.form-group input:focus::placeholder,
+.form-group textarea:focus::placeholder {
+  color: var(--text-muted);
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
   border-color: var(--accent);
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--bg-secondary);
   box-shadow: 0 0 0 4px var(--accent-glow);
 }
 
@@ -4028,6 +4131,10 @@ textarea:focus {
   background: rgba(255, 255, 255, 0.05);
 }
 
+.addon-management-list:empty {
+  display: none !important;
+}
+
 .addon-management-list {
   scrollbar-width: thin;
 }
@@ -4690,5 +4797,366 @@ textarea:focus {
 
 [data-theme="light"] .nav-btn.active svg {
   color: #000000 !important; /* High-contrast solid black icon */
+}
+
+/* ==========================================================================
+   ADMIN PAGES - IN-APP DASHBOARD COMPONENTS
+   Premium design system integrated with main app theme variables
+   ========================================================================== */
+
+.admin-page-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 32px;
+}
+
+/* ---- Stat Cards Grid ---- */
+.app-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.app-stat-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.app-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--accent-bg);
+  border-radius: 0 4px 4px 0;
+}
+
+.app-stat-icon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.app-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.app-stat-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* ---- Chart Wrappers ---- */
+.app-chart-wrapper {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ---- Card Sections ---- */
+.app-card-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.app-section-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+/* ---- Alert List ---- */
+.app-alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.app-alert-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+}
+
+.app-alert-item.danger {
+  border-left: 4px solid var(--danger);
+  background: rgba(239, 68, 68, 0.04);
+}
+
+.app-alert-item.warning {
+  border-left: 4px solid var(--warning);
+  background: rgba(251, 192, 45, 0.04);
+}
+
+.app-alert-item div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.app-alert-item strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.app-alert-item span {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.app-alert-value {
+  font-weight: 800 !important;
+  font-size: 0.95rem !important;
+}
+
+.app-alert-value.danger {
+  color: var(--danger) !important;
+}
+
+.app-alert-value.warning {
+  color: var(--warning) !important;
+}
+
+/* ---- Data Tables ---- */
+.app-table-wrap {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
+}
+
+.app-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 380px;
+}
+
+.app-admin-table th {
+  padding: 14px 18px;
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .app-admin-table th {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.app-admin-table td {
+  padding: 14px 18px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.app-admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.app-admin-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.app-admin-table tbody tr:active {
+  background: var(--accent-glow);
+}
+
+/* ---- Badges ---- */
+.app-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.app-badge.success {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--success);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.app-badge.warning {
+  background: rgba(251, 192, 45, 0.12);
+  color: var(--warning);
+  border: 1px solid rgba(251, 192, 45, 0.25);
+}
+
+.app-badge.danger {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--danger);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.app-badge.info {
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--info);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+/* ---- Progress Bars ---- */
+.app-progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.app-progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.app-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-progress-header span:first-child {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.app-progress-count {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.app-progress-bar {
+  height: 8px;
+  background: var(--bg-primary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.app-progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* ---- Add / Delete Buttons ---- */
+.app-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent-bg);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.app-add-btn:active {
+  transform: scale(0.96);
+}
+
+.app-del-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.app-del-btn:active {
+  transform: scale(0.9);
+  background: rgba(239, 68, 68, 0.2);
+}
+
+/* Admin page form inputs & selects */
+.admin-page-content input[type="text"],
+.admin-page-content input[type="number"],
+.admin-page-content input[type="date"],
+.admin-page-content select {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.admin-page-content input:focus,
+.admin-page-content select:focus {
+  border-color: var(--accent);
+}
+
+/* Empty state */
+.app-empty-state {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-style: italic;
 }
 

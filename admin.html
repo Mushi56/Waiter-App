@@ -25,6 +25,7 @@
       <a class="nav-item" data-target="payments"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> Payments</a>
       <a class="nav-item" data-target="reports"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> Reports</a>
       <a class="nav-item" data-target="promotions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> Promotions</a>
+      <a class="nav-item" data-target="receipts"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 2h16l-1 20H5L4 2z"/><path d="M6 14h12"/><path d="M6 18h12"/><path d="M6 10h12"/><path d="M6 6h12"/></svg> Receipt Settings</a>
       <a class="nav-item" data-target="settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Settings</a>
     </nav>
     <div class="sidebar-footer">
@@ -273,7 +274,41 @@
         </div>
       </section>
 
-      <!-- 11. Settings -->
+      <!-- 11. Receipt Settings -->
+      <section id="receipts" class="page-section">
+        <h1 class="section-title">Receipt Management</h1>
+        <div class="list-container" style="max-width: 600px; background: var(--bg-card); padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+          <form id="receiptConfigForm" onsubmit="event.preventDefault();">
+            <div style="margin-bottom:20px;">
+              <label style="display:block; margin-bottom:8px; color:var(--text-secondary); font-weight:600;">Restaurant / Logo Name</label>
+              <input type="text" id="receiptHeaderLogo" class="input-control" value="WAITER APP" style="width:100%; padding:10px; border-radius:8px; background:var(--bg-primary); border:1px solid var(--border); color:var(--text-primary);">
+            </div>
+            <div style="margin-bottom:20px;">
+              <label style="display:block; margin-bottom:8px; color:var(--text-secondary); font-weight:600;">Address Line</label>
+              <input type="text" id="receiptHeaderAddress" class="input-control" value="123 Food Street, Tasty City" style="width:100%; padding:10px; border-radius:8px; background:var(--bg-primary); border:1px solid var(--border); color:var(--text-primary);">
+            </div>
+            <div style="margin-bottom:20px;">
+              <label style="display:block; margin-bottom:8px; color:var(--text-secondary); font-weight:600;">Contact Phone</label>
+              <input type="text" id="receiptHeaderPhone" class="input-control" value="012-3456789" style="width:100%; padding:10px; border-radius:8px; background:var(--bg-primary); border:1px solid var(--border); color:var(--text-primary);">
+            </div>
+            <div style="margin-bottom:20px;">
+              <label style="display:block; margin-bottom:8px; color:var(--text-secondary); font-weight:600;">Tax Rate (%)</label>
+              <input type="number" id="receiptTaxRate" class="input-control" value="0" min="0" max="100" step="0.1" style="width:100%; padding:10px; border-radius:8px; background:var(--bg-primary); border:1px solid var(--border); color:var(--text-primary);">
+            </div>
+            <div style="margin-bottom:20px;">
+              <label style="display:block; margin-bottom:8px; color:var(--text-secondary); font-weight:600;">Footer Line 1 (Greeting)</label>
+              <input type="text" id="receiptFooterMessage1" class="input-control" value="THANK YOU FOR DINING WITH US!" style="width:100%; padding:10px; border-radius:8px; background:var(--bg-primary); border:1px solid var(--border); color:var(--text-primary);">
+            </div>
+            <div style="margin-bottom:20px;">
+              <label style="display:block; margin-bottom:8px; color:var(--text-secondary); font-weight:600;">Footer Line 2 (Payment Instruction)</label>
+              <input type="text" id="receiptFooterMessage2" class="input-control" value="Please pay at the cashier counter." style="width:100%; padding:10px; border-radius:8px; background:var(--bg-primary); border:1px solid var(--border); color:var(--text-primary);">
+            </div>
+            <button type="button" id="saveReceiptConfigBtn" class="btn-primary" style="padding: 12px 24px; border:none; background:var(--accent-bg); color:#000; font-weight:bold; border-radius:8px; cursor:pointer;">Save Receipt Layout</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- 12. Settings -->
       <section id="settings" class="page-section">
         <h1 class="section-title">System Settings</h1>
         <div class="list-container" style="max-width: 600px;">
