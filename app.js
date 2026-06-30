@@ -327,6 +327,9 @@
   let menuItems = [];
   let currentOrder = []; // { id, name, price, qty }
   let currentDineType = 'Dine-in';
+  let currentDiscountValue = 0;
+  let currentDiscountType = 'percent'; // 'percent' or 'currency'
+  let activeEditCartItemId = null;
   let currentlyViewingOrder = null;
   let orders = [];
   let tableNumber = '';
@@ -383,6 +386,9 @@
     orderItems: $('#orderItems'),
     totalItemsCount: $('#totalItemsCount'),
     totalAmount: $('#totalAmount'),
+    discountInput: $('#discountInput'),
+    discountPercentBtn: $('#discountPercentBtn'),
+    discountCurrencyBtn: $('#discountCurrencyBtn'),
     orderDetailModal: $('#orderDetailModal'),
     orderDetailTitle: $('#orderDetailTitle'),
     orderDetailBody: $('#orderDetailBody'),
@@ -1180,29 +1186,45 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>`;
 
+      const isExpanded = item.cartItemId === activeEditCartItemId;
+      const expandedClass = isExpanded ? 'expanded' : '';
+
       return `
-        <div class="order-item">
-          <div class="order-item-controls">
-            <button class="qty-btn minus" data-cart-id="${item.cartItemId}" data-action="dec">−</button>
-            <span class="order-item-qty">${item.qty}</span>
-            <button class="qty-btn" data-cart-id="${item.cartItemId}" data-action="inc">+</button>
+        <div class="order-item ${expandedClass}" data-cart-id="${item.cartItemId}">
+          <div class="order-item-info">
+            <span class="order-item-name"><span class="order-item-qty-static">${item.qty}x</span> ${item.name}${modText}${noteText}</span>
+            <span class="order-item-price">RM ${(item.price * item.qty).toFixed(2)}</span>
           </div>
-          <span class="order-item-name">${item.name}${modText}${noteText}</span>
-          <span class="order-item-price">RM ${(item.price * item.qty).toFixed(2)}</span>
-          <div class="order-item-actions">
-            ${editAddonBtn}
+          <div class="order-item-edit-panel">
+            <div class="order-item-controls">
+              <button class="qty-btn minus" data-cart-id="${item.cartItemId}" data-action="dec">−</button>
+              <span class="order-item-qty">${item.qty}</span>
+              <button class="qty-btn" data-cart-id="${item.cartItemId}" data-action="inc">+</button>
+            </div>
+            <div class="order-item-actions">
+              ${editAddonBtn}
+            </div>
           </div>
         </div>`;
     }).join('');
 
+    const discountAmount = currentDiscountType === 'percent'
+      ? totalPrice * (currentDiscountValue / 100)
+      : currentDiscountValue;
+    const finalPrice = Math.max(0, totalPrice - discountAmount);
+
     els.totalItemsCount.textContent = totalQty;
-    els.totalAmount.textContent = `RM ${totalPrice.toFixed(2)}`;
+    if (discountAmount > 0) {
+      els.totalAmount.innerHTML = `<span style="font-size:0.75rem; text-decoration:line-through; opacity:0.6; margin-right:4px;">RM ${totalPrice.toFixed(2)}</span> RM ${finalPrice.toFixed(2)}`;
+    } else {
+      els.totalAmount.textContent = `RM ${totalPrice.toFixed(2)}`;
+    }
     if (els.headerCartBadge) {
       els.headerCartBadge.textContent = totalQty;
       els.headerCartBadge.classList.toggle('hidden', totalQty === 0);
     }
     if (els.cartBadge) els.cartBadge.textContent = totalQty;
-    if (els.cartTotalBtn) els.cartTotalBtn.textContent = `RM ${totalPrice.toFixed(2)}`;
+    if (els.cartTotalBtn) els.cartTotalBtn.textContent = `RM ${finalPrice.toFixed(2)}`;
   }
 
   // --- Add to Order ---
@@ -1386,7 +1408,7 @@
 
   // --- Save Order ---
   function saveOrder() {
-    if (!tableNumber) {
+    if (currentDineType !== 'Take Away' && !tableNumber) {
       showToast('⚠️ Please select a table first!');
       if (els.tableSelectModal) els.tableSelectModal.classList.remove('hidden');
       return;
@@ -1399,14 +1421,28 @@
     const totalQty = currentOrder.reduce((s, i) => s + i.qty, 0);
     const totalPrice = currentOrder.reduce((s, i) => s + i.price * i.qty, 0);
 
+    const today = new Date().toISOString().split('T')[0];
+    const todayOrders = orders.filter(o => o.timestamp && o.timestamp.startsWith(today));
+    const orderNumber = String(todayOrders.length + 1).padStart(4, '0');
+
+    const discountAmount = currentDiscountType === 'percent'
+      ? totalPrice * (currentDiscountValue / 100)
+      : currentDiscountValue;
+    const finalPrice = Math.max(0, totalPrice - discountAmount);
+
     const order = {
       id: Date.now(),
-      table: tableNumber,
+      orderNumber: orderNumber,
+      table: currentDineType === 'Take Away' ? 'Takeaway' : tableNumber,
       dineType: currentDineType,
       items: [...currentOrder],
       note: els.orderNote ? els.orderNote.value.trim() : '',
       totalQty,
-      totalPrice,
+      totalPrice, // Subtotal
+      discountValue: currentDiscountValue,
+      discountType: currentDiscountType,
+      discountAmount: discountAmount,
+      finalPrice: finalPrice,
       timestamp: new Date().toISOString(),
     };
 
@@ -1414,6 +1450,8 @@
     saveOrders();
 
     currentOrder = [];
+    currentDiscountValue = 0;
+    if (els.discountInput) els.discountInput.value = '';
     if (els.orderNote) els.orderNote.value = '';
     changeTable(true); // Silent reset for new order
     renderOrder();
@@ -1463,7 +1501,7 @@
           </svg>
         </div>
         <div class="history-info">
-          <div class="history-table">Table ${order.table} <span style="font-size:0.65rem; padding:2px 6px; border-radius:10px; background:rgba(255,255,255,0.05); margin-left:4px; border:1px solid rgba(255,255,255,0.1); color:var(--text-secondary);">${order.dineType || 'Dine-in'}</span></div>
+          <div class="history-table">${order.table === 'Takeaway' ? 'Takeaway' : 'Table ' + order.table}</div>
           <div class="history-meta">${dateStr} • ${timeStr}<br>Items: ${order.totalQty} • RM ${order.totalPrice.toFixed(2)}</div>
         </div>
         <div class="history-actions">
@@ -1499,12 +1537,25 @@
       let noteText = item.note ? `<br><small style="color:var(--accent);font-size:0.75rem;font-style:italic;">Note: ${item.note}</small>` : '';
       html += `<div class="detail-row"><span>${item.name}${modText}${noteText}</span><span>${item.qty} × RM ${item.price.toFixed(2)} = RM ${(item.qty * item.price).toFixed(2)}</span></div>`;
     });
-    html += `<div class="detail-row detail-total"><span>Total</span><span>RM ${order.totalPrice.toFixed(2)}</span></div>`;
+    const subtotal = order.totalPrice;
+    const discountAmount = order.discountAmount || 0;
+    const finalPrice = order.finalPrice !== undefined ? order.finalPrice : (subtotal - discountAmount);
+
+    if (discountAmount > 0) {
+      html += `<div class="detail-row"><span>Subtotal</span><span>RM ${subtotal.toFixed(2)}</span></div>`;
+      html += `<div class="detail-row" style="color:var(--accent);"><span>Discount (${order.discountType === 'percent' ? order.discountValue + '%' : 'RM ' + order.discountValue})</span><span>-RM ${discountAmount.toFixed(2)}</span></div>`;
+      html += `<div class="detail-row detail-total"><span>Total</span><span>RM ${finalPrice.toFixed(2)}</span></div>`;
+    } else {
+      html += `<div class="detail-row detail-total"><span>Total</span><span>RM ${subtotal.toFixed(2)}</span></div>`;
+    }
     els.orderDetailBody.innerHTML = html;
     els.orderDetailModal.classList.remove('hidden');
   }
   function printReceipt(order, isPreview = false) {
     if (!order || !order.items || order.items.length === 0) return;
+    const hasPackaging = order.items.some(item => 
+      item.modifiers && item.modifiers.some(m => m.name.toLowerCase().includes('packaging') || m.name.toLowerCase().includes('takeaway'))
+    );
 
     // Load dynamic receipt config from localStorage
     const receiptConfig = JSON.parse(localStorage.getItem('receiptConfig')) || {
@@ -1519,8 +1570,10 @@
     // Calculate tax and grand total
     const taxRate = parseFloat(receiptConfig.taxRate) || 0;
     const subtotal = order.totalPrice;
-    const taxAmount = subtotal * (taxRate / 100);
-    const grandTotal = subtotal + taxAmount;
+    const discountAmount = order.discountAmount || 0;
+    const subtotalAfterDiscount = subtotal - discountAmount;
+    const taxAmount = subtotalAfterDiscount * (taxRate / 100);
+    const grandTotal = subtotalAfterDiscount + taxAmount;
 
     let itemsHtml = '';
     order.items.forEach(item => {
@@ -1549,142 +1602,320 @@
       <html>
       <head>
         <title>Receipt - Table ${order.table}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
         <style>
+          :root {
+            --primary: #E7A01E;
+            --primary-dark: #A66E0D;
+          }
           body {
+            background: #111318;
+            color: #333;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+          }
+          /* Actions Header Bar */
+          .actions-bar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 16px;
+            background: #181a20;
+            width: 100%;
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+          }
+          .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+          }
+          .btn-print {
+            background: #2ecc71;
+          }
+          .btn-pdf {
+            background: #e74c3c;
+          }
+          .btn-jpg {
+            background: #3498db;
+          }
+          .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            filter: brightness(1.1);
+          }
+          .btn-action:active {
+            transform: translateY(0);
+          }
+          /* Receipt Container */
+          .receipt-window-container {
+            padding: 30px 15px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            box-sizing: border-box;
+          }
+          /* Premium Paper slip */
+          .receipt-paper {
+            background: #FCFCF9;
+            color: #1A1A1A;
+            width: 100%;
+            max-width: 360px;
+            padding: 35px 24px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+            border-radius: 2px;
+            position: relative;
             font-family: 'Courier New', Courier, monospace;
             font-size: 14px;
-            color: #000;
-            background: #fff;
-            margin: 0;
-            padding: 20px;
-            max-width: 350px;
-            margin: 0 auto;
+            box-sizing: border-box;
+          }
+          /* Serrated paper edge effect at the bottom */
+          .receipt-paper::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(-45deg, transparent 4px, #FCFCF9 0), linear-gradient(45deg, transparent 4px, #FCFCF9 0);
+            background-size: 8px 8px;
           }
           .receipt-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
           }
           .receipt-logo {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 5px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: #000;
+            margin-bottom: 6px;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
           }
           .receipt-info {
             font-size: 12px;
-            margin-bottom: 3px;
+            color: #555;
+            margin-bottom: 4px;
           }
           .receipt-divider {
-            border-top: 1px dashed #000;
-            margin: 15px 0;
+            border-top: 1px dashed #bbb;
+            margin: 16px 0;
           }
           .receipt-item-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             align-items: flex-start;
           }
           .receipt-item-desc {
             flex: 1;
-            padding-right: 10px;
+            padding-right: 12px;
           }
           .receipt-item-name {
             font-weight: bold;
           }
-          .receipt-item-addon, .receipt-item-note {
+          .receipt-item-addon {
             font-size: 11px;
+            color: #555;
             margin-top: 2px;
-            color: #444;
+          }
+          .receipt-item-note {
+            font-size: 11px;
+            color: #d35400;
+            font-style: italic;
+            margin-top: 2px;
           }
           .receipt-item-qty {
-            width: 30px;
+            width: 35px;
             text-align: center;
           }
           .receipt-item-price {
-            width: 60px;
+            width: 70px;
             text-align: right;
           }
           .receipt-total-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 14px;
+            margin-bottom: 6px;
           }
           .receipt-total-row.grand-total {
             font-weight: bold;
-            font-size: 18px;
-            margin-top: 10px;
-            padding-top: 10px;
+            font-size: 19px;
+            margin-top: 12px;
+            padding-top: 12px;
             border-top: 1px solid #000;
           }
           .receipt-footer {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 32px;
             font-size: 12px;
+            color: #444;
           }
           .bold { font-weight: bold; }
+          /* Print overrides */
+          @media print {
+            .actions-bar {
+              display: none !important;
+            }
+            body {
+              background: #fff;
+              padding: 0;
+            }
+            .receipt-paper {
+              box-shadow: none;
+              max-width: 100%;
+              padding: 10px;
+            }
+            .receipt-paper::after {
+              display: none;
+            }
+          }
         </style>
       </head>
       <body>
-        <div class="receipt-header">
-          <div class="receipt-logo">${receiptConfig.logo}</div>
-          <div class="receipt-info">${receiptConfig.address}</div>
-          <div class="receipt-info">Tel: ${receiptConfig.phone}</div>
-          <div class="receipt-divider"></div>
-          <div class="receipt-info bold" style="font-size: 16px;">TABLE: ${order.table}</div>
-          <div class="receipt-info">Order ID: #${order.id}</div>
-          <div class="receipt-info">Date: ${new Date(order.timestamp).toLocaleString()}</div>
-          <div class="receipt-info">Type: ${order.dineType || 'Dine-in'}</div>
+        <div class="actions-bar">
+          <button class="btn-action btn-print" onclick="window.print()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            Print
+          </button>
+          <button class="btn-action btn-pdf" id="btnPdf">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            Save PDF
+          </button>
+          <button class="btn-action btn-jpg" id="btnJpg">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            Save JPG
+          </button>
         </div>
 
-        <div class="receipt-items">
-          <div class="receipt-item-row bold">
-            <div class="receipt-item-desc">Item Description</div>
-            <div class="receipt-item-qty">Qty</div>
-            <div class="receipt-item-price">Total</div>
+        <div class="receipt-window-container">
+          <div class="receipt-paper" id="receiptPaper">
+            <div class="receipt-header">
+              <div class="receipt-logo">${receiptConfig.logo}</div>
+              <div class="receipt-info">${receiptConfig.address}</div>
+              <div class="receipt-info">Tel: ${receiptConfig.phone}</div>
+              <div class="receipt-divider"></div>
+              <div class="receipt-info bold" style="font-size: 16px;">ORDER #: ${order.orderNumber || '----'}</div>
+              ${order.table === 'Takeaway' || hasPackaging ? `<div class="receipt-info bold" style="font-size: 16px; color: var(--primary);">TAKEAWAY</div>` : ''}
+              ${order.table === 'Takeaway' ? '' : `<div class="receipt-info bold">TABLE: ${order.table}</div>`}
+              <div class="receipt-info">Order Ref: #${order.id}</div>
+              <div class="receipt-info">Date: ${new Date(order.timestamp).toLocaleString()}</div>
+              <div class="receipt-info">Type: ${order.dineType || 'Dine-in'}</div>
+            </div>
+
+            <div class="receipt-items">
+              <div class="receipt-item-row bold">
+                <div class="receipt-item-desc">Item Description</div>
+                <div class="receipt-item-qty">Qty</div>
+                <div class="receipt-item-price">Total</div>
+              </div>
+              <div class="receipt-divider"></div>
+              ${itemsHtml}
+            </div>
+
+            <div class="receipt-divider"></div>
+
+            <div class="receipt-totals">
+              <div class="receipt-total-row">
+                <span>Subtotal:</span>
+                <span>RM ${subtotal.toFixed(2)}</span>
+              </div>
+              ${discountAmount > 0 ? `
+              <div class="receipt-total-row">
+                <span>Discount (${order.discountType === 'percent' ? order.discountValue + '%' : 'RM ' + order.discountValue}):</span>
+                <span>-RM ${discountAmount.toFixed(2)}</span>
+              </div>
+              ` : ''}
+              <div class="receipt-total-row">
+                <span>Tax (${taxRate}%):</span>
+                <span>RM ${taxAmount.toFixed(2)}</span>
+              </div>
+              <div class="receipt-total-row grand-total">
+                <span>TOTAL:</span>
+                <span>RM ${grandTotal.toFixed(2)}</span>
+              </div>
+            </div>
+
+            <div class="receipt-footer">
+              <div class="bold">${receiptConfig.footer1}</div>
+              <div>${receiptConfig.footer2}</div>
+              <div style="margin-top: 5px; font-size: 8px; color: #888;">Smart Menu PWA</div>
+            </div>
           </div>
-          <div class="receipt-divider"></div>
-          ${itemsHtml}
         </div>
 
-        <div class="receipt-divider"></div>
-
-        <div class="receipt-totals">
-          <div class="receipt-total-row">
-            <span>Subtotal:</span>
-            <span>RM ${subtotal.toFixed(2)}</span>
-          </div>
-          <div class="receipt-total-row">
-            <span>Tax (${taxRate}%):</span>
-            <span>RM ${taxAmount.toFixed(2)}</span>
-          </div>
-          <div class="receipt-total-row grand-total">
-            <span>TOTAL:</span>
-            <span>RM ${grandTotal.toFixed(2)}</span>
-          </div>
-        </div>
-
-        <div class="receipt-footer">
-          <div class="bold">${receiptConfig.footer1}</div>
-          <div>${receiptConfig.footer2}</div>
-          <div style="margin-top: 5px; font-size: 8px; color: #555;">Smart Menu PWA</div>
-        </div>
-
-        ${isPreview ? '' : `
         <script>
           window.onload = function() {
-            window.print();
-            setTimeout(function() {
-              window.close();
-            }, 500);
+            // Auto print and close if not preview mode
+            if (!${isPreview}) {
+              window.print();
+              setTimeout(function() {
+                window.close();
+              }, 500);
+            }
+
+            // Save PDF
+            document.getElementById('btnPdf').onclick = function() {
+              const { jsPDF } = window.jspdf;
+              const element = document.getElementById('receiptPaper');
+              
+              // Scale coordinates for PDF container
+              const width = element.offsetWidth;
+              const height = element.offsetHeight + 10;
+
+              html2canvas(element, { scale: 2.5, useCORS: true }).then(canvas => {
+                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                const pdf = new jsPDF({
+                  orientation: 'portrait',
+                  unit: 'px',
+                  format: [width, height]
+                });
+                pdf.addImage(imgData, 'JPEG', 0, 0, width, height);
+                pdf.save('Receipt_Table_${order.table}_${order.id}.pdf');
+              });
+            };
+
+            // Save JPG
+            document.getElementById('btnJpg').onclick = function() {
+              const element = document.getElementById('receiptPaper');
+              html2canvas(element, { scale: 3.0, useCORS: true }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Receipt_Table_${order.table}_${order.id}.jpg';
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.click();
+              });
+            };
           };
         </script>
-        `}
       </body>
       </html>
     `;
 
-    const printWindow = window.open('', '_blank', 'width=450,height=600');
+    const printWindow = window.open('', '_blank', 'width=460,height=700');
     if (printWindow) {
       printWindow.document.open();
       printWindow.document.write(receiptHtml);
@@ -2514,11 +2745,20 @@
     els.orderItems.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-action]');
       if (btn) {
+        e.stopPropagation();
         if (btn.dataset.action === 'edit-addons') {
           openEditAddonModal(btn.dataset.cartId);
         } else {
           changeQty(btn.dataset.cartId, btn.dataset.action);
         }
+        return;
+      }
+
+      const orderItem = e.target.closest('.order-item');
+      if (orderItem) {
+        const cartId = orderItem.dataset.cartId;
+        activeEditCartItemId = (activeEditCartItemId === cartId) ? null : cartId;
+        renderOrder();
       }
     });
 
@@ -2582,6 +2822,38 @@
         currentDineType = btn.dataset.type;
       });
     });
+
+    // Discount Event Listeners
+    if (els.discountInput) {
+      els.discountInput.addEventListener('input', () => {
+        currentDiscountValue = parseFloat(els.discountInput.value) || 0;
+        renderOrder();
+      });
+    }
+
+    if (els.discountPercentBtn && els.discountCurrencyBtn) {
+      els.discountPercentBtn.addEventListener('click', () => {
+        currentDiscountType = 'percent';
+        els.discountPercentBtn.classList.add('active');
+        els.discountPercentBtn.style.background = 'var(--accent)';
+        els.discountPercentBtn.style.color = '#fff';
+        els.discountCurrencyBtn.classList.remove('active');
+        els.discountCurrencyBtn.style.background = 'transparent';
+        els.discountCurrencyBtn.style.color = 'var(--text-secondary)';
+        renderOrder();
+      });
+
+      els.discountCurrencyBtn.addEventListener('click', () => {
+        currentDiscountType = 'currency';
+        els.discountCurrencyBtn.classList.add('active');
+        els.discountCurrencyBtn.style.background = 'var(--accent)';
+        els.discountCurrencyBtn.style.color = '#fff';
+        els.discountPercentBtn.classList.remove('active');
+        els.discountPercentBtn.style.background = 'transparent';
+        els.discountPercentBtn.style.color = 'var(--text-secondary)';
+        renderOrder();
+      });
+    }
 
     // Item detail overlay (customer UX)
     if (els.itemDetailOverlay) {

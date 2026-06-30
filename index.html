@@ -288,9 +288,15 @@
                   </button>
                 </div>
               </div>
-              <div class="form-group">
-                <label>General Order Instructions</label>
-                <textarea id="orderNote" placeholder="e.g. Table is in a hurry, No peanuts for anyone..." rows="2"></textarea>
+              <div class="discount-wrapper" style="margin-top: 15px; margin-bottom: 15px;">
+                <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; font-weight: 600;">Apply Discount</label>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input type="number" id="discountInput" placeholder="0" min="0" step="any" style="flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-tertiary); color: var(--text-primary); font-size: 0.9rem;" />
+                  <div class="discount-type-selector" style="display: flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--bg-tertiary);">
+                    <button type="button" id="discountPercentBtn" class="discount-type-btn active" data-type="percent" style="padding: 8px 12px; border: none; background: var(--accent); color: #fff; cursor: pointer; font-size: 0.85rem; font-weight: 600; outline: none;">%</button>
+                    <button type="button" id="discountCurrencyBtn" class="discount-type-btn" data-type="currency" style="padding: 8px 12px; border: none; background: transparent; color: var(--text-secondary); cursor: pointer; font-size: 0.85rem; font-weight: 600; outline: none;">RM</button>
+                  </div>
+                </div>
               </div>
               <div class="order-footer" style="display: flex; gap: 12px; margin-top: 15px; width: 100%;">
                 <div class="order-summary-compact" id="orderSummary" style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 12px; padding: 10px; height: 54px; box-sizing: border-box;">
