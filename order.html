@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0A0C10">
+  <meta name="description" content="Order food directly from your table - Smart Menu Digital Ordering">
+  <title>Smart Menu - Order Online</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="customer.css">
+</head>
+<body>
+  <div class="customer-app">
+    <!-- Header -->
+    <header class="customer-header">
+      <div class="customer-brand">
+        <div class="logo-box">
+          <svg class="header-logo-svg" width="30" height="30" viewBox="0 0 512 512" fill="none">
+            <rect width="512" height="512" rx="100" fill="#111416"/>
+            <path d="M120 380V180L256 310L392 180V380" stroke="#E7A01E" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M100 140C100 110 120 90 150 90H362C392 90 412 110 412 140V150H100V140Z" fill="#E7A01E"/>
+            <circle cx="256" cy="70" r="15" fill="#E7A01E"/>
+          </svg>
+        </div>
+        <div>
+          <h1 id="restaurantName">Smart Menu</h1>
+          <span class="restaurant-tag" id="restaurantTag">Digital Menu & Ordering</span>
+        </div>
+      </div>
+      <div class="header-table-badge" id="tableBadgeContainer">
+        <span class="table-label">Table</span>
+        <strong id="displayTableNumber">--</strong>
+      </div>
+    </header>
+
+    <!-- Table Assignment Alert if missing -->
+    <div class="table-prompt-banner hidden" id="tablePromptBanner">
+      <span>Please select or enter your table number to start ordering:</span>
+      <div style="display:flex; gap:8px; margin-top:8px;">
+        <input type="text" id="manualTableInput" placeholder="e.g. B4" class="input-control" style="width:100px; text-transform:uppercase;">
+        <button class="btn-accent" id="setTableBtn" style="padding:6px 14px; font-size:0.85rem;">Set Table</button>
+      </div>
+    </div>
+
+    <!-- Active Order Tracker Bar (if active order exists) -->
+    <div class="live-tracker-banner hidden" id="liveTrackerBanner">
+      <div class="tracker-info">
+        <div class="tracker-pulse"></div>
+        <div>
+          <span style="font-size:0.75rem; color:var(--text-secondary);">Active Order #<span id="trackerOrderNum"></span></span>
+          <strong id="trackerStatusText" style="display:block; color:var(--accent);">Preparing in kitchen...</strong>
+        </div>
+      </div>
+      <button class="btn-outline-sm" id="viewTrackerBtn">View Status</button>
+    </div>
+
+    <!-- Category Tabs Carousel -->
+    <nav class="cat-tabs-wrap" id="customerCatTabsWrap">
+      <div class="cat-tabs" id="customerCategoryTabs">
+        <!-- Rendered dynamically -->
+      </div>
+    </nav>
+
+    <!-- Menu Items Grid -->
+    <main class="customer-main">
+      <div class="section-heading">
+        <h2 id="currentCategoryTitle">All Items</h2>
+        <span class="items-count" id="itemsCountBadge">0 items</span>
+      </div>
+
+      <div class="menu-grid" id="customerMenuGrid">
+        <!-- Rendered dynamically -->
+      </div>
+    </main>
+
+    <!-- Floating Cart Bar -->
+    <div class="floating-cart-bar hidden" id="customerCartBar">
+      <div class="cart-bar-left">
+        <div class="cart-bar-count" id="cartBarCount">0</div>
+        <div>
+          <span class="cart-bar-label">Your Order</span>
+          <strong class="cart-bar-total" id="cartBarTotal">RM 0.00</strong>
+        </div>
+      </div>
+      <button class="btn-accent cart-bar-btn" id="openCartBtn">
+        View Cart
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+
+    <!-- Cart / Checkout Drawer -->
+    <div class="modal-overlay hidden" id="customerCartModal">
+      <div class="cart-sheet">
+        <div class="cart-sheet-header">
+          <div>
+            <h3>Your Order</h3>
+            <span style="font-size:0.8rem; color:var(--text-secondary);" id="cartModalTableInfo">Table --</span>
+          </div>
+          <button class="modal-close" id="closeCartBtn">&times;</button>
+        </div>
+        <div class="cart-sheet-body">
+          <div class="order-items-list" id="customerCartItems">
+            <!-- Dynamic Cart Items -->
+          </div>
+
+          <div class="checkout-section">
+            <label class="form-label">Dine-in or Takeaway?</label>
+            <div class="dine-selector">
+              <button class="dine-btn active" data-type="dine-in">Dine In</button>
+              <button class="dine-btn" data-type="takeaway">Takeaway</button>
+            </div>
+
+            <label class="form-label" style="margin-top:14px;">Special Instructions for Kitchen</label>
+            <textarea id="orderSpecialNotes" placeholder="e.g. Less spicy, allergy to peanuts, bring water first..." rows="2" class="notes-textarea"></textarea>
+
+            <div class="cart-summary-box">
+              <div class="summary-line"><span>Subtotal</span><span id="cartSubtotal">RM 0.00</span></div>
+              <div class="summary-line"><span>Tax (<span id="cartTaxRate">6%</span>)</span><span id="cartTax">RM 0.00</span></div>
+              <div class="summary-line total"><span>Total</span><span id="cartTotal">RM 0.00</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="cart-sheet-footer">
+          <button class="btn-accent submit-order-btn" id="submitOrderBtn">
+            <span>Send Order to Kitchen</span>
+            <strong id="btnTotalText">RM 0.00</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Addon / Customizer Modal -->
+    <div class="modal-overlay hidden" id="customerAddonModal">
+      <div class="modal" style="max-width:440px;">
+        <div class="modal-header">
+          <h3 id="custAddonItemName">Customize Item</h3>
+          <button class="modal-close" id="closeCustAddonModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="custAddonGroupsList" style="display:flex; flex-direction:column; gap:14px;"></div>
+          <div style="margin-top:16px;">
+            <label style="font-size:0.8rem; font-weight:600; color:var(--text-secondary); display:block; margin-bottom:6px;">Item Note</label>
+            <input type="text" id="custItemNoteInput" placeholder="e.g. No ice, extra sauce..." class="input-control" style="width:100%;">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-accent" id="confirmCustAddonBtn" style="width:100%; padding:12px;">Add to Order</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Tracker Full Modal -->
+    <div class="modal-overlay hidden" id="orderTrackerModal">
+      <div class="modal" style="max-width:420px; text-align:center;">
+        <div class="modal-header">
+          <h3>Order Status</h3>
+          <button class="modal-close" id="closeTrackerModal">&times;</button>
+        </div>
+        <div class="modal-body" style="padding:24px 16px;">
+          <div class="order-status-visual">
+            <div class="status-icon-circle" id="trackerVisualCircle">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </div>
+            <h2 id="trackerModalStatusTitle" style="margin-top:14px; font-size:1.3rem;">Order Received!</h2>
+            <p id="trackerModalStatusDesc" style="color:var(--text-secondary); font-size:0.9rem;">Your order #<span id="trackerDetailOrderNum"></span> is in queue.</p>
+          </div>
+
+          <div class="tracker-steps">
+            <div class="step-line active" id="step1"><span>1</span> Received</div>
+            <div class="step-line" id="step2"><span>2</span> Kitchen</div>
+            <div class="step-line" id="step3"><span>3</span> Ready</div>
+            <div class="step-line" id="step4"><span>4</span> Served</div>
+          </div>
+
+          <div class="tracker-order-summary" id="trackerOrderItemsList" style="margin-top:20px; text-align:left; max-height:180px; overflow-y:auto;">
+            <!-- Rendered items -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-accent" id="orderMoreBtn" style="width:100%;">Order More Items</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast hidden" id="customerToast">
+      <span id="customerToastMsg"></span>
+    </div>
+  </div>
+
+  <!-- Dependencies -->
+  <script src="node_modules/@supabase/supabase-js/dist/umd/supabase.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="db-service.js"></script>
+  <script src="customer.js"></script>
+</body>
+</html>

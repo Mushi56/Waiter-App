@@ -1,5 +1,5 @@
 // Waiter Helper - Service Worker
-const CACHE_NAME = 'waiter-helper-v117';
+const CACHE_NAME = 'waiter-helper-v118';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -8,12 +8,12 @@ const ASSETS_TO_CACHE = [
   './manifest.json',
   './icons/icon-192.svg',
   './icons/icon-512.svg',
-  './images/beef_burger.png',
-  './images/grilled_chicken.png',
-  './images/pasta_alfredo.png',
-  './images/chicken_pizza.png',
-  './images/chicken_wings.png',
-  './images/french_fries.png'
+  './images/beef_burger.webp',
+  './images/grilled_chicken.webp',
+  './images/pasta_alfredo.webp',
+  './images/chicken_pizza.webp',
+  './images/chicken_wings.webp',
+  './images/french_fries.webp'
 ];
 
 // Install event - cache assets

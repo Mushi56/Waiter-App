@@ -5,70 +5,70 @@
   // --- Default Menu ---
   const DEFAULT_MENU = [
     // Wraps
-    { id: 1, name: 'Beef Tortilla', price: 18.90, category: 'Wraps', image: 'images/beef_tortilla.png', isHero: false, heroText: 'HOT DEAL', description: 'Juicy grilled beef strips wrapped in a soft flour tortilla with fresh greens and savory sauce.' },
-    { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: 'images/wrap_chicken_tortilla.png', description: 'Tender seasoned chicken breast wrap with crisp vegetables and a signature dressing.' },
-    { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: 'images/wrap_zinger_tortilla.png', description: 'Extra crunchy spicy chicken zinger fillet wrapped with fresh lettuce and mayo.' },
+    { id: 1, name: 'Beef Tortilla', price: 18.90, category: 'Wraps', image: 'images/beef_tortilla.webp', isHero: false, heroText: 'HOT DEAL', description: 'Juicy grilled beef strips wrapped in a soft flour tortilla with fresh greens and savory sauce.' },
+    { id: 2, name: 'Chicken Tortilla', price: 14.90, category: 'Wraps', image: 'images/wrap_chicken_tortilla.webp', description: 'Tender seasoned chicken breast wrap with crisp vegetables and a signature dressing.' },
+    { id: 3, name: 'Zinger Tortilla', price: 18.90, category: 'Wraps', image: 'images/wrap_zinger_tortilla.webp', description: 'Extra crunchy spicy chicken zinger fillet wrapped with fresh lettuce and mayo.' },
     // Burgers
-    { id: 4, name: 'Burger Wagyu Truffle', price: 49.90, category: 'Burgers', image: 'images/burger_wagyu_truffle.png', isHero: true, heroText: 'BEST SELLER', description: 'Premium Wagyu beef patty infused with aromatic truffle oil and melted cheese.' },
-    { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: 'images/burger_grill_chicken.png', description: 'Perfectly grilled chicken thigh fillet served with fresh toppings on a toasted bun.' },
-    { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: 'images/burger_mac_daddy.png', description: 'A towering burger featuring a juicy beef patty topped with creamy mac and cheese.' },
-    { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: 'images/burger_triple_b.png', description: 'Beef, Bacon, and Barbecue sauce—the ultimate savory burger experience.' },
-    { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: 'images/burger_triple_stack.png', description: 'Three layers of juicy patties and melted cheese for the biggest appetite.' },
-    { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: 'images/burger_zinger.png', description: 'Our signature spicy fried chicken fillet with fresh lettuce on a toasted sesame bun.' },
+    { id: 4, name: 'Burger Wagyu Truffle', price: 49.90, category: 'Burgers', image: 'images/burger_wagyu_truffle.webp', isHero: true, heroText: 'BEST SELLER', description: 'Premium Wagyu beef patty infused with aromatic truffle oil and melted cheese.' },
+    { id: 5, name: 'Grill Chicken Burger', price: 22.90, category: 'Burgers', image: 'images/burger_grill_chicken.webp', description: 'Perfectly grilled chicken thigh fillet served with fresh toppings on a toasted bun.' },
+    { id: 6, name: 'The Mac Daddy', price: 23.90, category: 'Burgers', image: 'images/burger_mac_daddy.webp', description: 'A towering burger featuring a juicy beef patty topped with creamy mac and cheese.' },
+    { id: 7, name: 'Triple B', price: 23.90, category: 'Burgers', image: 'images/burger_triple_b.webp', description: 'Beef, Bacon, and Barbecue sauce—the ultimate savory burger experience.' },
+    { id: 8, name: 'Triple Stack', price: 36.90, category: 'Burgers', image: 'images/burger_triple_stack.webp', description: 'Three layers of juicy patties and melted cheese for the biggest appetite.' },
+    { id: 9, name: 'Zinger', price: 21.90, category: 'Burgers', image: 'images/burger_zinger.webp', description: 'Our signature spicy fried chicken fillet with fresh lettuce on a toasted sesame bun.' },
     // Main Course
-    { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: 'images/angus_ribeye_steak.png', isHero: false, heroText: 'PREMIUM', description: 'High-quality Angus ribeye grilled to perfection, served with black pepper sauce.' },
-    { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/fried_chicken_chop.png', isHero: true, heroText: 'BEST SELLER', description: 'Crispy deep-fried breaded chicken chop served with coleslaw and fries.' },
-    { id: 12, name: 'Grill Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/grill_chicken_chop.png', description: 'Succulent grilled chicken thigh served with our special homemade gravy.' },
-    { id: 13, name: 'Lamb Grilled', price: 36.90, category: 'Main Course', image: 'images/lamb_grilled.png', description: 'Tender grilled lamb chops seasoned with aromatic herbs and spices.' },
-    { id: 14, name: 'Lamb Grilled 1KG', price: 109.90, category: 'Main Course', image: 'images/lamb_grilled.png', description: 'Massive platter of grilled lamb chops, perfect for sharing with family.' },
-    { id: 15, name: 'Lamb Grilled 500g', price: 59.90, category: 'Main Course', image: 'images/lamb_grilled.png', description: 'A generous portion of our signature grilled lamb chops with sides.' },
-    { id: 16, name: 'Mix Platter', price: 38.90, category: 'Main Course', image: 'images/mix_platter.png', description: 'The best of both worlds—a combination of grilled chicken and lamb chops.' },
+    { id: 10, name: 'Angus Ribeye Steak', price: 79.00, category: 'Main Course', image: 'images/angus_ribeye_steak.webp', isHero: false, heroText: 'PREMIUM', description: 'High-quality Angus ribeye grilled to perfection, served with black pepper sauce.' },
+    { id: 11, name: 'Fried Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/fried_chicken_chop.webp', isHero: true, heroText: 'BEST SELLER', description: 'Crispy deep-fried breaded chicken chop served with coleslaw and fries.' },
+    { id: 12, name: 'Grill Chicken Chop', price: 22.90, category: 'Main Course', image: 'images/grill_chicken_chop.webp', description: 'Succulent grilled chicken thigh served with our special homemade gravy.' },
+    { id: 13, name: 'Lamb Grilled', price: 36.90, category: 'Main Course', image: 'images/lamb_grilled.webp', description: 'Tender grilled lamb chops seasoned with aromatic herbs and spices.' },
+    { id: 14, name: 'Lamb Grilled 1KG', price: 109.90, category: 'Main Course', image: 'images/lamb_grilled.webp', description: 'Massive platter of grilled lamb chops, perfect for sharing with family.' },
+    { id: 15, name: 'Lamb Grilled 500g', price: 59.90, category: 'Main Course', image: 'images/lamb_grilled.webp', description: 'A generous portion of our signature grilled lamb chops with sides.' },
+    { id: 16, name: 'Mix Platter', price: 38.90, category: 'Main Course', image: 'images/mix_platter.webp', description: 'The best of both worlds—a combination of grilled chicken and lamb chops.' },
     // Pasta
-    { id: 17, name: 'Aglio Bolognaise', price: 18.90, category: 'Pasta', image: 'images/pasta_aglio_bolognaise.png', description: 'Classic Aglio Olio pasta topped with a rich, slow-cooked beef bolognaise.' },
-    { id: 18, name: 'Aglio Olio', price: 15.90, category: 'Pasta', image: 'images/pasta_aglio_olio.png', description: 'Simple and delicious pasta tossed in olive oil, garlic, and chili flakes.' },
-    { id: 19, name: 'Amatricana', price: 19.90, category: 'Pasta', image: 'images/pasta_amatricana.png', description: 'Pasta in a spicy tomato-based sauce with savory beef bits and onions.' },
-    { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: 'images/pasta_beef_bolognaise.png', description: 'Hearty pasta served with a traditional rich minced beef and tomato sauce.' },
-    { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: 'images/pasta_carbonara.png', description: 'Creamy pasta sauce with beef bacon bits, parmesan, and a hint of black pepper.' },
-    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: 'images/pasta_garlic_cheese.png', description: 'Silky pasta tossed in fragrant garlic butter and topped with melted cheese.' },
-    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: 'images/pasta_garlic_cream.png', isHero: true, heroText: 'POPULAR', description: 'Rich and creamy garlic butter pasta that melts in your mouth.' },
-    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: 'images/pasta_mac_cheese.png', description: 'The ultimate comfort food—baked pasta in a thick, gooey cheese sauce.' },
-    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: 'images/pasta_marinara.png', description: 'Fresh pasta tossed in a zesty tomato sauce with aromatic herbs.' },
-    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: 'images/pasta_tomato_cream.png', description: 'A perfect blend of tangy tomato and smooth cream sauce.' },
+    { id: 17, name: 'Aglio Bolognaise', price: 18.90, category: 'Pasta', image: 'images/pasta_aglio_bolognaise.webp', description: 'Classic Aglio Olio pasta topped with a rich, slow-cooked beef bolognaise.' },
+    { id: 18, name: 'Aglio Olio', price: 15.90, category: 'Pasta', image: 'images/pasta_aglio_olio.webp', description: 'Simple and delicious pasta tossed in olive oil, garlic, and chili flakes.' },
+    { id: 19, name: 'Amatricana', price: 19.90, category: 'Pasta', image: 'images/pasta_amatricana.webp', description: 'Pasta in a spicy tomato-based sauce with savory beef bits and onions.' },
+    { id: 20, name: 'Beef Bolognaise', price: 19.90, category: 'Pasta', image: 'images/pasta_beef_bolognaise.webp', description: 'Hearty pasta served with a traditional rich minced beef and tomato sauce.' },
+    { id: 21, name: 'Carbonara', price: 19.90, category: 'Pasta', image: 'images/pasta_carbonara.webp', description: 'Creamy pasta sauce with beef bacon bits, parmesan, and a hint of black pepper.' },
+    { id: 22, name: 'Garlic Butter Cheese', price: 18.90, category: 'Pasta', image: 'images/pasta_garlic_cheese.webp', description: 'Silky pasta tossed in fragrant garlic butter and topped with melted cheese.' },
+    { id: 23, name: 'Garlic Butter Cream', price: 18.90, category: 'Pasta', image: 'images/pasta_garlic_cream.webp', isHero: true, heroText: 'POPULAR', description: 'Rich and creamy garlic butter pasta that melts in your mouth.' },
+    { id: 24, name: 'Mac and Cheese', price: 18.90, category: 'Pasta', image: 'images/pasta_mac_cheese.webp', description: 'The ultimate comfort food—baked pasta in a thick, gooey cheese sauce.' },
+    { id: 25, name: 'Marinara', price: 16.90, category: 'Pasta', image: 'images/pasta_marinara.webp', description: 'Fresh pasta tossed in a zesty tomato sauce with aromatic herbs.' },
+    { id: 26, name: 'Tomato Cream', price: 18.90, category: 'Pasta', image: 'images/pasta_tomato_cream.webp', description: 'A perfect blend of tangy tomato and smooth cream sauce.' },
     // Rice
-    { id: 27, name: 'Salted Egg Calamari Rice', price: 17.90, category: 'Rice', image: 'images/rice_salted_egg_calamari.png', description: 'Crispy fried calamari rings served with fragrant white rice and rich salted egg sauce.' },
-    { id: 28, name: 'Salted Egg Chicken Rice', price: 14.90, category: 'Rice', image: 'images/rice_salted_egg_chicken.png', description: 'Fried chicken pieces tossed in creamy salted egg yolk sauce, served with steamed white rice.' },
-    { id: 29, name: 'Salted Egg Prawn Rice', price: 21.90, category: 'Rice', image: 'images/rice_salted_egg_prawn.png', description: 'Succulent prawns glazed in golden salted egg sauce, served with white rice.' },
-    { id: 30, name: 'Salted Egg Zinger Rice', price: 19.90, category: 'Rice', image: 'images/rice_salted_egg_zinger.png', description: 'Spicy zinger fillet with salted egg sauce, served with a portion of white rice.' },
+    { id: 27, name: 'Salted Egg Calamari Rice', price: 17.90, category: 'Rice', image: 'images/rice_salted_egg_calamari.webp', description: 'Crispy fried calamari rings served with fragrant white rice and rich salted egg sauce.' },
+    { id: 28, name: 'Salted Egg Chicken Rice', price: 14.90, category: 'Rice', image: 'images/rice_salted_egg_chicken.webp', description: 'Fried chicken pieces tossed in creamy salted egg yolk sauce, served with steamed white rice.' },
+    { id: 29, name: 'Salted Egg Prawn Rice', price: 21.90, category: 'Rice', image: 'images/rice_salted_egg_prawn.webp', description: 'Succulent prawns glazed in golden salted egg sauce, served with white rice.' },
+    { id: 30, name: 'Salted Egg Zinger Rice', price: 19.90, category: 'Rice', image: 'images/rice_salted_egg_zinger.webp', description: 'Spicy zinger fillet with salted egg sauce, served with a portion of white rice.' },
     // Snacks
-    { id: 31, name: 'Triple Cheasy Bacon Fries', price: 12.90, category: 'Snacks', image: 'images/french_fries.png', isHero: true, heroText: 'TOP CHOICE', description: 'Loaded golden fries topped with extra cheese sauce and crispy beef bacon bits.' },
-    { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: 'images/snack_cheesy_fries.png', description: 'Crispy fries drizzled with a generous amount of creamy cheese sauce.' },
-    { id: 33, name: 'Chicken n Fries', price: 12.90, category: 'Snacks', image: 'images/snack_chicken_fries.png', description: 'A classic combination of crispy chicken pieces served with golden fries.' },
-    { id: 34, name: 'Onion Rings', price: 9.90, category: 'Snacks', image: 'images/snack_onion_rings.png', description: 'Sweet onions battered and fried until golden and extra crunchy.' },
-    { id: 35, name: 'Plain Fries', price: 7.00, category: 'Snacks', image: 'images/snack_plain_fries.png', description: 'Perfectly salted, crispy golden french fries.' },
-    { id: 36, name: 'Sober Cheese Snack', price: 5.00, category: 'Snacks', image: 'images/snack_sober_cheese.png', description: 'A light and cheesy snack perfect for sharing.' },
+    { id: 31, name: 'Triple Cheasy Bacon Fries', price: 12.90, category: 'Snacks', image: 'images/french_fries.webp', isHero: true, heroText: 'TOP CHOICE', description: 'Loaded golden fries topped with extra cheese sauce and crispy beef bacon bits.' },
+    { id: 32, name: 'Cheesy Fries', price: 12.90, category: 'Snacks', image: 'images/snack_cheesy_fries.webp', description: 'Crispy fries drizzled with a generous amount of creamy cheese sauce.' },
+    { id: 33, name: 'Chicken n Fries', price: 12.90, category: 'Snacks', image: 'images/snack_chicken_fries.webp', description: 'A classic combination of crispy chicken pieces served with golden fries.' },
+    { id: 34, name: 'Onion Rings', price: 9.90, category: 'Snacks', image: 'images/snack_onion_rings.webp', description: 'Sweet onions battered and fried until golden and extra crunchy.' },
+    { id: 35, name: 'Plain Fries', price: 7.00, category: 'Snacks', image: 'images/snack_plain_fries.webp', description: 'Perfectly salted, crispy golden french fries.' },
+    { id: 36, name: 'Sober Cheese Snack', price: 5.00, category: 'Snacks', image: 'images/snack_sober_cheese.webp', description: 'A light and cheesy snack perfect for sharing.' },
     // Coffee
-    { id: 37, name: 'Mocha', price: 12.00, category: 'Coffee', image: 'images/coffee_mocha.png', description: 'A rich blend of espresso, steamed milk, and decadent chocolate.' },
-    { id: 38, name: 'Latte', price: 10.90, category: 'Coffee', image: 'images/coffee_latte.png', description: 'Smooth espresso combined with perfectly steamed silky milk.' },
-    { id: 39, name: 'Americano', price: 7.00, category: 'Coffee', image: 'images/coffee_americano.png', description: 'A classic bold espresso shot diluted with hot water.' },
+    { id: 37, name: 'Mocha', price: 12.00, category: 'Coffee', image: 'images/coffee_mocha.webp', description: 'A rich blend of espresso, steamed milk, and decadent chocolate.' },
+    { id: 38, name: 'Latte', price: 10.90, category: 'Coffee', image: 'images/coffee_latte.webp', description: 'Smooth espresso combined with perfectly steamed silky milk.' },
+    { id: 39, name: 'Americano', price: 7.00, category: 'Coffee', image: 'images/coffee_americano.webp', description: 'A classic bold espresso shot diluted with hot water.' },
     // Non Coffee
-    { id: 40, name: 'Chocolate', price: 12.00, category: 'Non Coffee', image: 'images/non_coffee_chocolate.png', description: 'Creamy and rich cocoa drink served hot or iced.' },
-    { id: 41, name: 'Matcha', price: 11.00, category: 'Non Coffee', image: 'images/non_coffee_matcha.png', description: 'Authentic Japanese green tea latte with a smooth, earthy flavor.' },
-    { id: 42, name: 'Ice Peach Tea', price: 4.00, category: 'Non Coffee', image: 'images/non_coffee_peach_tea.png', description: 'Refreshing iced tea infused with sweet and fragrant peach flavor.' },
-    { id: 43, name: 'Ice Passionfruit Tea', price: 4.00, category: 'Non Coffee', image: 'images/non_coffee_passionfruit_tea.png', description: 'Zesty and tropical iced tea with real passionfruit notes.' },
-    { id: 44, name: 'Ice Lemon Tea', price: 4.00, category: 'Non Coffee', image: 'images/non_coffee_lemon_tea.png', description: 'The classic thirst-quencher—iced tea with a fresh citrus kick.' },
+    { id: 40, name: 'Chocolate', price: 12.00, category: 'Non Coffee', image: 'images/non_coffee_chocolate.webp', description: 'Creamy and rich cocoa drink served hot or iced.' },
+    { id: 41, name: 'Matcha', price: 11.00, category: 'Non Coffee', image: 'images/non_coffee_matcha.webp', description: 'Authentic Japanese green tea latte with a smooth, earthy flavor.' },
+    { id: 42, name: 'Ice Peach Tea', price: 4.00, category: 'Non Coffee', image: 'images/non_coffee_peach_tea.webp', description: 'Refreshing iced tea infused with sweet and fragrant peach flavor.' },
+    { id: 43, name: 'Ice Passionfruit Tea', price: 4.00, category: 'Non Coffee', image: 'images/non_coffee_passionfruit_tea.webp', description: 'Zesty and tropical iced tea with real passionfruit notes.' },
+    { id: 44, name: 'Ice Lemon Tea', price: 4.00, category: 'Non Coffee', image: 'images/non_coffee_lemon_tea.webp', description: 'The classic thirst-quencher—iced tea with a fresh citrus kick.' },
     // Mocktails
-    { id: 45, name: 'Watermelon Blackcurrant', price: 6.90, category: 'Mocktails', image: 'images/mocktail_watermelon_blackcurrant.png', description: 'A unique and refreshing mocktail blend of fruity watermelon and tart blackcurrant.' },
-    { id: 46, name: 'Virgin Mojitos', price: 6.90, category: 'Mocktails', image: 'images/mocktail_virgin_mojito.png', description: 'Refreshing lime and mint mocktail served chilled with soda.' },
-    { id: 47, name: 'Tropical Sunrise', price: 6.90, category: 'Mocktails', image: 'images/mocktail_tropical_sunrise.png', description: 'A vibrant layered mocktail with citrus and exotic fruit flavors.' },
-    { id: 48, name: 'TripleBerries', price: 6.90, category: 'Mocktails', image: 'images/mocktail_triple_berries.png', description: 'A sweet and tangy berry explosion featuring three types of berries.' },
-    { id: 49, name: 'Solero', price: 6.00, category: 'Mocktails', image: 'images/mocktail_solero.png', description: 'A nostalgic creamy lime mocktail inspired by the classic ice cream.' },
+    { id: 45, name: 'Watermelon Blackcurrant', price: 6.90, category: 'Mocktails', image: 'images/mocktail_watermelon_blackcurrant.webp', description: 'A unique and refreshing mocktail blend of fruity watermelon and tart blackcurrant.' },
+    { id: 46, name: 'Virgin Mojitos', price: 6.90, category: 'Mocktails', image: 'images/mocktail_virgin_mojito.webp', description: 'Refreshing lime and mint mocktail served chilled with soda.' },
+    { id: 47, name: 'Tropical Sunrise', price: 6.90, category: 'Mocktails', image: 'images/mocktail_tropical_sunrise.webp', description: 'A vibrant layered mocktail with citrus and exotic fruit flavors.' },
+    { id: 48, name: 'TripleBerries', price: 6.90, category: 'Mocktails', image: 'images/mocktail_triple_berries.webp', description: 'A sweet and tangy berry explosion featuring three types of berries.' },
+    { id: 49, name: 'Solero', price: 6.00, category: 'Mocktails', image: 'images/mocktail_solero.webp', description: 'A nostalgic creamy lime mocktail inspired by the classic ice cream.' },
     // Desserts
-    { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: 'images/cat_desserts.png', description: 'Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone.' },
-    { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: 'images/cat_desserts.png', description: 'Delicious dessert with layers of banana, cream, and buttery toffee.' },
-    { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: 'images/cat_desserts.png', description: 'Creamy cheesecake topped with a generous layer of crushed Biscoff cookies.' },
-    { id: 53, name: 'Roti John Wagyu Truffle', price: 50.00, category: 'Roti John', image: 'images/roti_john_wagyu_truffle.png', isHero: true, heroText: 'BEST SELLER', description: 'Homemade brioche bread of roti john serves with 100g marble 8 wagyu shabu shabu meat with signature truffle sauce.' },
-    { id: 54, name: 'Roti John Pulled Beef', price: 24.00, category: 'Roti John', image: 'images/roti_john_pulled_beef.png', description: 'Home made brioche bread of roti john serves with 8 hours long braised brisket with house marination and topped with Macaroni and cheese' },
-    { id: 55, name: 'Roti John Zinger', price: 22.00, category: 'Roti John', image: 'images/roti_john_zinger.png', description: 'Home made brioche bread of roti john serves with our signature zinger patty and cheese sauce.' },
+    { id: 50, name: 'Tiramisu', price: 25.00, category: 'Desserts', image: 'images/cat_desserts.webp', description: 'Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone.' },
+    { id: 51, name: 'Banofee Pie', price: 20.00, category: 'Desserts', image: 'images/cat_desserts.webp', description: 'Delicious dessert with layers of banana, cream, and buttery toffee.' },
+    { id: 52, name: 'Biscoff Cheese Cake', price: 15.00, category: 'Desserts', image: 'images/cat_desserts.webp', description: 'Creamy cheesecake topped with a generous layer of crushed Biscoff cookies.' },
+    { id: 53, name: 'Roti John Wagyu Truffle', price: 50.00, category: 'Roti John', image: 'images/roti_john_wagyu_truffle.webp', isHero: true, heroText: 'BEST SELLER', description: 'Homemade brioche bread of roti john serves with 100g marble 8 wagyu shabu shabu meat with signature truffle sauce.' },
+    { id: 54, name: 'Roti John Pulled Beef', price: 24.00, category: 'Roti John', image: 'images/roti_john_pulled_beef.webp', description: 'Home made brioche bread of roti john serves with 8 hours long braised brisket with house marination and topped with Macaroni and cheese' },
+    { id: 55, name: 'Roti John Zinger', price: 22.00, category: 'Roti John', image: 'images/roti_john_zinger.webp', description: 'Home made brioche bread of roti john serves with our signature zinger patty and cheese sauce.' },
     // Standalone Add-ons
     { id: 56, name: 'Add-on: Extra Grilled Chicken', price: 12.00, category: 'Add ons', image: null, description: 'Extra serving of perfectly grilled chicken thigh fillet.' },
     { id: 57, name: 'Add-on: Extra Beef Patty', price: 5.00, category: 'Add ons', image: null, description: 'Extra juicy flame-grilled beef patty.' },
@@ -86,18 +86,18 @@
   ];
 
   let appCategories = JSON.parse(localStorage.getItem('waiter_categories')) || [
-    { name: 'Main Course', emoji: '🥩', image: 'images/cat_main_course.png' },
-    { name: 'Pasta', emoji: '🍝', image: 'images/cat_pasta.png' },
-    { name: 'Burgers', emoji: '🍔', image: 'images/cat_burgers.png' },
-    { name: 'Wraps', emoji: '🌯', image: 'images/cat_wraps.png' },
-    { name: 'Rice', emoji: '🍚', image: 'images/cat_salted_egg.png' },
-    { name: 'Snacks', emoji: '🍟', image: 'images/cat_snacks.png' },
-    { name: 'Mocktails', emoji: '🍹', image: 'images/cat_mocktails.png' },
-    { name: 'Coffee', emoji: '☕', image: 'images/cat_coffee.png' },
-    { name: 'Non Coffee', emoji: '🧋', image: 'images/cat_non_coffee.png' },
-    { name: 'Desserts', emoji: '🍰', image: 'images/cat_desserts.png' },
-    { name: 'Add ons', emoji: '➕', image: 'images/cat_add_ons.png' },
-    { name: 'Roti John', emoji: '🥖', image: 'images/roti_john_wagyu_truffle.png' }
+    { name: 'Main Course', emoji: '🥩', image: 'images/cat_main_course.webp' },
+    { name: 'Pasta', emoji: '🍝', image: 'images/cat_pasta.webp' },
+    { name: 'Burgers', emoji: '🍔', image: 'images/cat_burgers.webp' },
+    { name: 'Wraps', emoji: '🌯', image: 'images/cat_wraps.webp' },
+    { name: 'Rice', emoji: '🍚', image: 'images/cat_salted_egg.webp' },
+    { name: 'Snacks', emoji: '🍟', image: 'images/cat_snacks.webp' },
+    { name: 'Mocktails', emoji: '🍹', image: 'images/cat_mocktails.webp' },
+    { name: 'Coffee', emoji: '☕', image: 'images/cat_coffee.webp' },
+    { name: 'Non Coffee', emoji: '🧋', image: 'images/cat_non_coffee.webp' },
+    { name: 'Desserts', emoji: '🍰', image: 'images/cat_desserts.webp' },
+    { name: 'Add ons', emoji: '➕', image: 'images/cat_add_ons.webp' },
+    { name: 'Roti John', emoji: '🥖', image: 'images/roti_john_wagyu_truffle.webp' }
   ];
   let EMOJI_MAP = {};
   function updateEmojiMap() {
@@ -871,7 +871,7 @@
   }
 
   // --- LocalStorage ---
-  const MENU_VERSION = '26'; // Bumped for Non-Coffee and Dessert pictures
+  const MENU_VERSION = '27'; // Bumped for Non-Coffee and Dessert pictures
 
   function loadData() {
     const storedVersion = localStorage.getItem('wh_menu_version');
@@ -882,18 +882,18 @@
       menuItems = [...DEFAULT_MENU];
       // Reset categories to the latest defaults (includes Rice and Roti John)
       appCategories = [
-        { name: 'Main Course', emoji: '🥩', image: 'images/cat_main_course.png' },
-        { name: 'Pasta', emoji: '🍝', image: 'images/cat_pasta.png' },
-        { name: 'Burgers', emoji: '🍔', image: 'images/cat_burgers.png' },
-        { name: 'Wraps', emoji: '🌯', image: 'images/cat_wraps.png' },
-        { name: 'Rice', emoji: '🍚', image: 'images/cat_salted_egg.png' },
-        { name: 'Snacks', emoji: '🍟', image: 'images/cat_snacks.png' },
-        { name: 'Mocktails', emoji: '🍹', image: 'images/cat_mocktails.png' },
-        { name: 'Coffee', emoji: '☕', image: 'images/cat_coffee.png' },
-        { name: 'Non Coffee', emoji: '🧋', image: 'images/cat_non_coffee.png' },
-        { name: 'Desserts', emoji: '🍰', image: 'images/cat_desserts.png' },
-        { name: 'Add ons', emoji: '➕', image: 'images/cat_add_ons.png' },
-        { name: 'Roti John', emoji: '🥖', image: 'images/roti_john_wagyu_truffle.png' }
+        { name: 'Main Course', emoji: '🥩', image: 'images/cat_main_course.webp' },
+        { name: 'Pasta', emoji: '🍝', image: 'images/cat_pasta.webp' },
+        { name: 'Burgers', emoji: '🍔', image: 'images/cat_burgers.webp' },
+        { name: 'Wraps', emoji: '🌯', image: 'images/cat_wraps.webp' },
+        { name: 'Rice', emoji: '🍚', image: 'images/cat_salted_egg.webp' },
+        { name: 'Snacks', emoji: '🍟', image: 'images/cat_snacks.webp' },
+        { name: 'Mocktails', emoji: '🍹', image: 'images/cat_mocktails.webp' },
+        { name: 'Coffee', emoji: '☕', image: 'images/cat_coffee.webp' },
+        { name: 'Non Coffee', emoji: '🧋', image: 'images/cat_non_coffee.webp' },
+        { name: 'Desserts', emoji: '🍰', image: 'images/cat_desserts.webp' },
+        { name: 'Add ons', emoji: '➕', image: 'images/cat_add_ons.webp' },
+        { name: 'Roti John', emoji: '🥖', image: 'images/roti_john_wagyu_truffle.webp' }
       ];
 
       // Force reset ADDONS_DATA
@@ -906,6 +906,38 @@
       menuItems = storedMenu ? JSON.parse(storedMenu) : [...DEFAULT_MENU];
       if (!storedMenu) saveMenu();
       appCategories = JSON.parse(localStorage.getItem('waiter_categories')) || appCategories;
+    }
+
+    
+    // Auto-migrate cached item and category images from .png to .webp
+    let migratedToWebp = false;
+    if (Array.isArray(menuItems)) {
+      menuItems.forEach(item => {
+        if (item.image && typeof item.image === 'string' && item.image.endsWith('.png')) {
+          item.image = item.image.replace(/\.png$/, '.webp');
+          migratedToWebp = true;
+        }
+        if (Array.isArray(item.gallery)) {
+          item.gallery.forEach(g => {
+            if (g && g.data && typeof g.data === 'string' && g.data.endsWith('.png')) {
+              g.data = g.data.replace(/\.png$/, '.webp');
+              migratedToWebp = true;
+            }
+          });
+        }
+      });
+    }
+    if (Array.isArray(appCategories)) {
+      appCategories.forEach(cat => {
+        if (cat.image && typeof cat.image === 'string' && cat.image.endsWith('.png')) {
+          cat.image = cat.image.replace(/\.png$/, '.webp');
+          migratedToWebp = true;
+        }
+      });
+    }
+    if (migratedToWebp) {
+      saveMenu();
+      saveCategories();
     }
 
     const storedOrders = localStorage.getItem('wh_orders');
@@ -972,6 +1004,40 @@
       els.adminPinInput.value = '';
       els.adminPinInput.focus();
     }
+  }
+
+  // --- Update Menu Quantities ---
+  function updateMenuCardQty(itemId) {
+    if (!els.menuGrid) return;
+    const card = els.menuGrid.querySelector(`.menu-card[data-id="${itemId}"]`);
+    if (!card) return;
+    const qtyBadge = card.querySelector('.menu-card-qty');
+    if (!qtyBadge) return;
+    const qty = getOrderQty(itemId);
+    if (qty > 0) {
+      qtyBadge.textContent = qty;
+      qtyBadge.classList.add('show');
+    } else {
+      qtyBadge.classList.remove('show');
+    }
+  }
+
+  function updateAllMenuCardQty() {
+    if (!els.menuGrid) return;
+    const cards = els.menuGrid.querySelectorAll('.menu-card');
+    cards.forEach(card => {
+      const itemId = parseInt(card.dataset.id);
+      const qtyBadge = card.querySelector('.menu-card-qty');
+      if (qtyBadge) {
+        const qty = getOrderQty(itemId);
+        if (qty > 0) {
+          qtyBadge.textContent = qty;
+          qtyBadge.classList.add('show');
+        } else {
+          qtyBadge.classList.remove('show');
+        }
+      }
+    });
   }
 
   // --- Render Menu Grid ---
@@ -1350,15 +1416,46 @@
     }
 
     renderOrder();
-    renderMenu();
+    updateMenuCardQty(menuItem.id);
     hapticFeedback();
 
-    // Pulse floating cart
+    // Pulse floating cart & Fly animation
     if (els.floatingCartBtn) {
       els.floatingCartBtn.classList.remove('pulse');
       void els.floatingCartBtn.offsetWidth;
       els.floatingCartBtn.classList.add('pulse');
       setTimeout(() => els.floatingCartBtn.classList.remove('pulse'), 600);
+
+      // Flyer particle animation
+      const card = els.menuGrid.querySelector(`.menu-card[data-id="${menuItem.id}"]`);
+      if (card) {
+        const img = card.querySelector('.menu-card-img');
+        const startRect = img ? img.getBoundingClientRect() : card.getBoundingClientRect();
+        const endRect = els.floatingCartBtn.getBoundingClientRect();
+
+        const flyer = document.createElement('div');
+        flyer.style.position = 'fixed';
+        flyer.style.top = `${startRect.top + startRect.height / 2 - 15}px`;
+        flyer.style.left = `${startRect.left + startRect.width / 2 - 15}px`;
+        flyer.style.width = '30px';
+        flyer.style.height = '30px';
+        flyer.style.borderRadius = '50%';
+        flyer.style.background = 'var(--accent)';
+        flyer.style.boxShadow = '0 0 12px var(--accent)';
+        flyer.style.zIndex = '9999';
+        flyer.style.pointerEvents = 'none';
+        flyer.style.transition = 'all 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
+        document.body.appendChild(flyer);
+
+        void flyer.offsetWidth;
+
+        flyer.style.top = `${endRect.top + endRect.height / 2 - 15}px`;
+        flyer.style.left = `${endRect.left + endRect.width / 2 - 15}px`;
+        flyer.style.transform = 'scale(0.3)';
+        flyer.style.opacity = '0.2';
+
+        setTimeout(() => flyer.remove(), 600);
+      }
     }
 
     // Animate card
@@ -1367,6 +1464,7 @@
       card.classList.remove('added');
       void card.offsetWidth;
       card.classList.add('added');
+      setTimeout(() => card.classList.remove('added'), 400);
     }
   }
 
@@ -1393,6 +1491,8 @@
     const idx = currentOrder.findIndex((o) => o.cartItemId === cartItemId);
     if (idx === -1) return;
 
+    const itemId = currentOrder[idx].id;
+
     if (action === 'inc') {
       currentOrder[idx].qty++;
     } else if (action === 'dec') {
@@ -1403,7 +1503,7 @@
     }
 
     renderOrder();
-    renderMenu();
+    updateMenuCardQty(itemId);
   }
 
   // --- Save Order ---
@@ -1455,7 +1555,7 @@
     if (els.orderNote) els.orderNote.value = '';
     changeTable(true); // Silent reset for new order
     renderOrder();
-    renderMenu();
+    updateAllMenuCardQty();
     renderHistoryPreview();
     if (els.orderModalOverlay) els.orderModalOverlay.classList.add('hidden');
     showToast('✅ Order saved successfully!');
@@ -2038,8 +2138,14 @@
           const minDim = Math.min(img.width, img.height);
           const startX = (img.width - minDim) / 2;
           const startY = (img.height - minDim) / 2;
-          ctx.drawImage(img, startX, startY, minDim, minDim, 0, 0, size, size);
-          resolve(canvas.toDataURL('image/jpeg', 0.85));
+                    ctx.drawImage(img, startX, startY, minDim, minDim, 0, 0, size, size);
+          // Export in optimized WebP format with JPEG fallback
+          const webpData = canvas.toDataURL('image/webp', 0.82);
+          if (webpData && webpData.startsWith('data:image/webp')) {
+            resolve(webpData);
+          } else {
+            resolve(canvas.toDataURL('image/jpeg', 0.85));
+          }
         };
         img.src = e.target.result;
       };
@@ -2936,6 +3042,20 @@
     // Clear All / History Buttons
     const clearAllBtn = $('#clearAllOrdersBtn');
     if (clearAllBtn) clearAllBtn.addEventListener('click', clearAllOrders);
+
+    const cartClearBtn = $('#clearAllBtn');
+    if (cartClearBtn) {
+      cartClearBtn.addEventListener('click', () => {
+        if (currentOrder.length === 0) return;
+        if (!confirm('Are you sure you want to clear this order?')) return;
+        currentOrder = [];
+        currentDiscountValue = 0;
+        if (els.discountInput) els.discountInput.value = '';
+        renderOrder();
+        updateAllMenuCardQty();
+        showToast('Cart cleared');
+      });
+    }
 
     const clearHistBtn = $('#clearHistoryBtn');
     if (clearHistBtn) clearHistBtn.addEventListener('click', clearHistory);
